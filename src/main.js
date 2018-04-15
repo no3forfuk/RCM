@@ -3,6 +3,10 @@ import App from "./app.vue";
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
+import Vuex from 'vuex';
+const storeConfig =require('./store/store');
+Vue.use(Vuex);
+const store = new Vuex.Store(storeConfig);
 Vue.use(VueRouter);
 //Vue.use(VueAxios, axios);
 import routerConfig  from './router.js';
@@ -19,5 +23,6 @@ require('./components.js');
 new Vue({
     el: '#app',
     router,
+    store,
     render: c => c(App)
 })

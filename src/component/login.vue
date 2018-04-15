@@ -13,6 +13,7 @@
                 <input type="password" class="form-control" placeholder="请输入密码" aria-describedby="sizing-addon2" v-model="password">
             </div>
             <br>
+            <p class="text-left font-small" v-if="tips">请输入正确的账号或密码</p>
             <button type="button" class="btn btn-success" id="login-btn" @click="login">登陆</button>
             <br><br>
             <p class="text-center text-size12">
@@ -28,7 +29,8 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      tips:false
     };
   },
   methods: {
@@ -43,7 +45,11 @@ export default {
           //1.保存token
           if(res.data.code == '001'){
               //2.跳转到首页
-              self.$router.push('/home')
+              self.$router.push('/home');
+              self.$store.state.isLogin = true;
+          }
+          if(res.data.code == '002'){
+              self.tips = true;
           }
           
       })
@@ -63,5 +69,9 @@ export default {
 }
 .text-size12 {
   font-size: 0.8em;
+}
+.font-small{
+    font-size: 0.8rem;
+    color:rgb(247, 25, 25);
 }
 </style>

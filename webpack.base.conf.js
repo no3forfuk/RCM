@@ -1,8 +1,6 @@
 
 const path = require('path');
-
 const webpack = require('webpack');
-
 const merge = require('webpack-merge');
 module.exports = {
     entry: {
@@ -11,12 +9,14 @@ module.exports = {
     output: {
         publicPath: '/views/',
         path: path.resolve(__dirname, 'views'),
-        filename: 'js/build.js'
-        //filename: 'js/[name][chunkhash:8].js'
+        filename: 'js/[name].js'
     },
     module: {
         rules: [
-            { test: /\.vue$/, use: 'vue-loader' },
+            {
+                test: /\.vue$/, 
+                use: 'vue-loader'
+            },
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
