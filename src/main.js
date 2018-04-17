@@ -1,25 +1,35 @@
+
 import Vue from "vue";
 import App from "./app.vue";
+
+
+
+
+//vuex
+import Vuex from 'vuex';
+Vue.use(Vuex);
+const storeConfig = require('./store/store').default;
+const store = new Vuex.Store(storeConfig);
+import { mapState } from 'vuex';
+
+
+//router
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+import routerConfig from './router/router.js';
+const router = new VueRouter(routerConfig);
+//权限控制
+//axios
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
-const storeConfig =require('./store/store');
-Vue.use(Vuex);
-const store = new Vuex.Store(storeConfig);
-Vue.use(VueRouter);
-//Vue.use(VueAxios, axios);
-import routerConfig  from './router.js';
-const router = new VueRouter(routerConfig);
 Vue.prototype.$ajax = axios;
-require('./components.js');
-//登陆认证
-// Vue.use(require('@websanova/vue-auth'), {
-//     auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
-//     http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
-//     router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
-//  });
 
+
+//自定义组件引入
+require('./components/components.js');
+
+
+//实例化Vue
 new Vue({
     el: '#app',
     router,

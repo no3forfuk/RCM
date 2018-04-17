@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="contanier text-center">
-                <img src="../imgs/2018-04-13_181539.png" width="200px">
+                <img src="" width="200px">
             <p class="h4">欢迎来到RCM</p>
             <div class="input-group">
                 <span class="input-group-addon" id="sizing-addon2">用户名</span>
@@ -17,7 +17,7 @@
             <button type="button" class="btn btn-success" id="login-btn" @click="login">登陆</button>
             <br><br>
             <p class="text-center text-size12">
-                <router-link :to="{name:'login'}">忘记密码</router-link>
+                <router-link :to="{name:'login'}">忘记密码了</router-link>
                 |
                 <router-link :to="{name:'register'}">注册一个新账号</router-link>
             </p>
@@ -30,30 +30,35 @@ export default {
     return {
       username: "",
       password: "",
-      tips:false
+      tips: false
     };
   },
+  created() {},
   methods: {
     login() {
       var self = this;
-      this.$ajax.post("/api/Admin/Login",{
+      this.$ajax
+        .post("/api/Admin/Login", {
           username: self.username,
           password: self.password
-      })
-      .then((res)=>{
+        })
+        .then(res => {
           //登陆成功
-          //1.保存token
-          if(res.data.code == '001'){
-              //2.跳转到首页
-              self.$router.push('/home');
-              self.$store.state.isLogin = true;
+          if (res.data.code == "001") {
+            //1.保存token
+            sessionStorage.setItem("userId", res.data.token);
+            //2.跳转到首页
+            self.$store.state.TOKEN = res.data.token;
+            self.$store.commit("login");
+            self.$router.replace("/home");
           }
-          if(res.data.code == '002'){
-              self.tips = true;
+          if (res.data.code == "002") {
+            self.tips = true;
           }
-          
-      })
-      .catch(()=>{});
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
@@ -70,8 +75,8 @@ export default {
 .text-size12 {
   font-size: 0.8em;
 }
-.font-small{
-    font-size: 0.8rem;
-    color:rgb(247, 25, 25);
+.font-small {
+  font-size: 0.8rem;
+  color: rgb(247, 25, 25);
 }
 </style>

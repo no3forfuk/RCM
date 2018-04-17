@@ -15,7 +15,7 @@ const apiRouter = express.Router();
 app.use(router);
 app.use('/api', apiRouter);
 
-
+const mock = require('./mock/mock.js');
 
 module.exports = merge(base, {
     mode: 'development',
@@ -29,12 +29,16 @@ module.exports = merge(base, {
             const bodyParser = require('body-parser');
             app.use(bodyParser.urlencoded({ extended: false }));
             app.use(bodyParser.json());
+            //登陆
+            
             app.post('/api/Admin/Login', function (req, res) {
+                let token = parseInt(Math.random() * 9635423165465452).toString(16);
                 let user = req.body;
                 if (user.username == 'admin' && user.password == '123456') {
                     res.json({
                         code: '001',
-                        msg: 'bingo'
+                        msg: 'bingo',
+                        token,
                     })
                 } else {
                     res.json({
@@ -42,7 +46,12 @@ module.exports = merge(base, {
                         msg: 'go out'
                     })
                 }
+            });
+            //获取榜单
+            app.get('/query/r1',(req,res)=>{
+                res.json(mock)
             })
+            
         }
     }
 })
