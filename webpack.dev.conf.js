@@ -30,7 +30,7 @@ module.exports = merge(base, {
             app.use(bodyParser.urlencoded({ extended: false }));
             app.use(bodyParser.json());
             //登陆
-            
+
             app.post('/api/Admin/Login', function (req, res) {
                 let token = parseInt(Math.random() * 9635423165465452).toString(16);
                 let user = req.body;
@@ -48,10 +48,16 @@ module.exports = merge(base, {
                 }
             });
             //获取榜单
-            app.get('/query/r1',(req,res)=>{
+            app.get('/query/r1', (req, res) => {
+                res.json(mock)
+            });
+            app.get('/query/r1/belong', (req, res) => {
+                res.json(mock)
+            });
+            app.get('/query/r1/ele',(req,res)=>{
                 res.json(mock)
             })
-            
+
         }
     }
 })

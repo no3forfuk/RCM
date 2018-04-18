@@ -1,24 +1,137 @@
 <template>
     <div>
-        <div class="page-header">
-        <h3>榜单管理</h3>
-    </div>
+        <div class="page-header header-root">
+            <h3 class="header-left">榜单管理</h3>
+            <div class="header-right">
+                <div class="input-group search-box">
+                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                    <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-search"></span></span>
+                </div>
+                <button class="btn btn-primary add-ranklist" data-toggle="modal" data-target=".bs-modal-lg" @click="add_rank">添加榜单</button>
+                <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="gridSystemModalLabel" >添加榜单</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">标题</label>
+                                        <div class="col-sm-10">
+                                        <input type="text" class="form-control" placeholder="请输入标题内容" v-model="submitData.name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-sm-2 control-label">级别</label>
+                                        <div class="col-sm-10">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="一级" v-model="submitData.belong"> 一级
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="二级" 
+                                                v-model="submitData.belong"> 二级
+                                            </label>
+                                        </div>
+                                    </div>
+                                   <div class="form-group">
+                                        <label class="col-sm-2 control-label">从属榜单</label>
+                                        <div class="col-sm-10">
+                                            <div class="dropdown dropdown">
+                                                <div class="buffer_rank" ref="buffer_rank">
+                                                    <button v-for="(item,index) in belongArr" :key="index" class="btn btn-default" @dblclick="deleteThis($event,index)">{{item}}</button>
+                                                </div>
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    请选择
+                                                    <span class="caret"></span>
+                                                </button>
+                                                    <ul class="dropdown-menu belong_rank" aria-labelledby="dropdownMenu1">
+                                                        <li v-for="(item,index) in belongData" :key="index" ><a href="javascript:;" @click="add($event,index)">{{item.name}}</a></li>
+                                                    </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">星标</label>
+                                        <div class="col-sm-10">
+                                        <input type="text" class="form-control" placeholder="请输入星标" v-model="submitData.star">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">详情</label>
+                                        <div class="col-sm-10">
+                                            <textarea v-model="submitData.disc"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">元素列表</label>
+                                        <div class="col-sm-10">
+                                            <div class="ele-buffer">
+                                                <button v-for="(item,index) in eleArr" :key="index" class="btn btn-default ele-btn" @dblclick="deleteEle($event,index)">{{item}}</button>
+                                            </div>
+                                            <div class="dropdown">
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    请选择
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu belong_rank" aria-labelledby="dropdownMenu1">
+                                                    <li v-for="(item,index) in eleData" :key="index" @click="addEle($event)"><a href="javascript:;">{{item.name}}</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" @click="submit">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-default">导入榜单</button>
+
+                    
+            </div>
+        </div>
         <div>
             <table class="table table table-hover table-striped table-bordered">
                 <thead>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">NAME</th>
-                    <th class="text-center">DISC</th>
-                    <th class="text-center">OPTIONS</th>
-                    <th class="text-center">备注</th>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">榜单名称</th>
+                    <th class="text-center">详情</th>
+                    <th class="text-center">
+                        <y-dropdown :dropdown="rankLv"></y-dropdown>
+                    </th>
+                    <th class="text-center">操作人</th>
+                    <th class="text-center">最后编辑时间</th>
+                    <th class="text-center">被推送次数</th>
+                    <th class="text-center">
+                        <y-dropdown :dropdown="starmark"></y-dropdown>
+                    </th>
+                    <th class="text-center">
+                        操作
+                    </th>
                 </thead>
-                <tbody>
+                <tbody class="text-left">
                     <tr v-for="(item,index) in rankList" :key="index">
-                        <td>{{item.id}}</td>
+                        <td>{{index+1}}</td>
                         <td>{{item.name}}</td>
-                        <td>{{item.disc}}</td>
-                        <td><button type="btn" class="btn btn-default" @click="deleteItem(item,index)">删除</button></td>
-                        <td></td>
+                        <td style="max-width:300px;"><p class="td-disc">{{item.disc}}</p></td>
+                        <td>{{item.level}}</td>
+                        <td>{{item.who}}</td>
+                        <td>19:30</td>
+                        <td>time</td>
+                        <td>{{item.star}}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-success" @click="showOrHidden">{{isShow}}</button>
+                                <button type="button" class="btn btn-danger" @click="deleteItem(item,index)">删除</button>
+                                <button type="button" class="btn btn-info">编辑</button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -29,22 +142,160 @@
 export default {
   data() {
     return {
-        rankList:[]
+      rankList: [],
+      isShow: "",
+      belongData: [],
+      belongArr: [],
+      eleData: [],
+      eleArr: [],
+      submitData: {
+        name: "",
+        who: "",
+        star: "",
+        time: "time",
+        belong: "",
+        disc: ""
+      }
     };
   },
   created() {
-      this.$ajax.get('/query/r1').then((res)=>{
-          this.rankList = res.data.rankList;
-      }).catch(()=>{
-
+    this.isShow = "隐藏";
+    //构建星标数据
+    class Dropdown {
+      constructor(title, lists, position) {
+        this.title = title;
+        this.menu = lists;
+        this.position = position;
+      }
+    }
+    this.starmark = new Dropdown("星标", ["最热", "最新"], "20px");
+    //构建级别数据
+    this.rankLv = new Dropdown("一级榜单", ["一级榜单", "二级榜单"], "20px");
+    //查询榜单
+    this.$ajax
+      .get("/query/r1")
+      .then(res => {
+        this.rankList = res.data.rankList;
       })
+      .catch(() => {});
   },
   methods: {
-      deleteItem(targrt,index){
-          this.rankList.splice(index,1)
+    deleteItem(targrt, index) {
+      this.rankList.splice(index, 1);
+    },
+    setRankLv(e) {
+      this.rankLv = e.target.innerText;
+    },
+    showOrHidden() {
+      if (this.isShow == "隐藏") {
+        this.isShow = "显示";
       }
+      if (this.isShow == "显示") {
+        this.isShow = "隐藏";
+      }
+    },
+    add(e, i) {
+      let text = e.target.innerText;
+      this.belongArr.push(text);
+      this.belongData.splice(i, 1);
+    },
+    add_rank() {
+      //获取榜单数据
+      this.$ajax
+        .get("/query/r1/belong")
+        .then(res => {
+          this.belongData = res.data.belong;
+          this.add_ele();
+        })
+        .catch(err => {});
+    },
+    deleteThis(e, i) {
+      let el = this.belongArr.splice(i, 1);
+      let obj = {};
+      obj.id = i;
+      obj.name = el[0];
+      this.belongData.push(obj);
+    },
+    add_ele() {
+      this.$ajax
+        .get("/query/r1/ele")
+        .then(res => {
+          this.eleData = res.data.ele;
+        })
+        .catch(err => {});
+    },
+    deleteEle(e, i) {
+      let el = this.eleArr.splice(i, 1);
+      let obj = {};
+      obj.id = i;
+      obj.name = el[0];
+      this.eleData.push(obj);
+    },
+    addEle(e, i) {
+      let text = e.target.innerText;
+      this.eleArr.push(text);
+      this.eleData.splice(i, 1);
+    },
+    submit() {
+      console.log(this.submitData);
+    }
   }
 };
 </script>
 <style scoped>
+.header-root {
+  position: relative;
+}
+.header-right {
+  position: absolute;
+  top: 0px;
+  left: 180px;
+}
+.search-box {
+  width: 60%;
+  float: left;
+}
+.add-ranklist {
+  margin: 0 1rem;
+}
+.btn-size {
+  width: 100%;
+  height: 100%;
+}
+.left-size {
+  width: 80%;
+  float: left;
+  font-size: 1.5rem;
+}
+.right-size {
+  width: 20%;
+  float: left;
+}
+.select-menu {
+  position: absolute;
+  right: 0;
+}
+.belong_rank {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.buffer_rank {
+  float: left;
+  margin-right: 1rem;
+}
+.ele-btn {
+  display: block;
+  width: 70%;
+}
+.ele-buffer {
+  max-height: 200px;
+  overflow: auto;
+}
+.td-disc {
+  max-width: 600px;
+  max-height: 50px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 </style>

@@ -1,45 +1,51 @@
 <template>
     <div>
-        <ul id="home-list">
-            <li>
-                <router-link :to="{name:'rankList'}">榜单管理</router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'rankList'}">内容管理</router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'rankList'}">审核管理</router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'rankList'}">用户管理</router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'rankList'}">统计管理</router-link>
-            </li>
-            <li>
-                <router-link :to="{name:'rankList'}">数据抓取</router-link>
-            </li>
-        </ul>
+        <div class="root-box">
+            <div class="left-box">
+                <div class="list-group">
+                    <router-link :to="{name:'rankList'}" class="list-group-item" active-class="active">榜单管理</router-link>
+                    <router-link :to="{name:'pushTask'}" class="list-group-item" active-class="active">推送任务</router-link>
+                    <router-link :to="{name:'elementList'}" class="list-group-item" active-class="active">元素列表</router-link>
+                    <router-link :to="{name:'postList'}" class="list-group-item" active-class="active">post列表</router-link>
+                    <router-link :to="{name:'levelCtrl'}" class="list-group-item" active-class="active">上下级管理</router-link>
+                </div>
+            </div>
+            <div class="right-box">
+                <div class="panel panel-default">
+                    <div class="panel-body toggle-box">
+                        <router-view></router-view>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 export default {
-  
-}
+  data() {
+    return {
+      
+    }
+  },
+  created(){
+
+  }
+};
 </script>
 <style scoped>
-    #home-list li{
-        background-color: #ccc;
-        list-style: none;
-        float: left;
-        margin: 1rem;
-    }
-    #home-list li a{
-        display: block;
-        width: 10rem;
-        height: 10rem;
-    }
+.root-box {
+  width: 98%;
+  margin: 0 auto;
+}
 
+.left-box {
+  width: 15%;
+  float: left;
+}
+.right-box {
+  width: 84%;
+  float: left;
+}
 </style>
 
 
