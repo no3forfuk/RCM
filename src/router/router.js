@@ -8,6 +8,7 @@ import PushTask from '../components/pushTask/pushTask.vue';
 import ElementList from '../components/elementList/elementList.vue';
 import PostList from '../components/postList/postList.vue';
 import LevelCtrl from '../components/levelCtrl/levelCtrl.vue';
+import UpLoadRank from '../components/uploadRank/upload.vue';
 export const routes = [
     {
         path: '/home', name: 'home', component: Home,
@@ -17,6 +18,7 @@ export const routes = [
             { path: '/home/elementList', name: 'elementList', component: ElementList },
             { path: '/home/postList', name: 'postList', component: PostList },
             { path: '/home/levelCtrl', name: 'levelCtrl', component: LevelCtrl },
+            { path: '/home/rankList/upload', name: 'upload', component: UpLoadRank },
         ],
         redirect:'/home/rankList'
     },

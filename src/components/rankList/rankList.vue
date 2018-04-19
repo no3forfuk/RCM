@@ -7,91 +7,8 @@
                     <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
                     <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-search"></span></span>
                 </div>
-                <button class="btn btn-primary add-ranklist" data-toggle="modal" data-target=".bs-modal-lg" @click="add_rank">添加榜单</button>
-                <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="gridSystemModalLabel" >添加榜单</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">标题</label>
-                                        <div class="col-sm-10">
-                                        <input type="text" class="form-control" placeholder="请输入标题内容" v-model="submitData.name">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label  class="col-sm-2 control-label">级别</label>
-                                        <div class="col-sm-10">
-                                            <label class="radio-inline">
-                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="一级" v-model="submitData.belong"> 一级
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="二级" 
-                                                v-model="submitData.belong"> 二级
-                                            </label>
-                                        </div>
-                                    </div>
-                                   <div class="form-group">
-                                        <label class="col-sm-2 control-label">从属榜单</label>
-                                        <div class="col-sm-10">
-                                            <div class="dropdown dropdown">
-                                                <div class="buffer_rank" ref="buffer_rank">
-                                                    <button v-for="(item,index) in belongArr" :key="index" class="btn btn-default" @dblclick="deleteThis($event,index)">{{item}}</button>
-                                                </div>
-                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    请选择
-                                                    <span class="caret"></span>
-                                                </button>
-                                                    <ul class="dropdown-menu belong_rank" aria-labelledby="dropdownMenu1">
-                                                        <li v-for="(item,index) in belongData" :key="index" ><a href="javascript:;" @click="add($event,index)">{{item.name}}</a></li>
-                                                    </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">星标</label>
-                                        <div class="col-sm-10">
-                                        <input type="text" class="form-control" placeholder="请输入星标" v-model="submitData.star">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">详情</label>
-                                        <div class="col-sm-10">
-                                            <textarea v-model="submitData.disc"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label">元素列表</label>
-                                        <div class="col-sm-10">
-                                            <div class="ele-buffer">
-                                                <button v-for="(item,index) in eleArr" :key="index" class="btn btn-default ele-btn" @dblclick="deleteEle($event,index)">{{item}}</button>
-                                            </div>
-                                            <div class="dropdown">
-                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    请选择
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu belong_rank" aria-labelledby="dropdownMenu1">
-                                                    <li v-for="(item,index) in eleData" :key="index" @click="addEle($event)"><a href="javascript:;">{{item.name}}</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary" @click="submit">确定</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn btn-default">导入榜单</button>
+                <button class="btn btn-primary add-ranklist" data-toggle="modal" data-target=".bs-modal-lg" @click="creatRankModal">添加榜单</button>
+                <button class="btn btn-default"><router-link :to="{name:'upload'}">导入榜单</router-link></button>
 
                     
             </div>
@@ -129,14 +46,16 @@
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-success" @click="showOrHidden">{{isShow}}</button>
                                 <button type="button" class="btn btn-danger" @click="deleteItem(item,index)">删除</button>
-                                <button type="button" class="btn btn-info">编辑</button>
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-modal-lg" @click="editRankModal(item)">编辑</button>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <y-modal v-bind:modal="rankdata" v-bind:tabData="rankList"></y-modal>
     </div>
+    
 </template>
 <script>
 export default {
@@ -153,14 +72,19 @@ export default {
         who: "",
         star: "",
         time: "time",
-        belong: "",
+        level: "",
         disc: ""
+      },
+      rankdata: {
+        name: "",
+        todo: "",
+        data: {}
       }
     };
   },
   created() {
     this.isShow = "隐藏";
-    //构建星标数据
+    //下拉框构造函数
     class Dropdown {
       constructor(title, lists, position) {
         this.title = title;
@@ -168,6 +92,7 @@ export default {
         this.position = position;
       }
     }
+    //构建星标数据
     this.starmark = new Dropdown("星标", ["最热", "最新"], "20px");
     //构建级别数据
     this.rankLv = new Dropdown("一级榜单", ["一级榜单", "二级榜单"], "20px");
@@ -180,12 +105,26 @@ export default {
       .catch(() => {});
   },
   methods: {
+    //添加榜单
+    creatRankModal() {
+      this.rankdata.name = "添加榜单";
+      this.rankdata.todo = "添加";
+      this.rankdata.data = {};
+    },
+    //编辑榜单
+    editRankModal(element) {
+      this.rankdata.name = "编辑榜单";
+      this.rankdata.todo = "修改";
+      this.rankdata.data = element;
+    },
+    //删除当前单元行
     deleteItem(targrt, index) {
       this.rankList.splice(index, 1);
     },
     setRankLv(e) {
       this.rankLv = e.target.innerText;
     },
+    //显示隐藏
     showOrHidden() {
       if (this.isShow == "隐藏") {
         this.isShow = "显示";
@@ -194,50 +133,16 @@ export default {
         this.isShow = "隐藏";
       }
     },
-    add(e, i) {
-      let text = e.target.innerText;
-      this.belongArr.push(text);
-      this.belongData.splice(i, 1);
-    },
-    add_rank() {
-      //获取榜单数据
+    confirm() {
       this.$ajax
-        .get("/query/r1/belong")
+        .post("/submit/add_rank", this.submitData)
         .then(res => {
-          this.belongData = res.data.belong;
-          this.add_ele();
+          this.rankList.push(this.submitData);
+          this.submitData = {};
+          $(".bs-modal-lg").modal("hide");
+          $(".confirm").modal("hide");
         })
         .catch(err => {});
-    },
-    deleteThis(e, i) {
-      let el = this.belongArr.splice(i, 1);
-      let obj = {};
-      obj.id = i;
-      obj.name = el[0];
-      this.belongData.push(obj);
-    },
-    add_ele() {
-      this.$ajax
-        .get("/query/r1/ele")
-        .then(res => {
-          this.eleData = res.data.ele;
-        })
-        .catch(err => {});
-    },
-    deleteEle(e, i) {
-      let el = this.eleArr.splice(i, 1);
-      let obj = {};
-      obj.id = i;
-      obj.name = el[0];
-      this.eleData.push(obj);
-    },
-    addEle(e, i) {
-      let text = e.target.innerText;
-      this.eleArr.push(text);
-      this.eleData.splice(i, 1);
-    },
-    submit() {
-      console.log(this.submitData);
     }
   }
 };

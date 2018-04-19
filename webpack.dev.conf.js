@@ -56,7 +56,19 @@ module.exports = merge(base, {
             });
             app.get('/query/r1/ele',(req,res)=>{
                 res.json(mock)
-            })
+            });
+            app.post('/submit/add_rank',(req,res)=>{
+                res.json({
+                    code:'001',
+                    msg:'success'
+                })
+            });
+            app.post('/submit/edit_rank',(req,res)=>{
+                res.json({
+                    code:'001',
+                    msg:'success'
+                })
+            });
 
         }
     }
