@@ -1,6 +1,7 @@
 
 export const state = {
-    isLogin: false
+    isLogin: false,
+    username:''
 };
 export const mutations = {
     login(state){
@@ -8,7 +9,8 @@ export const mutations = {
     },
     logout(state){
         state.isLogin = !state.isLogin;
-    }
+    },
+    
 };
 export default {
     state,

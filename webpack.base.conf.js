@@ -1,4 +1,3 @@
-
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -9,12 +8,12 @@ module.exports = {
     output: {
         publicPath: '/views/',
         path: path.resolve(__dirname, 'views'),
-        filename: 'js/[name].js'
+        filename: 'js/vue.js'
     },
     module: {
         rules: [
             {
-                test: /\.vue$/, 
+                test: /\.vue$/,
                 use: 'vue-loader'
             },
             {

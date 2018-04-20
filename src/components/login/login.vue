@@ -38,7 +38,7 @@ export default {
     login() {
       var self = this;
       this.$ajax
-        .post("/api/Admin/Login", {
+        .post("/api/Login", {
           username: self.username,
           password: self.password
         })
@@ -49,6 +49,7 @@ export default {
             sessionStorage.setItem("userId", res.data.token);
             //2.跳转到首页
             self.$store.state.TOKEN = res.data.token;
+            self.$store.state.username = res.data.username;
             self.$store.commit("login");
             self.$router.replace("/home");
           }

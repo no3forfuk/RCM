@@ -3,17 +3,21 @@
     <div>
         <div class="panel panel-default">
             <div class="panel-body ">
-                <h4 class="title"><router-link :to="{path:'/login'}">RCM后台管理</router-link></h4>
+                <h4 class="title"><router-link :to="{path:'/home'}">RCM后台管理</router-link></h4>
                 <div class="sign-in-out">
+                    
                     <button type="button" class="btn btn-default"  v-if="!isLogin">
                         <router-link :to="{path:'/login', name: 'login'}">登陆</router-link>
                     </button>
                     <button type="button" class="btn btn-default"  v-if="!isLogin">
                         <router-link :to="{path:'/register',name:'register'}">注册</router-link>
                     </button>
-                    <button type="button" class="btn btn-default" v-if="isLogin" @click="logout">
+                    <div v-if="isLogin">
+                      <span>{{username}}</span>
+                    <button type="button" class="btn btn-default" @click="logout">
                         <router-link :to="{name:'login'}">退出</router-link>
                     </button>
+                    </div>
                 </div> 
             </div>
             
@@ -23,7 +27,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      username:''
+    };
   },
   computed: {
     isLogin() {
@@ -31,22 +37,25 @@ export default {
     }
   },
   created() {
-      if(!sessionStorage.getItem('userId')){
-          this.$store.state.isLogin = false;
-      }
+    if (!sessionStorage.getItem("userId")) {
+      this.$store.state.isLogin = false;
+    }
   },
-  mounted() {},
+  mounted() {
+    
+  },
   methods: {
     logout() {
-      this.$store.commit('logout');
+      sessionStorage.removeItem("userId");
+      this.$store.commit("logout");
       this.$router.go("/login");
     }
   }
 };
 </script>
 <style scoped>
-.sign-in-out a{
-    display: block;
+.sign-in-out a {
+  display: block;
 }
 .panel-body {
   padding: 5px;

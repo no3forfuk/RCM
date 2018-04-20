@@ -35,8 +35,8 @@
                 <tbody class="text-left">
                     <tr v-for="(item,index) in rankList" :key="index">
                         <td>{{index+1}}</td>
-                        <td>{{item.name}}</td>
-                        <td style="max-width:300px;"><p class="td-disc">{{item.disc}}</p></td>
+                        <td>{{item.ranking_name}}</td>
+                        <td style="max-width:300px;"><p class="td-disc">{{item.ranking_desc}}</p></td>
                         <td>{{item.level}}</td>
                         <td>{{item.who}}</td>
                         <td>19:30</td>
@@ -98,9 +98,11 @@ export default {
     this.rankLv = new Dropdown("一级榜单", ["一级榜单", "二级榜单"], "20px");
     //查询榜单
     this.$ajax
-      .get("/query/r1")
+      .get("/api/Ranking/index")
       .then(res => {
-        this.rankList = res.data.rankList;
+        
+        this.rankList = res.data.data;
+        
       })
       .catch(() => {});
   },
@@ -134,15 +136,15 @@ export default {
       }
     },
     confirm() {
-      this.$ajax
-        .post("/submit/add_rank", this.submitData)
-        .then(res => {
-          this.rankList.push(this.submitData);
-          this.submitData = {};
-          $(".bs-modal-lg").modal("hide");
-          $(".confirm").modal("hide");
-        })
-        .catch(err => {});
+      // this.$ajax
+      //   .post("/submit/add_rank", this.submitData)
+      //   .then(res => {
+      //     this.rankList.push(this.submitData);
+      //     this.submitData = {};
+      //     $(".bs-modal-lg").modal("hide");
+      //     $(".confirm").modal("hide");
+      //   })
+      //   .catch(err => {});
     }
   }
 };

@@ -2,9 +2,9 @@
 import Vue from "vue";
 import App from "./app.vue";
 
-
+//引入工具函数
+import utils from './utils/utils';
 //解析excl
-
 
 //vuex
 import Vuex from 'vuex';
