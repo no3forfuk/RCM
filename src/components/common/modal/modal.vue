@@ -103,18 +103,19 @@ export default {
   },
   created() {
     //获取从属榜单数据
-    this.$ajax
-      .get("/query/r1/belong")
-      .then(res => {
-        this.belongData = res.data.belong;
-      })
-      .catch(err => {});
-    this.$ajax
-      .get("/query/r1/ele")
-      .then(res => {
-        this.eleData = res.data.ele;
-      })
-      .catch(err => {});
+    
+    // this.$ajax
+    //   .get("/query/r1/belong")
+    //   .then(res => {
+    //     this.belongData = res.data.belong;
+    //   })
+    //   .catch(err => {});
+    // this.$ajax
+    //   .get("/query/r1/ele")
+    //   .then(res => {
+    //     this.eleData = res.data.ele;
+    //   })
+    //   .catch(err => {});
   },
   mounted() {},
   methods: {

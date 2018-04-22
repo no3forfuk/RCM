@@ -66,11 +66,12 @@ module.exports = merge(base, {
             app.get('/query/r1/ele', (req, res) => {
                 res.json(mock)
             });
+            app.get('/api/getslidbar', (req, res) => {
+                res.json(mock)
+            });
+            /////////////////////////////////////
             app.post('/submit/add_rank', (req, res) => {
-                res.json({
-                    code: '001',
-                    msg: 'success'
-                })
+                res.json(mock.sidebar)
             });
             app.post('/submit/edit_rank', (req, res) => {
                 res.json({
@@ -78,12 +79,14 @@ module.exports = merge(base, {
                     msg: 'success'
                 })
             });
-            app.post("/api/Ranking/importRinking", (req, res) => {
+            app.post("/api/Ranking/importRanking", (req, res) => {
                 res.json({
                     code: '001',
-                    msg: 'success'
+                    msg: 'success',
+                    data:req.body
                 })
             });
+
         }
     }
 })

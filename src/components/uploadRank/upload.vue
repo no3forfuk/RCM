@@ -6,7 +6,7 @@
         <button type="button" class="btn download-bg-color font-color btn-lg">模板下载</button>
         <br>
         <br>
-        <input type="file" id="file" @change="uploadfile" multiple accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        <input type="file" ref="file" @change="uploadfile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 		<button type="button" class="btn btn-default" @click="upload_rankData">确定上传</button>
     </div>
 </template>
@@ -21,18 +21,28 @@ export default {
   },
   mounted() {},
   methods: {
+    test() {
+      return this.rankDataArr;
+    },
     upload_rankData() {
-      this.$ajax
-        .post("/api/Ranking/importRanking", this.rankDataArr)
-        .then(res => {
-          alert("上传成功");
-        })
-        .catch(err => {});
+      return new Promise((resolve, reject) => {
+        this.$axios
+          .importRank(this.rankDataArr)
+          .then(res => {
+            this.$router.replace("/home");
+          })
+          .catch(err => {});
+      });
+    },
+    aa() {
+      
     },
     uploadfile(e) {
       const self = this;
       let formData = new FormData();
-      let file = e.target.files[0];
+      console.log(e.target);
+      console.log(self.$refs.file.value);
+      let file = self.$refs.file.files[0];
       let reader = new FileReader();
       let workbook;
       reader.onload = function(e) {
@@ -71,7 +81,7 @@ export default {
 .upload-style {
   background-color: #ccc;
 }
-.file {
+#file {
   position: relative;
   display: inline-block;
   background: #d0eeff;
@@ -83,18 +93,5 @@ export default {
   text-decoration: none;
   text-indent: 0;
   line-height: 20px;
-}
-.file input {
-  position: absolute;
-  font-size: 100px;
-  right: 0;
-  top: 0;
-  opacity: 0;
-}
-.file:hover {
-  background: #aadffd;
-  border-color: #78c3f3;
-  color: #004974;
-  text-decoration: none;
 }
 </style>

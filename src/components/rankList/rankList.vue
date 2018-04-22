@@ -83,6 +83,9 @@ export default {
     };
   },
   created() {
+    const vm = this;
+    //获取首页榜列表
+    this.getRankList();
     this.isShow = "隐藏";
     //下拉框构造函数
     class Dropdown {
@@ -96,17 +99,20 @@ export default {
     this.starmark = new Dropdown("星标", ["最热", "最新"], "20px");
     //构建级别数据
     this.rankLv = new Dropdown("一级榜单", ["一级榜单", "二级榜单"], "20px");
-    //查询榜单
-    this.$ajax
-      .get("/api/Ranking/index")
-      .then(res => {
-        
-        this.rankList = res.data.data;
-        
-      })
-      .catch(() => {});
   },
   methods: {
+    //获取首页榜单数据
+    getRankList() {
+      return new Promise((resolve, reject) => {
+        this.$axios
+          .getRankList()
+          .then(res => {
+            let temp = res.data;
+            this.rankList = temp.data;
+          })
+          .catch(err => {});
+      });
+    },
     //添加榜单
     creatRankModal() {
       this.rankdata.name = "添加榜单";
@@ -135,17 +141,7 @@ export default {
         this.isShow = "隐藏";
       }
     },
-    confirm() {
-      // this.$ajax
-      //   .post("/submit/add_rank", this.submitData)
-      //   .then(res => {
-      //     this.rankList.push(this.submitData);
-      //     this.submitData = {};
-      //     $(".bs-modal-lg").modal("hide");
-      //     $(".confirm").modal("hide");
-      //   })
-      //   .catch(err => {});
-    }
+    
   }
 };
 </script>

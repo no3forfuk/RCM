@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
     entry: {
         app: './src/main.js',
@@ -8,7 +9,8 @@ module.exports = {
     output: {
         publicPath: '/views/',
         path: path.resolve(__dirname, 'views'),
-        filename: 'js/vue.js'
+        filename: 'js/vue.js',
+        chunkFilename: 'js/[chunkhash].js'
     },
     module: {
         rules: [
@@ -37,10 +39,19 @@ module.exports = {
                         }
                     }
                 ]
-            }
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                  fallback: "vue-style-loader",
+                  use: "css-loader"
+                })
+              }
 
         ]
     },
-    plugins: []
+    plugins: [
+        new ExtractTextPlugin("css/[name].css"),
+    ]
 
 }

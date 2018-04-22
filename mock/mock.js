@@ -26,7 +26,7 @@ module.exports = {
             name: '五大手游',
             who: '贱贱',
             star: '话题',
-            class:'游戏',
+            class: '游戏',
             children: [
                 {
                     id: 0,
@@ -110,5 +110,32 @@ module.exports = {
             id: 0,
             name: '死神'
         },
+    ],
+    sidebar: [
+        {
+            name: '榜单管理',
+            where: 'rankList'
+        },
+        {
+            name: '推送任务',
+            where: 'pushTask'
+        },
+        {
+            name: '元素列表',
+            where: 'elementList'
+        },
+        {
+            name: 'POST列表',
+            where: 'postList'
+        },
+        {
+            name: '上下级管理',
+            where: 'levelCtrl'
+        },
+        {
+            name: '权限管理',
+            where: 'rankList'
+        },
+
     ]
 }

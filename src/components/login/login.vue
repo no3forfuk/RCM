@@ -14,7 +14,7 @@
             </div>
             <br>
             <p class="text-left font-small" v-if="tips">请输入正确的账号或密码</p>
-            <button type="button" class="btn btn-success" id="login-btn" @click="login">登陆</button>
+            <button type="button" class="btn btn-success" id="login-btn" @click="loginByName">登陆</button>
             <br><br>
             <p class="text-center text-size12">
                 <router-link :to="{name:'login'}">忘记密码了</router-link>
@@ -35,31 +35,29 @@ export default {
   },
   created() {},
   methods: {
-    login() {
-      var self = this;
-      this.$ajax
-        .post("/api/Login", {
-          username: self.username,
-          password: self.password
-        })
-        .then(res => {
-          //登陆成功
-          if (res.data.code == "001") {
-            //1.保存token
-            sessionStorage.setItem("userId", res.data.token);
-            //2.跳转到首页
-            self.$store.state.TOKEN = res.data.token;
-            self.$store.state.username = res.data.username;
-            self.$store.commit("login");
-            self.$router.replace("/home");
-          }
-          if (res.data.code == "002") {
-            self.tips = true;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    loginByName() {
+      return new Promise((resolve, reject) => {
+        let params = {
+          username: this.username,
+          password: this.password
+        };
+        this.$store
+          .dispatch("loginByName", params)
+          .then(() => {
+            this.$router.replace("/home");
+          })
+          .catch(err => {});
+        // this.$axios
+        //   .loginByName(params)
+        //   .then(res => {
+        //     if (res.data.code == "001") {
+
+        //     } else if (res.data.code == "002") {
+        //       this.tips = true;
+        //     }
+        //   })
+        //   .catch(err => {});
+      });
     }
   }
 };

@@ -12,6 +12,7 @@ module.exports = merge(base, {
     // },
     plugins: [
         new HtmlWebpackPlugin({ template: './index.html', filename: 'index.html' }),
-        new cleanWebpackPlugin('views')
+        new cleanWebpackPlugin('views'),
+        
     ]
 })

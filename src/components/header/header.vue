@@ -28,7 +28,7 @@
 export default {
   data() {
     return {
-      username:''
+      username: ""
     };
   },
   computed: {
@@ -37,18 +37,18 @@ export default {
     }
   },
   created() {
-    if (!sessionStorage.getItem("userId")) {
-      this.$store.state.isLogin = false;
-    }
-  },
-  mounted() {
     
   },
+  mounted() {},
   methods: {
     logout() {
-      sessionStorage.removeItem("userId");
-      this.$store.commit("logout");
-      this.$router.go("/login");
+      this.$store
+        .dispatch("logout")
+        .then(res => {
+          this.isLogin = false;
+          this.$router.go("/login");
+        })
+        .catch(err => {});
     }
   }
 };
