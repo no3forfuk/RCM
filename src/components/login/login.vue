@@ -47,16 +47,6 @@ export default {
             this.$router.replace("/home");
           })
           .catch(err => {});
-        // this.$axios
-        //   .loginByName(params)
-        //   .then(res => {
-        //     if (res.data.code == "001") {
-
-        //     } else if (res.data.code == "002") {
-        //       this.tips = true;
-        //     }
-        //   })
-        //   .catch(err => {});
       });
     }
   }

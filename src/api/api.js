@@ -1,32 +1,9 @@
-import axios from 'axios'
-// import store from '../store/store'
-const service = axios.create({
-    baseURL: '/api'
-})
-service.interceptors.request.use(config => {
-    // if (store.state.token) {
-    //     //config.headers['X-Auth-Token'] = store.state.token
-    // }
-    return config
-}, error => {
-    // Do something with request error
-    console.log(error) // for debug
-    Promise.reject(error)
-})
-
-// respone interceptor
-service.interceptors.response.use(
-    response => response,
-    error => {
-        console.log('err' + error)// for debug
-
-        return Promise.reject(error)
-    })
+import request from './request'
 
 module.exports = {
     //登陆
-    loginByName(parmas) {
-        return service({
+    loginByUsername(parmas) {
+        return request({
             url: '/Login',
             method: 'POST',
             data: parmas || {}
@@ -34,7 +11,7 @@ module.exports = {
     },
     //获取侧边栏
     getSideBar(parmas) {
-        return service({
+        return request({
             url: '/getslidbar',
             method: 'GET',
             data: parmas || {}
@@ -43,7 +20,7 @@ module.exports = {
     //获取榜单列表
     // /Ranking/index
     getRankList(parmas) {
-        return service({
+        return request({
             url: '/Ranking/index',
             method: 'GET',
             data: parmas || {}
@@ -51,7 +28,8 @@ module.exports = {
     },
     //导入榜单
     importRank(parmas) {
-        return service({
+        if (!parmas) return;
+        return request({
             url: '/Ranking/importRanking',
             method: 'POST',
             data: parmas || {}

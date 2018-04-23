@@ -9,8 +9,15 @@ module.exports = {
     output: {
         publicPath: '/views/',
         path: path.resolve(__dirname, 'views'),
-        filename: 'js/vue.js',
-        chunkFilename: 'js/[chunkhash].js'
+        filename: 'js/vue.js'
+        //chunkFilename: 'js/[chunkhash].js'
+    },
+    resolve: {
+        extensions: ['.js', '.vue', '.json'],
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js',
+            '~': path.resolve(__dirname, 'src')
+        }
     },
     module: {
         rules: [
@@ -43,10 +50,10 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                  fallback: "vue-style-loader",
-                  use: "css-loader"
+                    fallback: "vue-style-loader",
+                    use: "css-loader"
                 })
-              }
+            }
 
         ]
     },
