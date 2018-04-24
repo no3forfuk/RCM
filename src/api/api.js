@@ -12,7 +12,7 @@ module.exports = {
     //获取侧边栏
     getSideBar(parmas) {
         return request({
-            url: '/getslidbar',
+            url: '/index/getMenu',
             method: 'GET',
             data: parmas || {}
         })

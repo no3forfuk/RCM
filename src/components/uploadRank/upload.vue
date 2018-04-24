@@ -83,37 +83,64 @@
                         let wb = XLSX.read(data, {
                             type: "binary"
                         });
-                        var rank2Arr = [];
-                        var fileData = [];
-                        var rankNumber2 = 0;
 
+                        var fileData = [];
                         for (let j = 0; j < wb.SheetNames.length; j++) {
                             let flag = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[j]]);
                             fileData = fileData.concat(flag);
                         }
+                        var rank1Arr = [];
+                        var count1 = 0;
+                        var count2 = 0;
+                        var count3 = 0;
                         for (let i = 0; i < fileData.length; i++) {
-                            var newRank = {};
+                            if (fileData[i]["一级榜单"]) {
+                                count2 = 0;
+                                var rank2Arr = [];
+                                var rank1Obj = {};
+                                rank1Obj.ranking_name = fileData[i]["一级榜单"] || '';
+                                rank1Obj.ranking_desc = fileData[i]["一级榜单详情"] || '';
+                                rank1Obj.ranking_level = '1';
+                                rank1Arr.push(rank1Obj);
+                            }
                             if (fileData[i]["二级榜单"]) {
+                                count3 = 0
+                                var rank2Obj = {};
                                 var elementArr = [];
-                                newRank.ranking_name = fileData[i]["二级榜单"] || "";
-                                newRank.ranking_desc = fileData[i]["二级榜单详情"] || "";
-                                newRank.ranking_level = '2';
-                                rank2Arr.push(newRank);
+                                rank2Obj.ranking_name = fileData[i]["二级榜单"] || "";
+                                rank2Obj.ranking_desc = fileData[i]["二级榜单详情"] || "";
+                                rank2Obj.ranking_level = '2';
+                                rank2Arr.push(rank2Obj);
+                            }
+                            if (fileData[i]["一级榜单"] && fileData[i]["二级榜单"]) {
+                                rank1Arr[count1].data = rank2Arr;
+                                count1++;
                             }
                             if (fileData[i]['元素']) {
                                 var elementObj = {};
-                                elementObj.element_name = fileData[i]['元素']
-                                elementObj.element_desc = fileData[i]['元素详情']
+                                var postArr = [];
+                                elementObj.element_name = fileData[i]['元素'] || "";
+                                elementObj.element_desc = fileData[i]['元素详情'] || "";
                                 elementArr.push(elementObj);
                             }
                             if (fileData[i]["二级榜单"] && fileData[i]['元素']) {
-                                rank2Arr[rankNumber2].data = elementArr;
-                                rankNumber2++;
+                                rank2Arr[count2].data = elementArr;
+                                count2++;
+                            }
+                            if (fileData[i]['post']) {
+                                var postObj = {};
+                                var str = fileData[i]['post'];
+                                str = str.substring(0, 10)
+                                postObj.post_name = str || "";
+                                postObj.post_content = fileData[i]['post'] || "";
+                                postArr.push(postObj);
+                            }
+                            if (fileData[i]['元素'] && fileData[i]['post']) {
+                                elementArr[count3].data = postArr;
+                                count3++;
                             }
                         }
-                        console.log(rank2Arr);
-                        // console.log(fileData)
-                        self.rankDataArr = rank2Arr;
+                        self.rankDataArr = rank1Arr;
                     };
                     reader.readAsBinaryString(file);
                 }

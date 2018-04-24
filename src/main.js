@@ -12,7 +12,7 @@ require('./components/components.js');
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
-const storeConfig = require('./store/store').default;
+const storeConfig = require('./store/store');
 const store = new Vuex.Store(storeConfig);
 import {mapState} from 'vuex';
 

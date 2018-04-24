@@ -37,7 +37,7 @@ module.exports = merge(base, {
                     res.json({
                         code: '001',
                         msg: 'bingo',
-                        token,
+                        access_token: 'qqq',
                         username: user.username
                     })
                 } else {
@@ -51,10 +51,20 @@ module.exports = merge(base, {
             app.get('/api/Ranking/index', (req, res) => {
                 res.json({
                     code: 1,
-                    data: [{
-                        ranking_name: 'aa',
-                        ranking_desc: 'bb'
-                    }]
+                    data: [
+                        {
+                            "ranking_name": "涂抹式面膜人气榜单",
+                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                            "operate_id": "admin",
+                            "is_hide": 1,
+                            "asterisk": 0,
+                            "updated_at": {
+                                "date": "2018-04-24 12:55:26.000000",
+                                "timezone_type": 3,
+                                "timezone": "UTC"
+                            }
+                        }
+                    ]
                 })
             });
             app.get('/query/r1', (req, res) => {
@@ -66,8 +76,33 @@ module.exports = merge(base, {
             app.get('/query/r1/ele', (req, res) => {
                 res.json(mock)
             });
-            app.get('/api/getslidbar', (req, res) => {
-                res.json(mock)
+            app.get('/api/index/getMenu', (req, res) => {
+                res.json({
+                    "code": 1,
+                    "msg": "获取成功",
+                    "data": [
+                        {
+                            "id": 1,
+                            "name": "角色管理",
+                            "menu": [
+                                {
+                                    "id": 2,
+                                    "name": "角色列表"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 7,
+                            "name": "榜单管理",
+                            "menu": [
+                                {
+                                    "id": 8,
+                                    "name": "榜单列表"
+                                }
+                            ]
+                        }
+                    ]
+                })
             });
             /////////////////////////////////////
             app.post('/submit/add_rank', (req, res) => {
@@ -83,7 +118,7 @@ module.exports = merge(base, {
                 res.json({
                     code: '001',
                     msg: 'success',
-                    data:req.body
+                    data: req.body
                 })
             });
 

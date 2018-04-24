@@ -3,8 +3,8 @@
         <div class="root-box">
             <div class="left-box">
                 <div class="list-group">
-                    <router-link v-for="(item,index) in sidebar" :key="index" :to="{name:item.where}"
-                                 class="list-group-item" active-class="active">{{item.name}}
+                    <router-link v-for="(item,index) in sidebar" :key="index" :to="{name:item.route}"
+                                 class="list-group-item" >{{item.name}}
                     </router-link>
                     <!-- <router-link :to="{name:'pushTask'}" class="list-group-item" active-class="active">推送任务</router-link>
                     <router-link :to="{name:'elementList'}" class="list-group-item" active-class="active">元素列表</router-link>
@@ -40,7 +40,15 @@
                 return new Promise((resolve, reject) => {
                     getSideBar()
                         .then(res => {
-                            this.sidebar = res.data.sidebar;
+                            this.sidebar = res.data.data;
+                            for(let i=0;i<this.sidebar.length;i++){
+                                if(this.sidebar[i].name == "角色管理"){
+                                   this.sidebar[i].route = 'role'
+                                }if(this.sidebar[i].name == "榜单管理"){
+                                    this.sidebar[i].route = 'rankList'
+                                }  
+                            }
+                            console.log(this.sidebar)
                         })
                         .catch(err => {
                             reject(false);
@@ -51,20 +59,20 @@
     };
 </script>
 <style scoped>
-    .root-box {
-        width: 98%;
-        margin: 0 auto;
-    }
+.root-box {
+  width: 98%;
+  margin: 0 auto;
+}
 
-    .left-box {
-        width: 15%;
-        float: left;
-    }
+.left-box {
+  width: 15%;
+  float: left;
+}
 
-    .right-box {
-        width: 84%;
-        float: left;
-    }
+.right-box {
+  width: 84%;
+  float: left;
+}
 </style>
 
 

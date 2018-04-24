@@ -16,6 +16,11 @@ export const routes = [
         path: '/home', name: 'home', component: resolve => require(['../components/home/home.vue'], resolve)
         ,
         children: [
+            // {
+            //     path: '/home/rankList/',
+            //     name: 'rankList',
+            //     component: resolve => require(['../components/common/404/404.vue'], resolve)
+            // },
             {
                 path: '/home/rankList',
                 name: 'rankList',

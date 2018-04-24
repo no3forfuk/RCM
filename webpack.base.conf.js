@@ -7,10 +7,10 @@ module.exports = {
         app: './src/main.js',
     },
     output: {
-        publicPath: '/views/',
+        publicPath: '/',
         path: path.resolve(__dirname, 'views'),
-        filename: 'js/vue.js'
-        //chunkFilename: 'js/[chunkhash].js'
+        filename: 'js/vue.js',
+        chunkFilename: 'js/[chunkhash].js'
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -49,6 +49,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
+                // use: ['css-loader']
                 use: ExtractTextPlugin.extract({
                     fallback: "vue-style-loader",
                     use: "css-loader"
@@ -58,7 +59,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin("css/[name].css"),
+         new ExtractTextPlugin("css/[name].css"),
     ]
 
 }

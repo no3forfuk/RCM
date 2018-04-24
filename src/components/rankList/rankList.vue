@@ -19,7 +19,7 @@
 
             </div>
         </div>
-        <div>
+        <div style="maxHeight:500px;overflow:auto;">
             <table class="table table table-hover table-striped table-bordered">
                 <thead>
                 <th class="text-center">序号</th>
@@ -43,10 +43,10 @@
                     <td>{{index+1}}</td>
                     <td>{{item.ranking_name}}</td>
                     <td style="max-width:300px;"><p class="td-disc">{{item.ranking_desc}}</p></td>
-                    <td>{{item.level}}</td>
-                    <td>{{item.who}}</td>
-                    <td>19:30</td>
-                    <td>time</td>
+                    <td>2</td>
+                    <td></td>
+                    <td>{{item.updated_at.date}}</td>
+                    <td></td>
                     <td>{{item.star}}</td>
                     <td>
                         <div class="btn-group" role="group">
