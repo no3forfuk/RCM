@@ -3,7 +3,7 @@
         <div class="root-box">
             <div class="left-box">
                 <div class="list-group">
-                    <router-link v-for="(item,index) in sidebar" :key="index" :to="{name:item.route}"
+                    <router-link v-for="(item,index) in sidebar" :key="index" :to="{name:item.route_name}"
                                  class="list-group-item" >{{item.name}}
                     </router-link>
                     <!-- <router-link :to="{name:'pushTask'}" class="list-group-item" active-class="active">推送任务</router-link>
@@ -41,14 +41,6 @@
                     getSideBar()
                         .then(res => {
                             this.sidebar = res.data.data;
-                            for(let i=0;i<this.sidebar.length;i++){
-                                if(this.sidebar[i].name == "角色管理"){
-                                   this.sidebar[i].route = 'role'
-                                }if(this.sidebar[i].name == "榜单管理"){
-                                    this.sidebar[i].route = 'rankList'
-                                }  
-                            }
-                            console.log(this.sidebar)
                         })
                         .catch(err => {
                             reject(false);

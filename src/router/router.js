@@ -23,7 +23,7 @@ export const routes = [
             // },
             {
                 path: '/home/rankList',
-                name: 'rankList',
+                name: 'ranking',
                 component: resolve => require(['../components/ranklist/ranklist.vue'], resolve)
             },
             {
@@ -33,7 +33,7 @@ export const routes = [
             },
             {
                 path: '/home/elementList',
-                name: 'elementList',
+                name: 'role',
                 component: resolve => require(['../components/elementList/elementList.vue'], resolve)
             },
             {

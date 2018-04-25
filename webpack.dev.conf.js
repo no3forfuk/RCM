@@ -84,6 +84,7 @@ module.exports = merge(base, {
                         {
                             "id": 1,
                             "name": "角色管理",
+                            "route_name":"role",
                             "menu": [
                                 {
                                     "id": 2,
@@ -94,6 +95,7 @@ module.exports = merge(base, {
                         {
                             "id": 7,
                             "name": "榜单管理",
+                            "route_name":"ranking",
                             "menu": [
                                 {
                                     "id": 8,
