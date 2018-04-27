@@ -8,9 +8,9 @@ module.exports = {
     },
     output: {
         publicPath: '/',
-        path: path.resolve(__dirname, 'views'),
-        filename: 'js/vue.js',
-        chunkFilename: 'js/[chunkhash].js'
+        path: path.resolve(__dirname, './dist'),
+        filename: 'Admin/js/vue.js',
+        chunkFilename: 'Admin/js/[chunkhash].js'
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -59,7 +59,7 @@ module.exports = {
         ]
     },
     plugins: [
-         new ExtractTextPlugin("css/[name].css"),
+         new ExtractTextPlugin("Admin/css/[name].css"),
     ]
 
 }

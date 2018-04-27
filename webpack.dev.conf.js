@@ -53,7 +53,55 @@ module.exports = merge(base, {
                     code: 1,
                     data: [
                         {
-                            "ranking_name": "涂抹式面膜人气榜单",
+                            "ranking_name": "膜是日常",
+                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                            "operate_id": "admin",
+                            "is_hide": 1,
+                            "asterisk": 0,
+                            "updated_at": {
+                                "date": "2018-04-24 12:55:26.000000",
+                                "timezone_type": 3,
+                                "timezone": "UTC"
+                            }
+                        },
+                        {
+                            "ranking_name": "看看大家最喜欢",
+                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                            "operate_id": "admin",
+                            "is_hide": 1,
+                            "asterisk": 0,
+                            "updated_at": {
+                                "date": "2018-04-24 12:55:26.000000",
+                                "timezone_type": 3,
+                                "timezone": "UTC"
+                            }
+                        },
+                        {
+                            "ranking_name": "日常护肤必不可",
+                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                            "operate_id": "admin",
+                            "is_hide": 1,
+                            "asterisk": 0,
+                            "updated_at": {
+                                "date": "2018-04-24 12:55:26.000000",
+                                "timezone_type": 3,
+                                "timezone": "UTC"
+                            }
+                        },
+                        {
+                            "ranking_name": "的一个环节～一起来看看大家最喜欢的是哪几种哪",
+                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                            "operate_id": "admin",
+                            "is_hide": 1,
+                            "asterisk": 0,
+                            "updated_at": {
+                                "date": "2018-04-24 12:55:26.000000",
+                                "timezone_type": 3,
+                                "timezone": "UTC"
+                            }
+                        },
+                        {
+                            "ranking_name": "面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢",
                             "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
                             "operate_id": "admin",
                             "is_hide": 1,
@@ -81,17 +129,7 @@ module.exports = merge(base, {
                     "code": 1,
                     "msg": "获取成功",
                     "data": [
-                        {
-                            "id": 1,
-                            "name": "角色管理",
-                            "route_name":"role",
-                            "menu": [
-                                {
-                                    "id": 2,
-                                    "name": "角色列表"
-                                }
-                            ]
-                        },
+                       
                         {
                             "id": 7,
                             "name": "榜单管理",
@@ -100,6 +138,17 @@ module.exports = merge(base, {
                                 {
                                     "id": 8,
                                     "name": "榜单列表"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 7,
+                            "name": "推送列表",
+                            "route_name":"pushTask",
+                            "menu": [
+                                {
+                                    "id": 8,
+                                    "name": "推送列表"
                                 }
                             ]
                         }

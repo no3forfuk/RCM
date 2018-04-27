@@ -11,7 +11,7 @@ import Html404 from '../components/common/404/404.vue';
 // import UpLoadRank from '../components/uploadRank/upload.vue';
 
 export const routes = [
-    {path: '/', redirect: '/login', hidden: true},
+    { path: '/', redirect: '/login', hidden: true },
     {
         path: '/home', name: 'home', component: resolve => require(['../components/home/home.vue'], resolve)
         ,
@@ -57,8 +57,8 @@ export const routes = [
     {
         path: '/login', name: 'login', component: Login,
     },
-    {path: '/register', name: 'register', component: Register},
-    {path: '*', redirect: '/404', component: Html404},
+    { path: '/register', name: 'register', component: Register },
+    { path: '*', redirect: '/404', component: Html404 },
 
 ];
 
