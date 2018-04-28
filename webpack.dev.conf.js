@@ -144,7 +144,7 @@ module.exports = merge(base, {
                         {
                             "id": 7,
                             "name": "推送列表",
-                            "route_name":"pushTask",
+                            "route_name":"push",
                             "menu": [
                                 {
                                     "id": 8,

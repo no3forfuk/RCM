@@ -34,6 +34,13 @@ module.exports = {
             method: 'POST',
             data: parmas || {}
         })
+    },
+    addPushTask(params) {
+        return request({
+            url: '/Element/add',
+            method: 'POST',
+            data: params || {}
+        })
     }
 }
 

@@ -28,7 +28,7 @@ export const routes = [
             },
             {
                 path: '/home/pushTask',
-                name: 'pushTask',
+                name: 'push',
                 component: resolve => require(['../components/pushTask/pushTask.vue'], resolve)
             },
             {
