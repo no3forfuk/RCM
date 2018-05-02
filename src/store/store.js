@@ -1,4 +1,4 @@
-import { loginByUsername } from '../api/api'
+import {loginByUsername} from '../api/api'
 
 export const state = {
     isLogin: false,
@@ -16,10 +16,9 @@ export const mutations = {
 
 };
 export const actions = {
-    loginByName({ commit }, parms) {
+    loginByName({commit}, parms) {
         return new Promise((resolve, reject) => {
             loginByUsername(parms).then((res) => {
-
                 sessionStorage.setItem("X-Auth-Token", res.data.data.access_token);
                 commit('TOKEN', res.data.data.access_token);
                 commit('ISLOGIN');
@@ -30,14 +29,13 @@ export const actions = {
         })
     }
     ,
-    logout({ commit }, parms) {
+    logout({commit}, parms) {
         return new Promise((resolve, reject) => {
             sessionStorage.removeItem("X-Auth-Token");
             commit('TOKEN', null);
             resolve();
         })
-    }
-    ,
+    },
 
 }
 export const getters = {

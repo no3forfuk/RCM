@@ -4,12 +4,14 @@
             <div class="left-box">
                 <div class="list-group">
                     <router-link v-for="(item,index) in sidebar" :key="index" :to="{name:item.route_name}"
-                                 class="list-group-item" >{{item.name}}
+                                 class="list-group-item">{{item.name}}
+                            <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Morbi leo risus</li>
+                            <li class="list-group-item">Porta ac consectetur ac</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
                     </router-link>
-                    <!-- <router-link :to="{name:'pushTask'}" class="list-group-item" active-class="active">推送任务</router-link>
-                    <router-link :to="{name:'elementList'}" class="list-group-item" active-class="active">元素列表</router-link>
-                    <router-link :to="{name:'postList'}" class="list-group-item" active-class="active">post列表</router-link>
-                    <router-link :to="{name:'levelCtrl'}" class="list-group-item" active-class="active">上下级管理</router-link> -->
+
                 </div>
             </div>
             <div class="right-box">
@@ -51,20 +53,20 @@
     };
 </script>
 <style scoped>
-.root-box {
-  width: 98%;
-  margin: 0 auto;
-}
+    .root-box {
+        width: 98%;
+        margin: 0 auto;
+    }
 
-.left-box {
-  width: 15%;
-  float: left;
-}
+    .left-box {
+        width: 15%;
+        float: left;
+    }
 
-.right-box {
-  width: 84%;
-  float: left;
-}
+    .right-box {
+        width: 84%;
+        float: left;
+    }
 </style>
 
 

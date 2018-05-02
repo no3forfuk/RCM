@@ -20,25 +20,26 @@ module.exports = merge(base, {
     mode: 'development',
     devtool: 'inline-source-map',
     plugins: [
-        new HtmlWebpackPlugin({ template: './index.html', filename: 'index.html' }),
+        new HtmlWebpackPlugin({template: './index.html', filename: 'index.html'}),
     ],
     devServer: {
         contentBase: './views',
         before(app) {
             const bodyParser = require('body-parser');
-            app.use(bodyParser.urlencoded({ extended: false }));
+            app.use(bodyParser.urlencoded({extended: false}));
             app.use(bodyParser.json());
             //登陆
-
             app.post('/api/Login', function (req, res) {
                 let token = parseInt(Math.random() * 9635423165465452).toString(16);
                 let user = req.body;
                 if (user.username == 'admin' && user.password == '123456') {
                     res.json({
-                        code: '001',
-                        msg: 'bingo',
-                        access_token: 'qqq',
-                        username: user.username
+                        "status_code": 1,
+                        "message": "登录成功！",
+                        "data": {
+                            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vcmNtLmNjL2FwaS9Mb2dpbiIsImlhdCI6MTUyNDcyMzczNiwiZXhwIjoxNTI0NzI3MzM2LCJuYmYiOjE1MjQ3MjM3MzYsImp0aSI6IjNyem1mcjdkc1JrMERWWUkiLCJzdWIiOjEsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.cjEZ_ZevnfnkxZVMLf0CuOOFw6bAzC8AvXNIgYbQHzY",
+                            "expires_in": 3600
+                        }
                     })
                 } else {
                     res.json({
@@ -115,25 +116,17 @@ module.exports = merge(base, {
                     ]
                 })
             });
-            app.get('/query/r1', (req, res) => {
-                res.json(mock)
-            });
-            app.get('/query/r1/belong', (req, res) => {
-                res.json(mock)
-            });
-            app.get('/query/r1/ele', (req, res) => {
-                res.json(mock)
-            });
+            //获取侧边栏
             app.get('/api/index/getMenu', (req, res) => {
                 res.json({
                     "code": 1,
                     "msg": "获取成功",
                     "data": [
-                       
+
                         {
                             "id": 7,
                             "name": "榜单管理",
-                            "route_name":"ranking",
+                            "route_name": "ranking",
                             "menu": [
                                 {
                                     "id": 8,
@@ -144,7 +137,7 @@ module.exports = merge(base, {
                         {
                             "id": 7,
                             "name": "推送列表",
-                            "route_name":"push",
+                            "route_name": "push",
                             "menu": [
                                 {
                                     "id": 8,
