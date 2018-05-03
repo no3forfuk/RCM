@@ -16,35 +16,30 @@ export const routes = [
         path: '/home', name: 'home', component: resolve => require(['../components/home/home.vue'], resolve)
         ,
         children: [
-            // {
-            //     path: '/home/rankList/',
-            //     name: 'rankList',
-            //     component: resolve => require(['../components/common/404/404.vue'], resolve)
-            // },
             {
                 path: '/home/rankList',
                 name: 'ranking',
                 component: resolve => require(['../components/ranklist/ranklist.vue'], resolve)
             },
             {
-                path: '/home/pushTask',
-                name: 'push',
+                path: '/home/PushList',
+                name: 'PushList',
                 component: resolve => require(['../components/pushTask/pushTask.vue'], resolve)
             },
             {
-                path: '/home/elementList',
-                name: 'role',
-                component: resolve => require(['../components/elementList/elementList.vue'], resolve)
+                path: '/home/FirstList',
+                name: 'FirstList',
+                component: resolve => require(['../components/firstRank/rankList.vue'], resolve)
             },
             {
-                path: '/home/postList',
-                name: 'postList',
-                component: resolve => require(['../components/postList/postList.vue'], resolve)
+                path: '/home/SecondList',
+                name: 'SecondList',
+                component: resolve => require(['../components/secondRank/SecondList.vue'], resolve)
             },
             {
-                path: '/home/levelCtrl',
-                name: 'levelCtrl',
-                component: resolve => require(['../components/levelCtrl/levelCtrl.vue'], resolve)
+                path: '/home/roleList',
+                name: 'RoleList',
+                component: resolve => require(['../components/role/RoleList.vue'], resolve)
             },
             {
                 path: '/home/rankList/upload',

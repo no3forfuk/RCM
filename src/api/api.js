@@ -41,6 +41,21 @@ module.exports = {
             method: 'POST',
             data: params || {}
         })
+    },
+    //获取二级榜单列表
+    getSecondRank(params) {
+        return request({
+            url: '/Ranking/SecondIndex',
+            method: 'GET',
+            data: params || {}
+        })
+    },
+    addSecondRank(params) {
+        return request({
+            url: '/Ranking/SecondAdd',
+            method: 'POST',
+            data: params || {}
+        })
     }
 }
 

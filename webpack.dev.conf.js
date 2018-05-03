@@ -23,7 +23,7 @@ module.exports = merge(base, {
         new HtmlWebpackPlugin({template: './index.html', filename: 'index.html'}),
     ],
     devServer: {
-        contentBase: './views',
+        contentBase: './dist/Admin',
         before(app) {
             const bodyParser = require('body-parser');
             app.use(bodyParser.urlencoded({extended: false}));
@@ -122,7 +122,18 @@ module.exports = merge(base, {
                     "code": 1,
                     "msg": "获取成功",
                     "data": [
-
+                        {
+                            "id": 1,
+                            "name": "角色管理",
+                            "route_name": "role",
+                            "menu": [
+                                {
+                                    "id": 2,
+                                    "name": "角色列表",
+                                    "route_name": "RoleList"
+                                }
+                            ]
+                        },
                         {
                             "id": 7,
                             "name": "榜单管理",
@@ -130,24 +141,73 @@ module.exports = merge(base, {
                             "menu": [
                                 {
                                     "id": 8,
-                                    "name": "榜单列表"
+                                    "name": "一级榜单列表",
+                                    "route_name": "FirstList"
+                                },
+                                {
+                                    "id": 14,
+                                    "name": "二级榜单列表",
+                                    "route_name": "SecondList"
                                 }
                             ]
                         },
                         {
-                            "id": 7,
-                            "name": "推送列表",
+                            "id": 21,
+                            "name": "推送管理",
                             "route_name": "push",
                             "menu": [
                                 {
-                                    "id": 8,
-                                    "name": "推送列表"
+                                    "id": 22,
+                                    "name": "推送列表",
+                                    "route_name": "PushList"
                                 }
                             ]
                         }
                     ]
                 })
             });
+            //获取二级榜单
+            app.get('/api/Ranking/SecondIndex', (req, res) => {
+                res.json({
+                    "status_code": 1,
+                    "message": "获取二级成功！",
+                    "data": {
+                        "current_page": 1,
+                        "data": [
+                            {
+                                "id": 1,
+                                "ranking_name": "今日热点",
+                                "ranking_desc": "今日热点事件排行榜",
+                                "exponent": 0,
+                                "is_hide": 1,
+                                "asterisk": 0,
+                                "created_at": "2018-05-03 10:21:41",
+                                "updated_at": "2018-05-03 10:21:41",
+                                "operate_name": {
+                                    "name": "admin"
+                                }
+                            }
+                        ],
+                        "first_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=1",
+                        "from": 1,
+                        "last_page": 1,
+                        "last_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=1",
+                        "next_page_url": null,
+                        "path": "http://rcm.bantangtv.com/api/Ranking/SecondIndex",
+                        "per_page": 15,
+                        "prev_page_url": null,
+                        "to": 1,
+                        "total": 1
+                    }
+                })
+            })
+            //添加二级榜单
+            app.post('/api/Ranking/SecondAdd', (req, res) => {
+                res.json({
+                    code: '001',
+                    message:'添加成功'
+                })
+            })
             /////////////////////////////////////
             app.post('/submit/add_rank', (req, res) => {
                 res.json(mock.sidebar)
@@ -155,7 +215,8 @@ module.exports = merge(base, {
             app.post('/submit/edit_rank', (req, res) => {
                 res.json({
                     code: '001',
-                    msg: 'success'
+                    msg: 'success',
+                    data:[]
                 })
             });
             app.post("/api/Ranking/importRanking", (req, res) => {
