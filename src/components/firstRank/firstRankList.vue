@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="page-header header-root">
-            <h3 class="header-left">二级榜单管理</h3>
+            <h3 class="header-left">一级榜单管理</h3>
             <div class="header-right">
                 <div class="input-group search-box">
                     <input type="text" class="form-control" placeholder="Recipient's username"
@@ -45,7 +45,8 @@
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-modal-lg"
                                     @click="editRank($event,item)">编辑
                             </button>
-                            <button type="button" class="btn" :class="{'btn-success':!item.is_hide,'btn-danger':item.is_hide}"
+                            <button type="button" class="btn"
+                                    :class="{'btn-success':!item.is_hide,'btn-danger':item.is_hide}"
                                     @click="showOrHidden($event,item)">
                                 {{item.is_hide ==
                                 1?'隐藏':'显示'}}
@@ -82,17 +83,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">添加元素</label>
+                                <label class="col-sm-2 control-label">添加二级榜单</label>
                                 <div class="col-sm-10" style="position: relative; height: 300px;">
                                     <div style="width: 40%;">
-                                        <ul class="list-group" v-if="addElementList.length"
+                                        <ul class="list-group" v-if="addSubList.length"
                                             style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in addElementList">
+                                            <li class="list-group-item" v-for="(item,index) in addSubList">
                                             <span class="badge" style="backgroundColor: #C9302C;">
                                                 <i class="glyphicon glyphicon-remove"
-                                                   style="cursor: pointer;" @click="deleteElement(index)"></i>
+                                                   style="cursor: pointer;" @click="deleteSubList(index)"></i>
                                             </span>
-                                                {{item.element_name}}
+                                                {{item.ranking_name}}
                                             </li>
                                         </ul>
                                     </div>
@@ -100,17 +101,17 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search for...">
                                             <span class="input-group-btn">
-        <button class="btn btn-default" type="button" @click="getElementList(page)">Go!</button>
+        <button class="btn btn-default" type="button" @click="getSecondRankList(page)">Go!</button>
       </span>
                                         </div>
-                                        <ul class="list-group" v-if="elementLsit.length"
+                                        <ul class="list-group" v-if="secondRankLsit.length"
                                             style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in elementLsit"
+                                            <li class="list-group-item" v-for="(item,index) in secondRankLsit"
                                                 :key="index">
                                             <span class="badge" style="backgroundColor: #5cb85c;cursor: pointer;"><i
                                                     class="glyphicon glyphicon-plus"
-                                                    @click="addElement(index)"></i></span>
-                                                {{item.element_name}}
+                                                    @click="add_subRank(index)"></i></span>
+                                                {{item.ranking_name}}
                                             </li>
                                             <button type="button" class="btn btn-default" @click="prePage(page)">上一页
                                             </button>
@@ -138,16 +139,16 @@
 
 </template>
 <script>
-    import {getSecondRank, addSecondRank, hideSecondRank, getElementList, editSecondRank} from '../../api/api'
+    import {getSecondRank, getFirstRankList} from '../../api/api'
 
     export default {
         data() {
             return {
                 rankList: [],
                 isShow: '',
-                elementLsit: [],
+                secondRankLsit: [],
                 page: 1,
-                addElementList: [],
+                addSubList: [],
                 addSecondParams: {
                     ranking_name: '',
                     ranking_level: 2,
@@ -185,11 +186,7 @@
         methods: {
             //add or edit
             operate(e) {
-
-
                 this.doOperate = '添加'
-
-
             },
             //确认
             confirm() {
@@ -210,12 +207,13 @@
                     })
                 }
             },
-            //获取二级榜单数据
+            //获取一级榜单数据
             getRankList() {
                 return new Promise((resolve, reject) => {
-                    getSecondRank()
+                    getFirstRankList()
                         .then(res => {
                             this.rankList = res.data.data.data;
+                            console.log(this.rankList);
                         })
                         .catch(err => {
                         });
@@ -285,12 +283,12 @@
                     })
                 }
             },
-            //获取元素列表
-            getElementList(params) {
+            //获取二级榜单列表
+            getSecondRankList(params) {
                 return new Promise((resolve, reject) => {
-                    getElementList(params).then(res => {
+                    getSecondRank(params).then(res => {
                             if (res.data.status_code == 1 && res.data.data.data.length > 0) {
-                                this.elementLsit = res.data.data.data;
+                                this.secondRankLsit = res.data.data.data;
                             } else {
                                 reject();
                             }
@@ -306,23 +304,24 @@
                 } else {
                     page--;
                     this.page = page;
-                    this.getElementList(this.page);
+                    this.getSecondRankList(this.page);
                 }
             },
             //下一页
             nextPage(page) {
                 page++;
                 this.page = page;
-                this.getElementList(this.page);
+                this.getSecondRankList(this.page);
             },
             //添加元素
-            addElement(index) {
-                this.addElementList.push(this.elementLsit[index]);
-                this.addElementList = [...new Set(this.addElementList)];
+            add_subRank(index) {
+
+                this.addSubList.push(this.secondRankLsit[index]);
+                this.addSubList = [...new Set(this.addSubList)];
             },
             //删除元素
-            deleteElement(index) {
-                this.addElementList.splice(index, 1);
+            deleteSubList(index) {
+                this.addSubList.splice(index, 1);
             }
 
         },

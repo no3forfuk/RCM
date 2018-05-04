@@ -29,7 +29,7 @@ export const routes = [
             {
                 path: '/home/FirstList',
                 name: 'FirstList',
-                component: resolve => require(['../components/firstRank/rankList.vue'], resolve)
+                component: resolve => require(['../components/firstRank/firstRankList.vue'], resolve)
             },
             {
                 path: '/home/SecondList',
