@@ -48,6 +48,7 @@ module.exports = merge(base, {
                     })
                 }
             });
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>一级榜单API
             //获取一级榜单
             app.get('/api/Ranking/FirstIndex', (req, res) => {
                 res.json({
@@ -244,6 +245,8 @@ module.exports = merge(base, {
                     ]
                 })
             });
+
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>二级榜单API
             //导入榜单
             app.post("/api/Ranking/importRanking", (req, res) => {
                 res.json({
