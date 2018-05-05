@@ -16,11 +16,11 @@ export const routes = [
         path: '/home', name: 'home', component: resolve => require(['../components/home/home.vue'], resolve)
         ,
         children: [
-            {
-                path: '/home/rankList',
-                name: 'ranking',
-                component: resolve => require(['../components/ranklist/ranklist.vue'], resolve)
-            },
+            // {
+            //     path: '/home/rankList',
+            //     name: 'ranking',
+            //     component: resolve => require(['../components/ranklist/ranklist.vue'], resolve)
+            // },
             {
                 path: '/home/PushList',
                 name: 'PushList',
@@ -37,17 +37,27 @@ export const routes = [
                 component: resolve => require(['../components/secondRank/SecondList.vue'], resolve)
             },
             {
-                path: '/home/roleList',
+                path: '/home/RoleList',
                 name: 'RoleList',
                 component: resolve => require(['../components/role/RoleList.vue'], resolve)
             },
             {
-                path: '/home/rankList/upload',
+                path: '/home/ElementList',
+                name: 'ElementList',
+                component: resolve => require(['../components/elementList/elementList.vue'], resolve)
+            },
+            {
+                path: '/home/ElementList/edit/:content',
+                name: 'editElement',
+                component: resolve => require(['../components/editElement/editElement.vue'], resolve)
+            },
+            {
+                path: '/home/upload',
                 name: 'upload',
                 component: resolve => require(['../components/uploadRank/upload.vue'], resolve)
             },
         ],
-        redirect: '/home/rankList'
+        redirect: '/home/FirstList'
     },
     {
         path: '/login', name: 'login', component: Login,
@@ -59,5 +69,5 @@ export const routes = [
 
 export default {
     routes,
-    //mode: 'history'
+    // mode: 'history'
 }

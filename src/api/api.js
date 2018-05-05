@@ -26,14 +26,31 @@ module.exports = {
             params: ''
         })
     },
+    //隐藏一级榜单
     hideFirstRank(params){
         return request({
             url:'/Ranking/FirstHide/' + params,
-            method:'GET',
+            method:'POST',
             params:''
         })
     },
-    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
+    //添加一级榜单
+    addFirstRank(params){
+        return request({
+            url:'/Ranking/FirstAdd',
+            method:'POST',
+            data:params
+        })
+    },
+    //编辑一级榜单
+    editFirstRank(params){
+        return request({
+            url:'/Ranking/FirstEdit/' +　params.id,
+            method:'POST',
+            data:params
+        })
+    },
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>二级榜单>>>>>>>>>>>>>>//
     //导入榜单
     importRank(parmas) {
         if (!parmas) return;
@@ -71,8 +88,8 @@ module.exports = {
     //隐藏二级榜单
     hideSecondRank(params) {
         return request({
-            url: '/Ranking/FirstHide/' + params,
-            method: 'PUT'
+            url: '/Ranking/SecondHide/' + params,
+            method: 'POST'
         })
     },
     //编辑二级榜单
@@ -83,15 +100,22 @@ module.exports = {
             data: params || {}
         })
     },
-    //获取元素列表
+    //获取元素列表>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>元素>>>>>>>>>>>>>>
     getElementList(params) {
         return request({
-            url: '/Element/index',
+            url: '/Element/index',//api/Element/hide/
             method: 'GET',
             params: {
                 page: params
             }
         })
-    }
+    },
+    hideElement(params) {
+        return request({
+            url: '/Element/hide/' + params,
+            method: 'POST'
+        })
+    },
+
 }
 

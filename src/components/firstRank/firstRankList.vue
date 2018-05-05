@@ -51,6 +51,9 @@
                                 {{item.is_hide ==
                                 1?'隐藏':'显示'}}
                             </button>
+                            <button type="button" class="btn btn-warning"
+                                    @click="addPushTask($event,item)">推送
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -72,14 +75,14 @@
                                 <label for="rankName" class="col-sm-2 control-label">榜单名称</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="rankName" placeholder="榜单名称"
-                                           v-model="addSecondParams.ranking_name">
+                                           v-model="addFirstParams.ranking_name">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="rankDesc" class="col-sm-2 control-label">榜单详情</label>
                                 <div class="col-sm-10">
                                     <textarea name="" id="rankDesc" cols="30" rows="3"
-                                              v-model="addSecondParams.ranking_desc"></textarea>
+                                              v-model="addFirstParams.ranking_desc"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -139,7 +142,7 @@
 
 </template>
 <script>
-    import {getSecondRank, getFirstRankList} from '../../api/api'
+    import {getSecondRank, getFirstRankList, hideFirstRank, addFirstRank, editFirstRank} from '../../api/api'
 
     export default {
         data() {
@@ -149,9 +152,9 @@
                 secondRankLsit: [],
                 page: 1,
                 addSubList: [],
-                addSecondParams: {
+                addFirstParams: {
                     ranking_name: '',
-                    ranking_level: 2,
+                    ranking_level: 1,
                     ranking_desc: '',
                     id: '',
                     data: []
@@ -191,17 +194,17 @@
             //确认
             confirm() {
                 if (this.doOperate == '添加') {
-                    this.addSecondParams.data = this.addElementList;
-                    this.addSecondRank(this.addSecondParams);
+                    this.addFirstParams.data = this.addSubList;
+                    this.addFirstRank(this.addFirstParams);
                 }
                 if (this.doOperate == '编辑') {
-                    this.addSecondParams.data = this.addElementList;
-                    editSecondRank(this.addSecondParams).then(res => {
+                    this.addFirstParams.data = this.addSubList;
+                    editFirstRank(this.addFirstParams).then(res => {
                         alert('修改成功');
                         $('.bs-modal-lg').modal('hide');
-                        this.addSecondParams.ranking_name = '';
-                        this.addSecondParams.ranking_desc = '';
-                        this.addElementList = []
+                        this.addFirstParams.ranking_name = '';
+                        this.addFirstParams.ranking_desc = '';
+                        this.addSubList = []
                         this.getRankList();
                     }).catch(err => {
                     })
@@ -213,14 +216,13 @@
                     getFirstRankList()
                         .then(res => {
                             this.rankList = res.data.data.data;
-                            console.log(this.rankList);
                         })
                         .catch(err => {
                         });
                 });
             },
-            //添加二级榜单
-            addSecondRank(params) {
+            //添加一级榜单
+            addFirstRank(params) {
                 if (params.ranking_name == '') {
                     alert('请填写榜单名称')
                     return
@@ -230,15 +232,12 @@
                     return
                 }
                 return new Promise((resolve, reject) => {
-                    addSecondRank(params)
+                    addFirstRank(params)
                         .then(res => {
                             console.log(res.data);
                             if (res.data.code == '001') {
                                 alert('添加成功')
                                 $('.bs-modal-lg').modal('hide');
-                                this.addSecondParams.ranking_name = '';
-                                this.addSecondParams.ranking_desc = '';
-                                this.addElementList = [];
                                 this.getRankList();
                             }
                         })
@@ -249,10 +248,9 @@
             //编辑榜单
             editRank(e, element) {
                 this.doOperate = '编辑';
-                this.addSecondParams.ranking_name = element.ranking_name;
-                this.addSecondParams.ranking_level = element.ranking_level;
-                this.addSecondParams.ranking_desc = element.ranking_desc;
-                this.addSecondParams.id = element.id;
+                this.addFirstParams.ranking_name = element.ranking_name;
+                this.addFirstParams.ranking_desc = element.ranking_desc;
+                this.addFirstParams.id = element.id;
             },
             setRankLv(e) {
                 this.rankLv = e.target.innerText;
@@ -263,7 +261,7 @@
                 if (e.target.innerText == '隐藏') {
                     params = 1;
                     return new Promise((resolve, reject) => {
-                        hideSecondRank(params).then(res => {
+                        hideFirstRank(params).then(res => {
                             alert('隐藏成功')
                             e.target.innerText = '显示';
                             item.is_hide = false;
@@ -274,7 +272,7 @@
                 if (e.target.innerText == '显示') {
                     params = 0;
                     return new Promise((resolve, reject) => {
-                        hideSecondRank(params).then(res => {
+                        hideFirstRank(params).then(res => {
                             alert('显示成功')
                             e.target.innerText = '隐藏';
                             item.is_hide = true;
@@ -322,6 +320,16 @@
             //删除元素
             deleteSubList(index) {
                 this.addSubList.splice(index, 1);
+            },
+            //添加推送
+            addPushTask(e, target) {
+                e.target.disabled = true;
+                e.target.innerText = '已推送';
+                const str = localStorage.getItem('pushTaskArr');
+                const arr = JSON.parse(str);
+                arr.push(target);
+                JSON.stringify(arr);
+                localStorage.setItem('pushTaskArr', JSON.stringify(arr));
             }
 
         },

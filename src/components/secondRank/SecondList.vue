@@ -45,16 +45,25 @@
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-modal-lg"
                                     @click="editRank($event,item)">编辑
                             </button>
-                            <button type="button" class="btn" :class="{'btn-success':!item.is_hide,'btn-danger':item.is_hide}"
+                            <button type="button" class="btn"
+                                    :class="{'btn-success':!item.is_hide,'btn-danger':item.is_hide}"
                                     @click="showOrHidden($event,item)">
                                 {{item.is_hide ==
                                 1?'隐藏':'显示'}}
+                            </button>
+                            <button type="button" class="btn btn-warning"
+                                    @click="addPushTask($event,item)">推送
                             </button>
                         </div>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
+            </button>
+            <input type="text" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
+            <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
+            </button>
         </div>
 
         <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -112,9 +121,10 @@
                                                     @click="addElement(index)"></i></span>
                                                 {{item.element_name}}
                                             </li>
-                                            <button type="button" class="btn btn-default" @click="prePage(page)">上一页
+                                            <button type="button" class="btn btn-default" @click="prePage($refs.elementList,'page')">上一页
                                             </button>
-                                            <button type="button" class="btn btn-default" @click="nextPage(page)">下一页
+                                            <input type="text" v-model="page" ref="elementList" style="width: 35%;">
+                                            <button type="button" class="btn btn-default" @click="nextPage($refs.elementList,'page')">下一页
                                             </button>
                                         </ul>
                                     </div>
@@ -155,7 +165,8 @@
                     id: '',
                     data: []
                 },
-                doOperate: '添加'
+                doOperate: '添加',
+                currentPage: 1
 
             }
         },
@@ -163,7 +174,7 @@
 
             const vm = this;
             //获取首页榜列表
-            this.getRankList();
+            this.getRankList(this.currentPage);
             this.isShow = "隐藏";
 
             //下拉框构造函数
@@ -183,13 +194,10 @@
 
         },
         methods: {
+
             //add or edit
             operate(e) {
-
-
                 this.doOperate = '添加'
-
-
             },
             //确认
             confirm() {
@@ -205,15 +213,15 @@
                         this.addSecondParams.ranking_name = '';
                         this.addSecondParams.ranking_desc = '';
                         this.addElementList = []
-                        this.getRankList();
+                        this.getRankList(this.currentPage);
                     }).catch(err => {
                     })
                 }
             },
             //获取二级榜单数据
-            getRankList() {
+            getRankList(page) {
                 return new Promise((resolve, reject) => {
-                    getSecondRank()
+                    getSecondRank(page)
                         .then(res => {
                             this.rankList = res.data.data.data;
                         })
@@ -234,7 +242,6 @@
                 return new Promise((resolve, reject) => {
                     addSecondRank(params)
                         .then(res => {
-                            console.log(res.data);
                             if (res.data.code == '001') {
                                 alert('添加成功')
                                 $('.bs-modal-lg').modal('hide');
@@ -252,7 +259,6 @@
             editRank(e, element) {
                 this.doOperate = '编辑';
                 this.addSecondParams.ranking_name = element.ranking_name;
-                this.addSecondParams.ranking_level = element.ranking_level;
                 this.addSecondParams.ranking_desc = element.ranking_desc;
                 this.addSecondParams.id = element.id;
             },
@@ -300,20 +306,18 @@
                 })
             },
             //上一页
-            prePage(page) {
-                if (page == 1) {
+            prePage(target,page) {
+                if (target.value == 1) {
                     return;
                 } else {
-                    page--;
-                    this.page = page;
-                    this.getElementList(this.page);
+                    target.value--;
+                    this[page] = target.value;
                 }
             },
             //下一页
-            nextPage(page) {
-                page++;
-                this.page = page;
-                this.getElementList(this.page);
+            nextPage(target,page) {
+                target.value++;
+                this[page] = target.value;
             },
             //添加元素
             addElement(index) {
@@ -323,10 +327,28 @@
             //删除元素
             deleteElement(index) {
                 this.addElementList.splice(index, 1);
+            },
+            //添加推送
+            addPushTask(e, target) {
+                e.target.disabled = true;
+                e.target.innerText = '已推送';
+                const str = localStorage.getItem('pushTaskArr');
+                const arr = JSON.parse(str);
+                arr.push(target);
+                JSON.stringify(arr);
+                localStorage.setItem('pushTaskArr', JSON.stringify(arr));
             }
 
         },
-        computed: {}
+        computed: {},
+        watch: {
+            currentPage: function (n,o) {
+                this.getRankList(n)
+            },
+            page:function (n,o) {
+                this.getElementList(n)
+            }
+        }
     };
 </script>
 <style scoped>

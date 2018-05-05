@@ -127,74 +127,101 @@ module.exports = merge(base, {
                     }
                 })
             })
-            //获取榜单/api/Ranking/index
-            app.get('/api/Ranking/index', (req, res) => {
+            //隐藏一级榜单
+            app.post('/api/Ranking/FirstHide/1', (req, res) => {
                 res.json({
-                    code: 1,
-                    data: [
-                        {
-                            "ranking_name": "膜是日常",
-                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                            "operate_id": "admin",
-                            "is_hide": 1,
-                            "asterisk": 0,
-                            "updated_at": {
-                                "date": "2018-04-24 12:55:26.000000",
-                                "timezone_type": 3,
-                                "timezone": "UTC"
-                            }
-                        },
-                        {
-                            "ranking_name": "看看大家最喜欢",
-                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                            "operate_id": "admin",
-                            "is_hide": 1,
-                            "asterisk": 0,
-                            "updated_at": {
-                                "date": "2018-04-24 12:55:26.000000",
-                                "timezone_type": 3,
-                                "timezone": "UTC"
-                            }
-                        },
-                        {
-                            "ranking_name": "日常护肤必不可",
-                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                            "operate_id": "admin",
-                            "is_hide": 1,
-                            "asterisk": 0,
-                            "updated_at": {
-                                "date": "2018-04-24 12:55:26.000000",
-                                "timezone_type": 3,
-                                "timezone": "UTC"
-                            }
-                        },
-                        {
-                            "ranking_name": "的一个环节～一起来看看大家最喜欢的是哪几种哪",
-                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                            "operate_id": "admin",
-                            "is_hide": 1,
-                            "asterisk": 0,
-                            "updated_at": {
-                                "date": "2018-04-24 12:55:26.000000",
-                                "timezone_type": 3,
-                                "timezone": "UTC"
-                            }
-                        },
-                        {
-                            "ranking_name": "面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢",
-                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                            "operate_id": "admin",
-                            "is_hide": 1,
-                            "asterisk": 0,
-                            "updated_at": {
-                                "date": "2018-04-24 12:55:26.000000",
-                                "timezone_type": 3,
-                                "timezone": "UTC"
-                            }
-                        }
-                    ]
+                    code: '001',
+                    message: 'success'
+                })
+            })
+            app.post('/api/Ranking/FirstHide/0', (req, res) => {
+                res.json({
+                    code: '001',
+                    message: 'success'
                 })
             });
+            //添加一级榜单
+            app.post('/api/Ranking/FirstAdd', (req, res) => {
+                res.json({
+                    code: '001',
+                    message: '添加成功'
+                })
+            })
+            //编辑一级榜单
+            app.post('/api/Ranking/FirstEdit/2', (req, res) => {
+                res.json({
+                    code: '001',
+                    massage: '修改成功'
+                })
+            })
+            //获取榜单/api/Ranking/index
+            // app.get('/api/Ranking/index', (req, res) => {
+            //     res.json({
+            //         code: 1,
+            //         data: [
+            //             {
+            //                 "ranking_name": "膜是日常",
+            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+            //                 "operate_id": "admin",
+            //                 "is_hide": 1,
+            //                 "asterisk": 0,
+            //                 "updated_at": {
+            //                     "date": "2018-04-24 12:55:26.000000",
+            //                     "timezone_type": 3,
+            //                     "timezone": "UTC"
+            //                 }
+            //             },
+            //             {
+            //                 "ranking_name": "看看大家最喜欢",
+            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+            //                 "operate_id": "admin",
+            //                 "is_hide": 1,
+            //                 "asterisk": 0,
+            //                 "updated_at": {
+            //                     "date": "2018-04-24 12:55:26.000000",
+            //                     "timezone_type": 3,
+            //                     "timezone": "UTC"
+            //                 }
+            //             },
+            //             {
+            //                 "ranking_name": "日常护肤必不可",
+            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+            //                 "operate_id": "admin",
+            //                 "is_hide": 1,
+            //                 "asterisk": 0,
+            //                 "updated_at": {
+            //                     "date": "2018-04-24 12:55:26.000000",
+            //                     "timezone_type": 3,
+            //                     "timezone": "UTC"
+            //                 }
+            //             },
+            //             {
+            //                 "ranking_name": "的一个环节～一起来看看大家最喜欢的是哪几种哪",
+            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+            //                 "operate_id": "admin",
+            //                 "is_hide": 1,
+            //                 "asterisk": 0,
+            //                 "updated_at": {
+            //                     "date": "2018-04-24 12:55:26.000000",
+            //                     "timezone_type": 3,
+            //                     "timezone": "UTC"
+            //                 }
+            //             },
+            //             {
+            //                 "ranking_name": "面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢",
+            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+            //                 "operate_id": "admin",
+            //                 "is_hide": 1,
+            //                 "asterisk": 0,
+            //                 "updated_at": {
+            //                     "date": "2018-04-24 12:55:26.000000",
+            //                     "timezone_type": 3,
+            //                     "timezone": "UTC"
+            //                 }
+            //             }
+            //         ]
+            //     })
+            // });
             //获取侧边栏
             app.get('/api/index/getMenu', (req, res) => {
                 res.json({
@@ -239,6 +266,18 @@ module.exports = merge(base, {
                                     "id": 22,
                                     "name": "推送列表",
                                     "route_name": "PushList"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 21,
+                            "name": "元素管理",
+                            "route_name": "element",
+                            "menu": [
+                                {
+                                    "id": 22,
+                                    "name": "元素列表",
+                                    "route_name": "ElementList"
                                 }
                             ]
                         }
@@ -495,13 +534,13 @@ module.exports = merge(base, {
                 })
             })
             //显示隐藏
-            app.put('/api/Ranking/FirstHide/1', (req, res) => {
+            app.post('/api/Ranking/SecondHide/1', (req, res) => {
                 res.json({
                     code: '001',
                     message: 'success'
                 })
             })
-            app.put('/api/Ranking/FirstHide/0', (req, res) => {
+            app.post('/api/Ranking/SecondHide/0', (req, res) => {
                 res.json({
                     code: '001',
                     message: 'success'
@@ -517,210 +556,480 @@ module.exports = merge(base, {
                         "data": [
                             {
                                 "id": 1,
-                                "element_name": "詹姆斯 我累了",
-                                "element_desc": null,
-                                "exponent": 270039,
+                                "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
+                                "element_desc": "大名鼎鼎的十全大补面膜",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 1,
+                                        "ranking_name": "涂抹式面膜人气榜单",
+                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 1,
+                                            "ranking_id": 1
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 2,
-                                "element_name": "新歌被批曲风过时",
-                                "element_desc": null,
-                                "exponent": 237120,
-                                "is_hide": 0,
+                                "element_name": "香奈儿熨斗面膜",
+                                "element_desc": "涂抹式面膜中的经典单品",
+                                "exponent": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 1,
+                                        "ranking_name": "涂抹式面膜人气榜单",
+                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 2,
+                                            "ranking_id": 1
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 3,
-                                "element_name": "朝鲜将用首尔时间",
-                                "element_desc": null,
-                                "exponent": 189724,
+                                "element_name": "彼得罗夫青瓜啫喱面膜",
+                                "element_desc": "深层补水啫喱状面膜",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 1,
+                                        "ranking_name": "涂抹式面膜人气榜单",
+                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 3,
+                                            "ranking_id": 1
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 4,
-                                "element_name": "范丞丞晒自拍付费",
-                                "element_desc": null,
-                                "exponent": 164764,
+                                "element_name": "碧欧泉奇迹面膜",
+                                "element_desc": "奇迹面膜，含有 35 种营养成分，5%的高浓度活源精粹 LIFE PLANKTON，能加速肌底细胞新陈代谢，激活肌肤自主吸收源动力，增强肌肤抵抗力。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 1,
+                                        "ranking_name": "涂抹式面膜人气榜单",
+                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 4,
+                                            "ranking_id": 1
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 5,
-                                "element_name": "惠若琪 大婚",
-                                "element_desc": null,
-                                "exponent": 142250,
+                                "element_name": "科颜氏金盏花舒缓保湿面膜",
+                                "element_desc": "科颜氏金盏花舒缓保湿面膜，其配方保留了看得见的金盏花瓣，佐以芦荟汁配制，集镇静，舒缓，保湿，调理于一体，为肌肤注入焕颜活力，犹如浸浴在金盏花田一般清爽滋润，舒缓日常生活中的皮肤\"小情绪”。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 1,
+                                        "ranking_name": "涂抹式面膜人气榜单",
+                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 5,
+                                            "ranking_id": 1
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 6,
-                                "element_name": "诺贝尔文学奖丑闻",
-                                "element_desc": null,
-                                "exponent": 121256,
+                                "element_name": "悦木之源水润畅饮夜间密集修护面膜",
+                                "element_desc": "悦木之源水润畅饮夜间密集滋养面膜乳霜质地，细腻幼滑，容易推开，能有效深层补水滋润，让肌肤瞬间恢复水嫩充盈状态，平衡肌肤水油分泌，明显改善肤质状况。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 1,
+                                        "ranking_name": "涂抹式面膜人气榜单",
+                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 6,
+                                            "ranking_id": 1
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 7,
-                                "element_name": "张若昀斥隐私被泄",
-                                "element_desc": null,
-                                "exponent": 117976,
+                                "element_name": "馥蕾诗 红茶抗皱紧致修护面膜",
+                                "element_desc": "馥蕾诗红茶抗皱紧致修护面膜给予肌肤高效紧致，即刻柔软顺滑，幼嫩饱满。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 1,
+                                        "ranking_name": "涂抹式面膜人气榜单",
+                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 7,
+                                            "ranking_id": 1
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 8,
-                                "element_name": "游客偷香蕉遭殴打",
-                                "element_desc": null,
-                                "exponent": 117346,
+                                "element_name": "皇家猫粮",
+                                "element_desc": "皇家宠物食品有限公司全球总部于1967年成立，坐落在法国南部的埃玛哥共占地24公顷，集中了所有的重要设施并集结了所有的资源，一切都为了给犬猫提供最好的服务。皇家总部是由研发、营运、财务、人力资源部，以及四个销售部组成的将近500人大团队，为将近90个国家的60个分公司提供服务与支持。从Royal Canin这一品牌自1968年成立以来，经过40多年的发展已经成为全球宠物食品行业的领军人物。皇家另一大特色就是在总部设有大规模的犬场和猫场。犬猫场有160多只犬和180多只猫。皇家提供了最好的环境和最优质的食物，让这些犬猫在总部的犬猫场自在生活。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 8,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 9,
-                                "element_name": "阚清子称重新认识",
-                                "element_desc": null,
-                                "exponent": 109231,
+                                "element_name": "伟嘉猫粮",
+                                "element_desc": "含有丰富的有机物，是小动物就能吃，只要它愿意吃喜欢这个味道。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 9,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 10,
-                                "element_name": "陈怡蓉宣布怀孕",
-                                "element_desc": null,
-                                "exponent": 101736,
+                                "element_name": "雪山",
+                                "element_desc": "美国雪山公司从1989年开始研制Natural Balance宠物食品，希望制造出世界上品质最优良和最健康的宠物食品。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 10,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 11,
-                                "element_name": "孔雀遭游客拔毛",
-                                "element_desc": null,
-                                "exponent": 79151,
+                                "element_name": "凌采",
+                                "element_desc": "美国Natura公司生产的宠物食品品种齐全、品质保证已有十多年历史，旗下有露华系列、露华EVO系列、加州天然系列、健盈系列、卡玛系列的猫粮、犬粮，罐头、饼干等纯天然产品，并一直处于同行业的领头羊位置。",
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 11,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 12,
-                                "element_name": "特朗普伞被掀翻",
+                                "element_name": "珍宝SANPO",
                                 "element_desc": null,
-                                "exponent": 73511,
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 12,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 13,
-                                "element_name": "电视问政引发热议",
+                                "element_name": "比瑞吉猫粮",
                                 "element_desc": null,
-                                "exponent": 62265,
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 13,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 14,
-                                "element_name": "巴西女生桥上自拍",
+                                "element_name": "美滋元 宠物猫粮",
                                 "element_desc": null,
-                                "exponent": 54570,
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 14,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "id": 15,
-                                "element_name": "逃犯出席朋友婚礼",
+                                "element_name": "妙多乐 宠物猫粮",
                                 "element_desc": null,
-                                "exponent": 50711,
+                                "exponent": 0,
+                                "is_check": 0,
                                 "is_hide": 0,
                                 "asterisk": 0,
-                                "created_at": "2018-05-03 10:21:41",
-                                "updated_at": "2018-05-03 10:21:41",
+                                "created_at": "2018-05-04 10:11:59",
+                                "updated_at": "2018-05-04 10:11:59",
                                 "operate_name": {
                                     "name": "admin"
-                                }
+                                },
+                                "second_ranking": [
+                                    {
+                                        "id": 2,
+                                        "ranking_name": "猫粮品牌排行榜",
+                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                                        "exponent": 0,
+                                        "is_check": 0,
+                                        "is_hide": 1,
+                                        "asterisk": 0,
+                                        "created_at": "2018-05-04 10:11:59",
+                                        "updated_at": "2018-05-04 10:11:59",
+                                        "pivot": {
+                                            "element_id": 15,
+                                            "ranking_id": 2
+                                        }
+                                    }
+                                ]
                             }
                         ],
-                        "first_page_url": "http://rcm.bantangtv.com/api/Element/index?page=1",
+                        "first_page_url": "http://rcm.cc/api/Element/index?page=1",
                         "from": 1,
-                        "last_page": 4,
-                        "last_page_url": "http://rcm.bantangtv.com/api/Element/index?page=4",
-                        "next_page_url": "http://rcm.bantangtv.com/api/Element/index?page=2",
-                        "path": "http://rcm.bantangtv.com/api/Element/index",
+                        "last_page": 24,
+                        "last_page_url": "http://rcm.cc/api/Element/index?page=24",
+                        "next_page_url": "http://rcm.cc/api/Element/index?page=2",
+                        "path": "http://rcm.cc/api/Element/index",
                         "per_page": 15,
                         "prev_page_url": null,
                         "to": 15,
-                        "total": 50
+                        "total": 357
                     }
                 })
             })
@@ -731,6 +1040,19 @@ module.exports = merge(base, {
                     message: '修改成功'
                 })
             })
+            //元素
+            app.post('/api/Element/hide/1', (req, res) => {
+                res.json({
+                    code: '001',
+                    message: 'success'
+                })
+            })
+            app.post('/api/Element/hide/0', (req, res) => {
+                res.json({
+                    code: '001',
+                    message: 'success'
+                })
+            });
             /////////////////////////////////////
             app.post('/submit/add_rank', (req, res) => {
                 res.json(mock.sidebar)

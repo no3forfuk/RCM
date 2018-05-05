@@ -3,14 +3,15 @@
         <div class="left">
             <div class="page-header range">
                 <h3>推送任务</h3>
-                <button type="button" class="btn btn-success addTask"><i class="glyphicon glyphicon-arrow-right"
-                                                                         @click="getPushTask"></i></button>
+                <button type="button" @click="getPushTask" class="btn btn-success addTask"><i
+                        class="glyphicon glyphicon-arrow-right"
+                ></i></button>
             </div>
-            <div>
+            <div style="height: 500px;overflow: auto;">
                 <table class="table table-striped push-tab table-bordered table-hover active">
                     <thead>
                     <th class="text-center" style="width:10%">
-                        <input type="checkbox" @click="checkAll">全选
+                        <input type="checkbox" @click="checkAll($event)">全选
                     </th>
                     <th class="text-center">名称</th>
                     </thead>
@@ -52,8 +53,7 @@
                     <button type="button" class="btn btn-default" @click="removeAll"><i
                             class="glyphicon glyphicon-remove"></i></button>
                     <button type="button" class="btn btn-success" style="width:97%;marginTop:5px;" @click="addTaskList">
-                        <i
-                                class="glyphicon glyphicon-ok"></i></button>
+                        <i class="glyphicon glyphicon-ok"></i></button>
 
                 </div>
             </div>
@@ -61,7 +61,7 @@
     </div>
 </template>
 <script>
-    import {getRankList, addPushTask} from "../../api/api";
+    import {addPushTask} from "../../api/api";
 
     export default {
         data() {
@@ -73,12 +73,7 @@
             };
         },
         created() {
-            getRankList()
-                .then(res => {
-                    this.lists = res.data.data;
-                })
-                .catch(err => {
-                });
+            this.getRankList()
         },
         updated() {
         },
@@ -92,8 +87,8 @@
                 this.oldValue = e;
             },
             getPushTask() {
-                var arr = [];
-                var listArr = [];
+                const arr = [];
+                const listArr = [];
                 for (let i = 0; i < this.$refs.checkboxes.length; i++) {
                     if (this.$refs.checkboxes[i].checked) {
                         arr.push(i);
@@ -120,10 +115,17 @@
                 this.pushTashArr.splice(i, 1);
                 this.setValue();
             },
-            checkAll() {
-                for (let i = 0; i < this.$refs.checkboxes.length; i++) {
-                    this.$refs.checkboxes[i].checked = true;
+            checkAll(e) {
+                if (e.target.checked == true) {
+                    for (let i = 0; i < this.$refs.checkboxes.length; i++) {
+                        this.$refs.checkboxes[i].checked = true;
+                    }
+                }else {
+                    for (let i = 0; i < this.$refs.checkboxes.length; i++) {
+                        this.$refs.checkboxes[i].checked = false;
+                    }
                 }
+
             },
             orderDiy(e) {
                 var obj = {};
@@ -152,28 +154,31 @@
                 for (let i = 0; i < this.pushTashArr.length; i++) {
                     arr[i] = this.pushTashArr[i];
                 }
-                for (let i = 0; i < this.$refs.taskCheck.length; i++) {
-                    if (this.$refs.taskCheck[i].checked) {
-                        if (i < 1) {
-                            return
+                if (this.$refs.taskCheck) {
+                    for (let i = 0; i < this.$refs.taskCheck.length; i++) {
+                        if (this.$refs.taskCheck[i].checked) {
+                            if (i < 1) {
+                                return
+                            }
+                            obj[i] = this.pushTashArr[i];
                         }
-                        obj[i] = this.pushTashArr[i];
+                    }
+                    for (let k in obj) {
+                        temp = arr[k - 1];
+                        arr[k - 1] = arr[k];
+                        arr[k] = temp;
+                        this.$refs.taskCheck[k].checked = false;
+                        this.$refs.taskCheck[k - 1].checked = true;
+                        if (k == 1) {
+                            this.$refs.taskCheck[0].checked = false;
+                        }
+                    }
+                    this.pushTashArr = [];
+                    for (let i = 0; i < arr.length; i++) {
+                        this.pushTashArr[i] = arr[i];
                     }
                 }
-                for (let k in obj) {
-                    temp = arr[k - 1];
-                    arr[k - 1] = arr[k];
-                    arr[k] = temp;
-                    this.$refs.taskCheck[k].checked = false;
-                    this.$refs.taskCheck[k - 1].checked = true;
-                    if (k == 1) {
-                        this.$refs.taskCheck[0].checked = false;
-                    }
-                }
-                this.pushTashArr = [];
-                for (let i = 0; i < arr.length; i++) {
-                    this.pushTashArr[i] = arr[i];
-                }
+
 
             },
             setValue() {
@@ -182,7 +187,12 @@
                 }
                 let resultarr = [...new Set(this.order)];
                 this.order = resultarr;
-            }
+            },
+            getRankList() {
+                const str = localStorage.getItem('pushTaskArr');
+                this.lists = JSON.parse(str);
+            },
+
         }
     };
 </script>
@@ -226,6 +236,7 @@
     .task-window {
         width: 460px;
         height: 400px;
+        overflow: auto;
     }
 
     .root {
