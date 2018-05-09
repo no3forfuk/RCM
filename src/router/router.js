@@ -4,7 +4,7 @@ import Register from '../components/register/register.vue';
 import index from '../components/index/index.vue';
 import Html404 from '../components/common/404/404.vue';
 // import RankList from '../components/ranklist/ranklist.vue';
-// import PushTask from '../components/pushTask/pushTask.vue';
+// import PushTask from '../components/pushTask/pushList.vue';
 // import ElementList from '../components/elementList/elementList.vue';
 // import PostList from '../components/postList/postList.vue';
 // import LevelCtrl from '../components/levelCtrl/levelCtrl.vue';
@@ -24,7 +24,7 @@ export const routes = [
             {
                 path: '/home/PushList',
                 name: 'PushList',
-                component: resolve => require(['../components/pushTask/pushTask.vue'], resolve)
+                component: resolve => require(['../components/pushTask/pushList.vue'], resolve)
             },
             {
                 path: '/home/FirstList',
@@ -55,6 +55,10 @@ export const routes = [
                 path: '/home/upload',
                 name: 'upload',
                 component: resolve => require(['../components/uploadRank/upload.vue'], resolve)
+            },{
+                path: '/home/PushTask',
+                name: 'PushTask',
+                component: resolve => require(['../components/pushTask/pushTask.vue'], resolve)
             },
         ],
         redirect: '/home/FirstList'

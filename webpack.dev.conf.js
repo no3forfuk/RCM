@@ -230,6 +230,7 @@ module.exports = merge(base, {
             //     })
             // });
             //获取侧边栏
+            //获取侧边栏
             app.get('/api/index/getMenu', (req, res) => {
                 res.json({
                     "code": 1,
@@ -273,6 +274,11 @@ module.exports = merge(base, {
                                     "id": 22,
                                     "name": "推送列表",
                                     "route_name": "PushList"
+                                },
+                                {
+                                    "id": 23,
+                                    "name": "推送任务",
+                                    "route_name": "PushTask"
                                 }
                             ]
                         },

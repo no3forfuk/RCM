@@ -28,15 +28,9 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
             },
             {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -59,7 +53,7 @@ module.exports = {
         ]
     },
     plugins: [
-         new ExtractTextPlugin("Admin/css/[name].css"),
+        new ExtractTextPlugin("Admin/css/[name].css"),
     ]
 
 }

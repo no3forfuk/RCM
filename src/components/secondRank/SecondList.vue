@@ -96,7 +96,7 @@
                                     <div style="width: 40%;">
                                         <ul class="list-group" v-if="addElementList.length"
                                             style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in addElementList">
+                                            <li class="list-group-item" v-for="(item,index) in addElementList" :key="index">
                                             <span class="badge" style="backgroundColor: #C9302C;">
                                                 <i class="glyphicon glyphicon-remove"
                                                    style="cursor: pointer;" @click="deleteElement(index)"></i>

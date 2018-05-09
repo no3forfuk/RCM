@@ -31,7 +31,7 @@ module.exports = {
         return request({
             url:'/Ranking/FirstHide/' + params,
             method:'POST',
-            params:''
+            params:params
         })
     },
     //添加一级榜单
@@ -90,7 +90,8 @@ module.exports = {
     hideSecondRank(params) {
         return request({
             url: '/Ranking/SecondHide/' + params,
-            method: 'POST'
+            method: 'POST',
+            data:params
         })
     },
     //编辑二级榜单

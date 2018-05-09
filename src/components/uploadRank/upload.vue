@@ -19,7 +19,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                        <h2 class="modal-title">上传成功</h2>
+                        <h2 class="modal-title">{{success}}</h2>
                     </div>
                     <div class="modal-body text-center">
                         <button type="button" class="btn btn-default" data-dismiss="modal">点击继续上传</button>
@@ -42,7 +42,8 @@
             return {
                 tableData: [],
                 rankDataArr: [],
-                hasFile: ''
+                hasFile: '',
+                success: '上传成功'
             };
         },
         mounted() {

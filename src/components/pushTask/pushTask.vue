@@ -1,283 +1,32 @@
 <template>
-    <div class="root">
-        <div class="left">
-            <div class="page-header range">
-                <h3>推送任务</h3>
-                <button type="button" @click="getPushTask" class="btn btn-success addTask"><i
-                        class="glyphicon glyphicon-arrow-right"
-                ></i></button>
-            </div>
-            <div style="height: 500px;overflow: auto;">
-                <table class="table table-striped push-tab table-bordered table-hover active">
-                    <thead>
-                    <th class="text-center" style="width:10%">
-                        <input type="checkbox" @click="checkAll($event)">全选
-                    </th>
-                    <th class="text-center">名称</th>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(list,index) in lists" :key="index">
-                        <td class="text-center check-td">
-                            <input type="checkbox" ref="checkboxes">
-                        </td>
-                        <td @click="addSingle(list)">{{list.ranking_name}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div>
+        <div class="page-header">
+            <span v-text="today" class="h3"></span>
         </div>
-        <div class="right">
-            <div class="panel panel-default">
-                <div class="panel-body task-window">
-                    <ul class="list-group" ref="pushBuffer">
-                        <li class="list-group-item order" v-for="(item,index) in pushTashArr" :key="index">
-                            <input
-                                    @change="orderDiy"
-                                    @focus="getOldValue(index)"
-                                    type="number" min="1"
-                                    max="20"
-                                    v-model="order[index]"
-                                    class="order-input">
-                            <span style="marginLeft:5px;"
-                                  @click="deleteSingle(item,index)">{{item.ranking_name}}</span>
-                            <input
-                                    type="checkbox"
-                                    style="float:right;"
-                                    ref="taskCheck">
-                        </li>
-                    </ul>
-                </div>
-                <div class="panel-footer task-ctrl">
-                    <button type="button" class="btn btn-default" @click="pushSort"><i
-                            class="glyphicon glyphicon-hand-up"></i></button>
-                    <button type="button" class="btn btn-default" @click="removeAll"><i
-                            class="glyphicon glyphicon-remove"></i></button>
-                    <button type="button" class="btn btn-success" style="width:97%;marginTop:5px;"
-                            @click="addTaskList(pushTashArr)">
-                        <i class="glyphicon glyphicon-ok"></i></button>
+        <table class="table table-bordered table-striped table-hover">
 
-                </div>
-            </div>
-        </div>
+
+
+        </table>
     </div>
 </template>
+
 <script>
-    import {addPushTask} from "../../api/api";
     import {timeFormat} from '../../utils/utils'
+
     export default {
         data() {
-            return {
-                lists: [],
-                pushTashArr: [],
-                order: [],
-                oldValue: ""
-            };
+            return {}
         },
-        created() {
-            this.getRankList()
-        },
-        updated() {
-        },
-        methods: {
-            addTaskList(params) {
-                if (params && params.length !== 0) {
-                    var arr = []
-                    for (let i = 0; i < params.length; i++) {
-                        var obj = {}
-                        obj.level = params[i].ranking_level;
-                        obj.id = params[i].id;
-                        arr.push(obj)
-                    }
-                    var date = timeFormat('-')
-                    var pushData = {};
-                    pushData.push_date = date;
-                    pushData.push_json = arr;
-                    addPushTask(pushData).then(res => {
-                        if (res.status == 200 && res.data.status_code == 1) {
-                            alert('推送成功')
-                        } else {
-                            alert('推送失败，请重试')
-                        }
-                    }).catch(err => {
-                    })
-                }
-            },
-            getOldValue(e) {
-                this.oldValue = e;
-            },
-            getPushTask() {
-                const arr = [];
-                const listArr = [];
-                for (let i = 0; i < this.$refs.checkboxes.length; i++) {
-                    if (this.$refs.checkboxes[i].checked) {
-                        arr.push(i);
-                    }
-                }
-                for (let i = 0; i < arr.length; i++) {
-                    this.pushTashArr.push(this.lists[arr[i]]);
-                }
-                let resultarr = [...new Set(this.pushTashArr)];
-                this.pushTashArr = resultarr;
-                this.setValue();
-            },
-            addSingle(obj) {
-                this.pushTashArr.push(obj);
-                let resultarr = [...new Set(this.pushTashArr)];
-                this.pushTashArr = resultarr;
-                this.setValue();
-            },
-            removeAll() {
-                this.pushTashArr = [];
-                this.setValue();
-            },
-            deleteSingle(obj, i) {
-                this.pushTashArr.splice(i, 1);
-                this.setValue();
-            },
-            checkAll(e) {
-                if (e.target.checked == true) {
-                    for (let i = 0; i < this.$refs.checkboxes.length; i++) {
-                        this.$refs.checkboxes[i].checked = true;
-                    }
-                } else {
-                    for (let i = 0; i < this.$refs.checkboxes.length; i++) {
-                        this.$refs.checkboxes[i].checked = false;
-                    }
-                }
-
-            },
-            orderDiy(e) {
-                var obj = {};
-                for (let i = 0; i < this.pushTashArr.length; i++) {
-                    if (e.target.value > this.pushTashArr.length) {
-                        e.target.value = this.oldValue + 1;
-                        return;
-                    }
-                    this.order.push(i + 1);
-                    obj[i] = this.pushTashArr[i];
-                }
-                var temp = 0;
-                temp = obj[this.oldValue];
-                obj[this.oldValue] = obj[e.target.value - 1];
-                obj[e.target.value - 1] = temp;
-                for (let k in obj) {
-                    this.pushTashArr[k] = obj[k];
-
-                    this.order[k] = parseInt(k) + 1;
-                }
-            },
-            pushSort() {
-                var obj = {}, temp;
-                var arr = [];
-                var index = [];
-                for (let i = 0; i < this.pushTashArr.length; i++) {
-                    arr[i] = this.pushTashArr[i];
-                }
-                if (this.$refs.taskCheck) {
-                    for (let i = 0; i < this.$refs.taskCheck.length; i++) {
-                        if (this.$refs.taskCheck[i].checked) {
-                            if (i < 1) {
-                                return
-                            }
-                            obj[i] = this.pushTashArr[i];
-                        }
-                    }
-                    for (let k in obj) {
-                        temp = arr[k - 1];
-                        arr[k - 1] = arr[k];
-                        arr[k] = temp;
-                        this.$refs.taskCheck[k].checked = false;
-                        this.$refs.taskCheck[k - 1].checked = true;
-                        if (k == 1) {
-                            this.$refs.taskCheck[0].checked = false;
-                        }
-                    }
-                    this.pushTashArr = [];
-                    for (let i = 0; i < arr.length; i++) {
-                        this.pushTashArr[i] = arr[i];
-                    }
-                }
-
-
-            },
-            setValue() {
-                for (let i = 0; i < this.pushTashArr.length; i++) {
-                    this.order.push(i + 1);
-                }
-                let resultarr = [...new Set(this.order)];
-                this.order = resultarr;
-            },
-            getRankList() {
-                const str = localStorage.getItem('pushTaskArr');
-                this.lists = JSON.parse(str);
-            },
-
+        computed: {
+            today() {
+                return timeFormat('/')
+            }
         }
-    };
+    }
+
 </script>
+
 <style scoped>
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none !important;
-        margin: 0;
-    }
 
-    .order {
-        position: relative;
-    }
-
-    .order .order-input {
-        display: block;
-        width: 20px;
-        height: 20px;
-        float: left;
-        color: #f60;
-    }
-
-    .range {
-        position: relative;
-    }
-
-    .addTask {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-    }
-
-    .task-ctrl button {
-        width: 48%;
-    }
-
-    .task-ctrl {
-        text-align: center;
-    }
-
-    .task-window {
-        width: 460px;
-        height: 400px;
-        overflow: auto;
-    }
-
-    .root {
-        position: relative;
-    }
-
-    .right {
-        position: absolute;
-        top: 0px;
-        right: -16px;
-    }
-
-    .left {
-        padding-right: 480px;
-        box-sizing: border-box;
-    }
-
-    .check-td {
-        text-indent: -27px;
-    }
-
-    .text-center {
-        text-align: center;
-    }
 </style>
