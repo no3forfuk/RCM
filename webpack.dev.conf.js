@@ -48,6 +48,13 @@ module.exports = merge(base, {
                     })
                 }
             });
+            //添加推送
+            app.post('/api/Push/add',(req,res)=>{
+                res.json({
+                    code:'1',
+                    message:'chenggong1'
+                })
+            })
             //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>一级榜单API
             //获取一级榜单
             app.get('/api/Ranking/FirstIndex', (req, res) => {

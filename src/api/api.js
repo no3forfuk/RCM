@@ -60,9 +60,10 @@ module.exports = {
             data: parmas || {}
         })
     },
+    //添加推送
     addPushTask(params) {
         return request({
-            url: '/Element/add',
+            url: '/Push/add',
             method: 'POST',
             data: params || {}
         })

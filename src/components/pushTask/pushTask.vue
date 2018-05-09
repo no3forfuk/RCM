@@ -52,7 +52,8 @@
                             class="glyphicon glyphicon-hand-up"></i></button>
                     <button type="button" class="btn btn-default" @click="removeAll"><i
                             class="glyphicon glyphicon-remove"></i></button>
-                    <button type="button" class="btn btn-success" style="width:97%;marginTop:5px;" @click="addTaskList">
+                    <button type="button" class="btn btn-success" style="width:97%;marginTop:5px;"
+                            @click="addTaskList(pushTashArr)">
                         <i class="glyphicon glyphicon-ok"></i></button>
 
                 </div>
@@ -62,7 +63,7 @@
 </template>
 <script>
     import {addPushTask} from "../../api/api";
-
+    import {timeFormat} from '../../utils/utils'
     export default {
         data() {
             return {
@@ -78,10 +79,28 @@
         updated() {
         },
         methods: {
-            addTaskList() {
-                addPushTask().then(res => {
-                }).catch(err => {
-                })
+            addTaskList(params) {
+                if (params && params.length !== 0) {
+                    var arr = []
+                    for (let i = 0; i < params.length; i++) {
+                        var obj = {}
+                        obj.level = params[i].ranking_level;
+                        obj.id = params[i].id;
+                        arr.push(obj)
+                    }
+                    var date = timeFormat('-')
+                    var pushData = {};
+                    pushData.push_date = date;
+                    pushData.push_json = arr;
+                    addPushTask(pushData).then(res => {
+                        if (res.status == 200 && res.data.status_code == 1) {
+                            alert('推送成功')
+                        } else {
+                            alert('推送失败，请重试')
+                        }
+                    }).catch(err => {
+                    })
+                }
             },
             getOldValue(e) {
                 this.oldValue = e;
@@ -120,7 +139,7 @@
                     for (let i = 0; i < this.$refs.checkboxes.length; i++) {
                         this.$refs.checkboxes[i].checked = true;
                     }
-                }else {
+                } else {
                     for (let i = 0; i < this.$refs.checkboxes.length; i++) {
                         this.$refs.checkboxes[i].checked = false;
                     }
