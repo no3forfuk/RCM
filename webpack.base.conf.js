@@ -28,6 +28,14 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-env']
+                        }
+                    }
+                ]
             },
             {
                 test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
@@ -54,6 +62,10 @@ module.exports = {
     },
     plugins: [
         new ExtractTextPlugin("Admin/css/[name].css"),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+          })
     ]
 
 }

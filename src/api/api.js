@@ -14,7 +14,7 @@ module.exports = {
         return request({
             url: '/Index/getMenu',
             method: 'GET',
-            data: parmas || {}
+            params: parmas || {}
         })
     },
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>一级榜单api>>>>>>>>>>>>>>>>>>//

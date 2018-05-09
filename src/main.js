@@ -11,13 +11,20 @@ require('./components/components.js');
 //vuex
 import Vuex from 'vuex';
 
+import './static/font/iconfont.css'
 Vue.use(Vuex);
 const storeConfig = require('./store/store');
 const store = new Vuex.Store(storeConfig);
 import {mapState} from 'vuex';
 
 
+import $ from 'jquery'  
+import 'bootstrap/dist/css/bootstrap.min.css'  
+import 'bootstrap/dist/js/bootstrap.min'  
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 
 //router
 import VueRouter from 'vue-router';
@@ -29,22 +36,7 @@ const router = new VueRouter(routerConfig);
 //权限控制
 
 // router.beforeEach((to, from, next) => {
-//     if (from.path === "/" || from.path === "/login") {
-//         if (store.state.token) {
-//             next()
-//         } else {
-//             if (to.path === "/login") {
-//                 next()
-//             } else {
-//                 next('/login')
-//             }
-//
-//         }
-//     } else {
-//         next(false)
-//     }
-//
-//
+    
 // });
 
 
