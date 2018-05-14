@@ -37,7 +37,7 @@
                     <td>{{index+1}}</td>
                     <td>{{item.ranking_name}}</td>
                     <td style="max-width:300px;"><p class="td-disc">{{item.ranking_desc}}</p></td>
-                    <td>{{item.operate_name.name}}</td>
+                    <td>{{item.admin.name}}</td>
                     <td>{{item.updated_at}}</td>
                     <td>{{item.star}}</td>
                     <td>
@@ -281,7 +281,7 @@
                     })
                 }
             },
-            //获取二级榜单列表
+            //获取一级级榜单列表
             getSecondRankList(params) {
                 return new Promise((resolve, reject) => {
                     getSecondRank(params).then(res => {

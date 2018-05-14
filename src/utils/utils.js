@@ -1,8 +1,13 @@
 /*Created By Jsir on 2018/5/8*/
 'use strict'
 const utils = {}
-utils.timeFormat = function (type) {
-    let time = new Date();
+utils.timeFormat = function (type,ms) {
+    var time;
+    if (ms) {
+        time = new Date(ms);
+    } else {
+        time = new Date();
+    }
     let mouth = time.getMonth() + 1;
     let day = time.getDate();
     if (mouth < 10) {

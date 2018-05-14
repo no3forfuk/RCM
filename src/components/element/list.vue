@@ -12,7 +12,11 @@
             </div>
         </div>
         <div style="maxHeight:500px;overflow:auto;">
-            <h4>元素列表  <router-link :to="{name:'editElement',params:{content:{}}}"><button type="button" class="btn btn-default">添加元素</button></router-link></h4>
+            <h4>元素列表
+                <router-link :to="{name:'editElement',params:{content:{}}}">
+                    <button type="button" class="btn btn-default">添加元素</button>
+                </router-link>
+            </h4>
             <table class="table table table-hover table-striped table-bordered">
                 <thead>
                 <th class="text-center">序号</th>
@@ -28,7 +32,9 @@
                 <tbody class="text-left">
                 <tr v-for="(item,index) in elementList" :key="index">
                     <td>{{index+1}}</td>
-                    <td>{{item.element_name}}</td>
+                    <td>
+                        <router-link :to="{name:'elementDetails',query:{id:item.id}}">{{item.element_name}}</router-link>
+                    </td>
                     <td style="max-width:300px;"><p class="td-disc">{{item.element_desc}}</p></td>
                     <td>
                         <ul class="list-group">

@@ -5,13 +5,13 @@ import index from '../components/index/index.vue';
 import Html404 from '../components/common/404/404.vue';
 // import RankList from '../components/ranklist/ranklist.vue';
 // import PushTask from '../components/pushTask/pushList.vue';
-// import ElementList from '../components/elementList/elementList.vue';
+// import ElementList from '../components/element/element.vue';
 // import PostList from '../components/postList/postList.vue';
 // import LevelCtrl from '../components/levelCtrl/levelCtrl.vue';
 // import UpLoadRank from '../components/uploadRank/upload.vue';
 
 export const routes = [
-    { path: '/', redirect: '/login', hidden: true },
+    {path: '/', redirect: '/login', hidden: true},
     {
         path: '/home', name: 'home', component: resolve => require(['../components/home/home.vue'], resolve)
         ,
@@ -44,30 +44,39 @@ export const routes = [
             {
                 path: '/home/ElementList',
                 name: 'ElementList',
-                component: resolve => require(['../components/elementList/elementList.vue'], resolve)
+                component: resolve => require(['../components/element/list.vue'], resolve)
             },
             {
                 path: '/home/ElementList/edit/:content',
                 name: 'editElement',
-                component: resolve => require(['../components/editElement/editElement.vue'], resolve)
+                component: resolve => require(['../components/element/edit.vue'], resolve)
             },
             {
                 path: '/home/upload',
                 name: 'upload',
                 component: resolve => require(['../components/uploadRank/upload.vue'], resolve)
-            },{
+            },
+            {
                 path: '/home/PushTask',
                 name: 'PushTask',
                 component: resolve => require(['../components/pushTask/pushTask.vue'], resolve)
             },
+            {
+                path: '/home/elementDetalis',
+                name: 'elementDetails',
+                query: {
+                    id: 'id'
+                },
+                component: resolve => require(['../components/element/details.vue'], resolve)
+            }
         ],
         redirect: '/home/FirstList'
     },
     {
         path: '/login', name: 'login', component: Login,
     },
-    { path: '/register', name: 'register', component: Register },
-    { path: '*', redirect: '/404', component: Html404 },
+    {path: '/register', name: 'register', component: Register},
+    {path: '*', redirect: '/404', component: Html404},
 
 ];
 

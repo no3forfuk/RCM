@@ -43,7 +43,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            outputPath: 'images',
+                            outputPath: 'Admin/images',
                             name: '[hash:16].[ext]'
                         }
                     }

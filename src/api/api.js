@@ -27,27 +27,27 @@ module.exports = {
         })
     },
     //隐藏一级榜单
-    hideFirstRank(params){
+    hideFirstRank(params) {
         return request({
-            url:'/Ranking/FirstHide/' + params,
-            method:'POST',
-            params:params
+            url: '/Ranking/FirstHide/' + params,
+            method: 'POST',
+            params: params
         })
     },
     //添加一级榜单
-    addFirstRank(params){
+    addFirstRank(params) {
         return request({
-            url:'/Ranking/FirstAdd',
-            method:'POST',
-            data:params
+            url: '/Ranking/FirstAdd',
+            method: 'POST',
+            data: params
         })
     },
     //编辑一级榜单
-    editFirstRank(params){
+    editFirstRank(params) {
         return request({
-            url:'/Ranking/FirstEdit/' +　params.id,
-            method:'POST',
-            data:params
+            url: '/Ranking/FirstEdit/' + params.id,
+            method: 'POST',
+            data: params
         })
     },
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>二级榜单>>>>>>>>>>>>>>//
@@ -91,7 +91,7 @@ module.exports = {
         return request({
             url: '/Ranking/SecondHide/' + params,
             method: 'POST',
-            data:params
+            data: params
         })
     },
     //编辑二级榜单
@@ -112,12 +112,51 @@ module.exports = {
             }
         })
     },
+    //隐藏元素
     hideElement(params) {
         return request({
             url: '/Element/hide/' + params,
             method: 'POST'
         })
     },
+    //获取元素详情
+    getElementDetails(params) {
+        return request({
+            url: '/Element/details',
+            method: 'GET',
+            params: {
+                id: params
+            }
+        })
+    },
+    //编辑元素
+    editElementInfo(params){
+        return request({
+            url: '/Element/edit',
+            method: 'POST',
+            data: params
+        })
+    },
+    //推送任务列表
+    getPushTaskList(params) {
+        return request({
+            url: '/pushTask/list',
+            method: 'POST',
+            data: {
+                time: params
+            }
+        })
+    },
+    //查询榜单
+    serachRankList(params) {
+        return request({
+            url: '/search/ranking',
+            method: 'POST',
+            data: {
+                key: params
+            }
+        })
+    }
 
 }
 
