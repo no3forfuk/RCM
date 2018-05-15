@@ -190,6 +190,7 @@ module.exports = merge(base, {
             // });
             //获取侧边栏
             //获取侧边栏
+            //获取侧边栏
             app.get('/api/index/getMenu', (req, res) => {
                 res.json({
                     "code": 1,
@@ -250,6 +251,17 @@ module.exports = merge(base, {
                                     "id": 22,
                                     "name": "元素列表",
                                     "route_name": "ElementList"
+                                }
+                            ]
+                        }, {
+                            "id": 21,
+                            "name": "POST管理",
+                            "route_name": "post",
+                            "menu": [
+                                {
+                                    "id": 22,
+                                    "name": "POST列表",
+                                    "route_name": "postList"
                                 }
                             ]
                         }
@@ -1110,6 +1122,26 @@ module.exports = merge(base, {
                             }
                         }
                     ]
+                })
+            })
+            //获取七牛token
+            app.get('/api/Qiniu/getUploadToken', (res, req) => {
+                const qiniu = require('qiniu');
+                var ak = 'CCfyEudIXBbtgJVlJjLyKrxsiIT1a-X3gfQBeXKU';
+                var sk = '9DJlV0wjgouH1NlZE8taDXKHn5DK24lGbFiXclt9';
+                var mac = new qiniu.auth.digest.Mac(ak, sk);
+                var options = {
+                    scope: 'yyrcm',
+                };
+                var putPolicy = new qiniu.rs.PutPolicy(options);
+                var uploadToken = putPolicy.uploadToken(mac);
+                req.json({
+                    "status_code": 1,
+                    "message": 'success',
+                    data: {
+                        "qiniu_token": uploadToken,
+                        "bucket": 'yyrcm'
+                    }
                 })
             })
             /////////////////////////////////////

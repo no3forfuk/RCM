@@ -1,5 +1,6 @@
 /*Created By Jsir on 2018/5/8*/
 'use strict'
+const qiniu = require('qiniu-js');
 const utils = {}
 utils.timeFormat = function (type,ms) {
     var time;
@@ -21,5 +22,15 @@ utils.timeFormat = function (type,ms) {
         day = day
     }
     return time.getFullYear() + type + mouth + type + day;
+}
+utils.uploadImages = function (file,filename,token,putExtra,config,observer) {
+    var file = file;
+    var key = filename;
+    var token = token;
+    var putExtra = putExtra;
+    var config = config;
+    var observer = observer;
+    var observable = qiniu.upload(file, key, token, putExtra, config);
+    var subscription = observable.subscribe(observer);
 }
 module.exports = utils;

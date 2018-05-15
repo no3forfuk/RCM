@@ -130,7 +130,7 @@ module.exports = {
         })
     },
     //编辑元素
-    editElementInfo(params){
+    editElementInfo(params) {
         return request({
             url: '/Element/edit',
             method: 'POST',
@@ -155,6 +155,14 @@ module.exports = {
             data: {
                 key: params
             }
+        })
+    },
+    //获取七牛TOKEN
+    get7NiuToken() {
+        return request({
+            url: '/Qiniu/getUploadToken',
+            method: 'GET',
+            params: ''
         })
     }
 

@@ -12,11 +12,13 @@
   "license": "ISC",
   "dependencies": {
     "element-ui": "^2.3.7",
+    "qiniu-js": "^2.2.2",
     "vue": "^2.5.16",
     "vuex": "^3.0.1",
     "xlsx": "^0.12.9"
   },
   "devDependencies": {
+    "qiniu": "^7.1.5",
     "@babel/core": "^7.0.0-beta.44",
     "@babel/preset-env": "^7.0.0-beta.44",
     "@websanova/vue-auth": "^2.21.6-beta",
@@ -34,6 +36,7 @@
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "jquery": "^3.3.1",
+    "plupload": "^2.3.6",
     "popper.js": "^1.14.3",
     "style-loader": "^0.20.3",
     "uglifyjs-webpack-plugin": "^1.2.4",

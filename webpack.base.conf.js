@@ -41,7 +41,7 @@ module.exports = {
                 test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: 'url-loader',
                         options: {
                             outputPath: 'Admin/images',
                             name: '[hash:16].[ext]'

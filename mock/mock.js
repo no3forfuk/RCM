@@ -126,7 +126,7 @@ module.exports = {
         },
         {
             name: 'POST列表',
-            where: 'postList'
+            where: 'post'
         },
         {
             name: '上下级管理',

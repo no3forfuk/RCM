@@ -6,7 +6,7 @@ import Html404 from '../components/common/404/404.vue';
 // import RankList from '../components/ranklist/ranklist.vue';
 // import PushTask from '../components/pushTask/pushList.vue';
 // import ElementList from '../components/element/element.vue';
-// import PostList from '../components/postList/postList.vue';
+// import PostList from '../components/post/post.vue';
 // import LevelCtrl from '../components/levelCtrl/levelCtrl.vue';
 // import UpLoadRank from '../components/uploadRank/upload.vue';
 
@@ -68,6 +68,21 @@ export const routes = [
                     id: 'id'
                 },
                 component: resolve => require(['../components/element/details.vue'], resolve)
+            },
+            {
+                path: '/home/post',
+                name: 'postList',
+                component: resolve => require(['../components/post/list.vue'], resolve)
+            },
+            {
+                path: '/home/addPost',
+                name: 'addPost',
+                component: resolve => require(['../components/post/add.vue'], resolve)
+            },
+            {
+                path: '/home/postDetails',
+                name: 'postDetails',
+                component: resolve => require(['../components/post/details.vue'], resolve)
             }
         ],
         redirect: '/home/FirstList'
