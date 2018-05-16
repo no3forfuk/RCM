@@ -32,9 +32,25 @@ export const routes = [
                 component: resolve => require(['../components/firstRank/firstRankList.vue'], resolve)
             },
             {
+                path: '/home/firstRankDetails',
+                name: 'firstRankDetails',
+                query: {
+                    id: 'id'
+                },
+                component: resolve => require(['../components/firstRank/details.vue'], resolve)
+            },
+            {
                 path: '/home/SecondList',
                 name: 'SecondList',
                 component: resolve => require(['../components/secondRank/SecondList.vue'], resolve)
+            },
+            {
+                path: '/home/secondRankDetails',
+                name: 'secondRankDetails',
+                query: {
+                    id: 'id'
+                },
+                component: resolve => require(['../components/secondRank/details.vue'], resolve)
             },
             {
                 path: '/home/RoleList',
@@ -83,6 +99,11 @@ export const routes = [
                 path: '/home/postDetails',
                 name: 'postDetails',
                 component: resolve => require(['../components/post/details.vue'], resolve)
+            },
+            {
+                path: '/home/count',
+                name: 'countList',
+                component: resolve => require(['../components/count/countList.vue'], resolve)
             }
         ],
         redirect: '/home/FirstList'

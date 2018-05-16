@@ -33,7 +33,8 @@
                 <tr v-for="(item,index) in elementList" :key="index">
                     <td>{{index+1}}</td>
                     <td>
-                        <router-link :to="{name:'elementDetails',query:{id:item.id}}">{{item.element_name}}</router-link>
+                        <router-link :to="{name:'elementDetails',query:{id:item.id}}">{{item.element_name}}
+                        </router-link>
                     </td>
                     <td style="max-width:300px;"><p class="td-disc">{{item.element_desc}}</p></td>
                     <td>
@@ -61,13 +62,13 @@
                 </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
-            </button>
-            <input type="text" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
-            <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
-            </button>
         </div>
-
+        <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
+        </button>
+        <input type="number" :max="totalPage" min="1" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
+        <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
+        </button>
+        <span>共{{totalPage}}页</span>
     </div>
 </template>
 <script>
@@ -78,12 +79,16 @@
             return {
                 elementList: [],
                 currentPage: 1,
-
-            };
+                totalPage: 0
+            }
         },
         created() {
             getElementList(this.currentPage).then(res => {
-                this.elementList = res.data.data.data
+                if (res.status == 200 && res.data.status_code == 1) {
+                    this.elementList = res.data.data.data;
+                    this.totalPage = res.data.data.last_page;
+                }
+
             })
         },
         methods: {
@@ -98,8 +103,12 @@
             },
             //下一页
             nextPage(target, page) {
+                if (target.value >= this.totalPage) {
+                    return
+                }
                 target.value++;
                 this[page] = target.value;
+
             },
             //显示隐藏
             showOrHidden(e, item) {

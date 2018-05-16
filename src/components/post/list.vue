@@ -9,7 +9,8 @@
                     <span class="input-group-addon" id="basic-addon2"><span
                             class="glyphicon glyphicon-search"></span></span>
                 </div>
-                <button type="button" class="btn btn-primary" v-text="TEXT.addPost" style="margin-left: 15px;" @click="goAdd"></button>
+                <button type="button" class="btn btn-primary" v-text="TEXT.addPost" style="margin-left: 15px;"
+                        @click="goAdd"></button>
             </div>
         </div>
         <div>
@@ -28,10 +29,10 @@
                 </th>
                 </thead>
                 <tbody>
-                <tr @click="goDetails">
+                <tr>
                     <td>star</td>
                     <td>
-                       name
+                        <router-link :to="{name:'postDetails',query:{id:'id'}}">name</router-link>
                     </td>
                     <td>father</td>
                     <td>hot</td>
@@ -67,10 +68,10 @@
             init() {
                 this.TEXT = POSTLIST;
             },
-            goAdd(){
+            goAdd() {
                 this.$router.replace('/home/addPost')
             },
-            goDetails(){
+            goDetails() {
                 this.$router.replace('/home/postDetails')
             }
         }

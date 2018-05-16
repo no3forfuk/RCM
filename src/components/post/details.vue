@@ -74,7 +74,7 @@
     .h5-view {
         width: 365px;
         height: 792px;
-        /*background: url("../../static/images/phone.png");*/
+        background: url("../../static/images/phone.png");
         position: absolute;
         top: 10px;
         left: 50%;

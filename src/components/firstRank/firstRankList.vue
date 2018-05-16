@@ -35,7 +35,10 @@
                 <tbody class="text-left">
                 <tr v-for="(item,index) in rankList" :key="index">
                     <td>{{index+1}}</td>
-                    <td>{{item.ranking_name}}</td>
+                    <td>
+                        <router-link :to="{name:'firstRankDetails',query:{id:item.id}}">{{item.ranking_name}}
+                        </router-link>
+                    </td>
                     <td style="max-width:300px;"><p class="td-disc">{{item.ranking_desc}}</p></td>
                     <td>{{item.admin.name}}</td>
                     <td>{{item.updated_at}}</td>

@@ -35,7 +35,10 @@
                 <tbody class="text-left">
                 <tr v-for="(item,index) in rankList" :key="index">
                     <td>{{index+1}}</td>
-                    <td>{{item.ranking_name}}</td>
+                    <td>
+                        <router-link :to="{name:'secondRankDetails',query:{id:item.id}}">{{item.ranking_name}}
+                        </router-link>
+                    </td>
                     <td style="max-width:300px;"><p class="td-disc">{{item.ranking_desc}}</p></td>
                     <td>{{item.admin.name}}</td>
                     <td>{{item.updated_at}}</td>
@@ -59,13 +62,13 @@
                 </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
-            </button>
-            <input type="text" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
-            <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
-            </button>
         </div>
-
+        <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
+        </button>
+        <input type="number" :max="totalPage" min="1" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
+        <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
+        </button>
+        <span>共{{totalPage}}页</span>
         <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -96,7 +99,8 @@
                                     <div style="width: 40%;">
                                         <ul class="list-group" v-if="addElementList.length"
                                             style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in addElementList" :key="index">
+                                            <li class="list-group-item" v-for="(item,index) in addElementList"
+                                                :key="index">
                                             <span class="badge" style="backgroundColor: #C9302C;">
                                                 <i class="glyphicon glyphicon-remove"
                                                    style="cursor: pointer;" @click="deleteElement(index)"></i>
@@ -121,10 +125,12 @@
                                                     @click="addElement(index)"></i></span>
                                                 {{item.element_name}}
                                             </li>
-                                            <button type="button" class="btn btn-default" @click="prePage($refs.elementList,'page')">上一页
+                                            <button type="button" class="btn btn-default"
+                                                    @click="prePage($refs.elementList,'page')">上一页
                                             </button>
                                             <input type="text" v-model="page" ref="elementList" style="width: 35%;">
-                                            <button type="button" class="btn btn-default" @click="nextPage($refs.elementList,'page')">下一页
+                                            <button type="button" class="btn btn-default"
+                                                    @click="nextPage($refs.elementList,'page')">下一页
                                             </button>
                                         </ul>
                                     </div>
@@ -142,8 +148,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
 </template>
@@ -166,7 +170,8 @@
                     data: []
                 },
                 doOperate: '添加',
-                currentPage: 1
+                currentPage: 1,
+                totalPage: 0
 
             }
         },
@@ -194,7 +199,6 @@
 
         },
         methods: {
-
             //add or edit
             operate(e) {
                 this.doOperate = '添加'
@@ -223,7 +227,10 @@
                 return new Promise((resolve, reject) => {
                     getSecondRank(page)
                         .then(res => {
-                            this.rankList = res.data.data.data;
+                            if (res.status == 200 && res.data.status_code == 1) {
+                                this.rankList = res.data.data.data;
+                                this.totalPage = res.data.data.last_page;
+                            }
                         })
                         .catch(err => {
                         });
@@ -306,7 +313,7 @@
                 })
             },
             //上一页
-            prePage(target,page) {
+            prePage(target, page) {
                 if (target.value == 1) {
                     return;
                 } else {
@@ -315,7 +322,10 @@
                 }
             },
             //下一页
-            nextPage(target,page) {
+            nextPage(target, page) {
+                if (target.value >= this.totalPage) {
+                    return
+                }
                 target.value++;
                 this[page] = target.value;
             },
@@ -342,10 +352,10 @@
         },
         computed: {},
         watch: {
-            currentPage: function (n,o) {
+            currentPage: function (n, o) {
                 this.getRankList(n)
             },
-            page:function (n,o) {
+            page: function (n, o) {
                 this.getElementList(n)
             }
         }

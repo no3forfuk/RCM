@@ -120,76 +120,6 @@ module.exports = merge(base, {
                     massage: '修改成功'
                 })
             })
-            //获取榜单/api/Ranking/index
-            // app.get('/api/Ranking/index', (req, res) => {
-            //     res.json({
-            //         code: 1,
-            //         data: [
-            //             {
-            //                 "ranking_name": "膜是日常",
-            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-            //                 "operate_id": "admin",
-            //                 "is_hide": 1,
-            //                 "asterisk": 0,
-            //                 "updated_at": {
-            //                     "date": "2018-04-24 12:55:26.000000",
-            //                     "timezone_type": 3,
-            //                     "timezone": "UTC"
-            //                 }
-            //             },
-            //             {
-            //                 "ranking_name": "看看大家最喜欢",
-            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-            //                 "operate_id": "admin",
-            //                 "is_hide": 1,
-            //                 "asterisk": 0,
-            //                 "updated_at": {
-            //                     "date": "2018-04-24 12:55:26.000000",
-            //                     "timezone_type": 3,
-            //                     "timezone": "UTC"
-            //                 }
-            //             },
-            //             {
-            //                 "ranking_name": "日常护肤必不可",
-            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-            //                 "operate_id": "admin",
-            //                 "is_hide": 1,
-            //                 "asterisk": 0,
-            //                 "updated_at": {
-            //                     "date": "2018-04-24 12:55:26.000000",
-            //                     "timezone_type": 3,
-            //                     "timezone": "UTC"
-            //                 }
-            //             },
-            //             {
-            //                 "ranking_name": "的一个环节～一起来看看大家最喜欢的是哪几种哪",
-            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-            //                 "operate_id": "admin",
-            //                 "is_hide": 1,
-            //                 "asterisk": 0,
-            //                 "updated_at": {
-            //                     "date": "2018-04-24 12:55:26.000000",
-            //                     "timezone_type": 3,
-            //                     "timezone": "UTC"
-            //                 }
-            //             },
-            //             {
-            //                 "ranking_name": "面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢",
-            //                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-            //                 "operate_id": "admin",
-            //                 "is_hide": 1,
-            //                 "asterisk": 0,
-            //                 "updated_at": {
-            //                     "date": "2018-04-24 12:55:26.000000",
-            //                     "timezone_type": 3,
-            //                     "timezone": "UTC"
-            //                 }
-            //             }
-            //         ]
-            //     })
-            // });
-            //获取侧边栏
-            //获取侧边栏
             //获取侧边栏
             app.get('/api/index/getMenu', (req, res) => {
                 res.json({
@@ -262,6 +192,18 @@ module.exports = merge(base, {
                                     "id": 22,
                                     "name": "POST列表",
                                     "route_name": "postList"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 21,
+                            "name": "统计",
+                            "route_name": "post",
+                            "menu": [
+                                {
+                                    "id": 22,
+                                    "name": "统计列表",
+                                    "route_name": "countList"
                                 }
                             ]
                         }
