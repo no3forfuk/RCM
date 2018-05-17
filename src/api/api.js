@@ -70,11 +70,22 @@ module.exports = {
     },
     //获取二级榜单列表
     getSecondRank(params) {
+        if (!params) {
+            params = ''
+        }
         return request({
             url: '/Ranking/SecondIndex',
             method: 'GET',
+            params: params
+        })
+    },
+    //获取二级榜单详情
+    getSecondRankDetails(id) {
+        return request({
+            url: '/Ranking/SecondDetails',
+            method: 'GET',
             params: {
-                page: params
+                id:id
             }
         })
     },
@@ -97,7 +108,7 @@ module.exports = {
     //编辑二级榜单
     editSecondRank(params) {
         return request({
-            url: '/Ranking/SecondEdit/' + params.id,
+            url: '/Ranking/SecondEdit',
             method: 'POST',
             data: params || {}
         })
@@ -105,11 +116,9 @@ module.exports = {
     //获取元素列表>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>元素>>>>>>>>>>>>>>
     getElementList(params) {
         return request({
-            url: '/Element/index',//api/Element/hide/
+            url: '/Element/index',
             method: 'GET',
-            params: {
-                page: params
-            }
+            params: params
         })
     },
     //隐藏元素

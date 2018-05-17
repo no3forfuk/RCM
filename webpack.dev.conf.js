@@ -181,32 +181,38 @@ module.exports = merge(base, {
                                     "id": 22,
                                     "name": "元素列表",
                                     "route_name": "ElementList"
-                                }
-                            ]
-                        }, {
-                            "id": 21,
-                            "name": "POST管理",
-                            "route_name": "post",
-                            "menu": [
+                                },
                                 {
-                                    "id": 22,
+                                    "id": 33,
                                     "name": "POST列表",
-                                    "route_name": "postList"
+                                    "route_name": "PostList"
                                 }
                             ]
                         },
-                        {
-                            "id": 21,
-                            "name": "统计",
-                            "route_name": "post",
-                            "menu": [
-                                {
-                                    "id": 22,
-                                    "name": "统计列表",
-                                    "route_name": "countList"
-                                }
-                            ]
-                        }
+                        // {
+                        //     "id": 21,
+                        //     "name": "POST管理",
+                        //     "route_name": "post",
+                        //     "menu": [
+                        //         {
+                        //             "id": 22,
+                        //             "name": "POST列表",
+                        //             "route_name": "postList"
+                        //         }
+                        //     ]
+                        // },
+                        // {
+                        //     "id": 21,
+                        //     "name": "统计",
+                        //     "route_name": "post",
+                        //     "menu": [
+                        //         {
+                        //             "id": 22,
+                        //             "name": "统计列表",
+                        //             "route_name": "countList"
+                        //         }
+                        //     ]
+                        // }
                     ]
                 })
             });
@@ -254,6 +260,28 @@ module.exports = merge(base, {
                         "prev_page_url": null,
                         "to": 15,
                         "total": 60
+                    }
+                })
+            });
+            //获取二级榜单详情
+            app.get('/api/Ranking/SecondDetails/', (req, res) => {
+                res.json({
+                    "status_code": 1,
+                    "message": "获取详情成功！",
+                    "data": {
+                        "id": 2,
+                        "ranking_name": "猫粮品牌排行榜",
+                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
+                        "ranking_level": 2,
+                        "exponent": 0,
+                        "is_check": 0,
+                        "is_hide": 1,
+                        "asterisk": 0,
+                        "updated_at": "2018-05-15 15:12:13",
+                        "operate_type": 1,
+                        "admin": {
+                            "name": "admin"
+                        }
                     }
                 })
             })
@@ -790,10 +818,10 @@ module.exports = merge(base, {
                     "message": "编辑成功"
                 })
             })
-            //编辑榜单
-            app.post('/api/Ranking/SecondEdit/2', (req, res) => {
+            //编辑二级榜单
+            app.post('/api/Ranking/SecondEdit', (req, res) => {
                 res.json({
-                    code: '001',
+                    status_code: 1,
                     message: '修改成功'
                 })
             })

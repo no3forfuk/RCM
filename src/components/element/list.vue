@@ -4,11 +4,13 @@
             <h3 class="header-left">元素管理</h3>
             <div class="header-right">
                 <div class="input-group search-box">
-                    <input type="text" class="form-control" placeholder="Recipient's username"
-                           aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2"><span
+                    <input type="text" class="form-control" placeholder="Search"
+                           aria-describedby="basic-addon2" v-model="keyWords">
+                    <span class="input-group-addon" id="basic-addon2" @click="searchElementByKeyWord(currentPage)"><span
                             class="glyphicon glyphicon-search"></span></span>
                 </div>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editExp">指数规则管理</button>
             </div>
         </div>
         <div style="maxHeight:500px;overflow:auto;">
@@ -22,6 +24,7 @@
                 <th class="text-center">序号</th>
                 <th class="text-center">元素名称</th>
                 <th class="text-center">详情</th>
+                <th class="text-center">指数</th>
                 <th class="text-center">所属榜单</th>
                 <th class="text-center">操作人</th>
                 <th class="text-center">最后编辑时间</th>
@@ -37,6 +40,9 @@
                         </router-link>
                     </td>
                     <td style="max-width:300px;"><p class="td-disc">{{item.element_desc}}</p></td>
+                    <td>
+                        <a href="#" data-toggle="modal" data-target="#eleExp">666</a>
+                    </td>
                     <td>
                         <ul class="list-group">
                             <li class="list-group-item" v-for="(list,index) in item.second_ranking" :key="index">
@@ -69,6 +75,8 @@
         <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
         </button>
         <span>共{{totalPage}}页</span>
+        <element-exp></element-exp>
+        <edit-exp></edit-exp>
     </div>
 </template>
 <script>
@@ -79,19 +87,57 @@
             return {
                 elementList: [],
                 currentPage: 1,
-                totalPage: 0
+                totalPage: 0,
+                keyWords: ''
             }
         },
         created() {
-            getElementList(this.currentPage).then(res => {
-                if (res.status == 200 && res.data.status_code == 1) {
-                    this.elementList = res.data.data.data;
-                    this.totalPage = res.data.data.last_page;
-                }
+            this.getElementListIndex(this.currentPage);
 
-            })
         },
         methods: {
+            //获取元素列表
+            getElementListIndex(page) {
+                var params;
+                if (this.keyWords == '') {
+                    params = {
+                        page: page
+                    }
+                } else {
+                    params = {
+                        page: page,
+                        like: this.keyWords
+                    }
+                }
+                getElementList(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.elementList = res.data.data.data;
+                        this.totalPage = res.data.data.last_page;
+                    }
+                })
+            },
+            //关键字查询
+            searchElementByKeyWord(page) {
+                var params;
+                if (this.keyWords == '') {
+                    params = {
+                        page: page
+                    }
+                } else {
+                    params = {
+                        page: page,
+                        like: this.keyWords
+                    }
+                }
+                getElementList(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.elementList = res.data.data.data;
+                        this.totalPage = res.data.data.last_page;
+                    }
+                }).catch(err => {
+                    throw err;
+                })
+            },
             //上一页
             prePage(target, page) {
                 if (target.value == 1) {
@@ -139,7 +185,7 @@
         },
         watch: {
             currentPage: function (n, o) {
-                getElementList(n)
+                this.getElementListIndex(n)
             }
         }
     };

@@ -87,7 +87,7 @@ export const routes = [
             },
             {
                 path: '/home/post',
-                name: 'postList',
+                name: 'PostList',
                 component: resolve => require(['../components/post/list.vue'], resolve)
             },
             {

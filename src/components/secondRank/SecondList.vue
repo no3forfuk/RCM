@@ -4,16 +4,19 @@
             <h3 class="header-left">二级榜单管理</h3>
             <div class="header-right">
                 <div class="input-group search-box">
-                    <input type="text" class="form-control" placeholder="Recipient's username"
-                           aria-describedby="basic-addon2">
-                    <span class="input-group-addon" id="basic-addon2"><span
+                    <input type="text" class="form-control" placeholder="Search"
+                           aria-describedby="basic-addon2" v-model="keyWords">
+                    <span class="input-group-addon" id="basic-addon2" @click="searchInkeyWords(page)"
+                          style="cursor: pointer;"><span
                             class="glyphicon glyphicon-search"></span></span>
                 </div>
-                <button class="btn btn-primary add-ranklist" data-toggle="modal" data-target=".bs-modal-lg"
+                <button class="btn btn-default add-ranklist" data-toggle="modal" data-target=".bs-modal-lg"
                         @click="operate($event)">添加榜单
                 </button>
                 <button class="btn btn-default">
                     <router-link :to="{name:'upload'}">导入榜单</router-link>
+                </button>
+                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#editRate">评级规则管理
                 </button>
             </div>
         </div>
@@ -26,7 +29,10 @@
                 <th class="text-center">操作人</th>
                 <th class="text-center">最后编辑时间</th>
                 <th class="text-center">
-                    <y-dropdown :dropdown="starmark"></y-dropdown>
+                    星标
+                </th>
+                <th class="text-center">
+                    评级
                 </th>
                 <th class="text-center">
                     操作
@@ -36,13 +42,19 @@
                 <tr v-for="(item,index) in rankList" :key="index">
                     <td>{{index+1}}</td>
                     <td>
-                        <router-link :to="{name:'secondRankDetails',query:{id:item.id}}">{{item.ranking_name}}
+                        {{item.ranking_name}}
+                    </td>
+                    <td style="max-width:300px;">
+                        <router-link :to="{name:'secondRankDetails',query:{id:item.id}}">
+                            <p class="td-disc">{{item.ranking_desc}}</p>
                         </router-link>
                     </td>
-                    <td style="max-width:300px;"><p class="td-disc">{{item.ranking_desc}}</p></td>
                     <td>{{item.admin.name}}</td>
                     <td>{{item.updated_at}}</td>
-                    <td>{{item.star}}</td>
+                    <td></td>
+                    <td>
+                        <a href="#" data-toggle="modal" data-target="#secondRate" @click="showRate(item)">S+</a>
+                    </td>
                     <td>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-modal-lg"
@@ -69,6 +81,8 @@
         <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
         </button>
         <span>共{{totalPage}}页</span>
+        <second-rate v-bind:info="rateTarget"></second-rate>
+        <editsecond-rate></editsecond-rate>
         <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -171,8 +185,9 @@
                 },
                 doOperate: '添加',
                 currentPage: 1,
-                totalPage: 0
-
+                totalPage: 0,
+                rateTarget: {},
+                keyWords: ''
             }
         },
         created() {
@@ -180,25 +195,35 @@
             const vm = this;
             //获取首页榜列表
             this.getRankList(this.currentPage);
-            this.isShow = "隐藏";
-
-            //下拉框构造函数
-            class Dropdown {
-                constructor(title, lists, position) {
-                    this.title = title;
-                    this.menu = lists;
-                    this.position = position;
-                }
-            }
-
-            //构建星标数据
-            this.starmark = new Dropdown("星标", ["最热", "最新"], "20px");
-            //构建级别数据
-            this.rankLv = new Dropdown("一级榜单", ["一级榜单", "二级榜单"], "20px");
-
 
         },
         methods: {
+            //关键字查询
+            searchInkeyWords(page) {
+                var params;
+                if (this.keyWords == '') {
+                    params = {
+                        page: page
+                    }
+                } else {
+                    params = {
+                        page: page,
+                        like: this.keyWords
+                    }
+                }
+                getSecondRank(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.rankList = res.data.data.data;
+                        this.totalPage = res.data.data.last_page;
+                    }
+                }).catch(err => {
+                    throw err
+                })
+            },
+            //展示评级
+            showRate(item) {
+                this.rateTarget = item;
+            },
             //add or edit
             operate(e) {
                 this.doOperate = '添加'
@@ -224,8 +249,19 @@
             },
             //获取二级榜单数据
             getRankList(page) {
+                var params;
+                if (this.keyWords == '') {
+                    params = {
+                        page: page
+                    }
+                } else {
+                    params = {
+                        page: page,
+                        like: this.keyWords
+                    }
+                }
                 return new Promise((resolve, reject) => {
-                    getSecondRank(page)
+                    getSecondRank(params)
                         .then(res => {
                             if (res.status == 200 && res.data.status_code == 1) {
                                 this.rankList = res.data.data.data;

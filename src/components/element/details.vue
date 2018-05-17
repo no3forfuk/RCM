@@ -1,66 +1,83 @@
 <template>
     <div>
-        <div class="contianer">
-            <span class="h4"><b>元素名称:</b> </span>
-            <input type="text"
-                   v-model="info.element_name"
-                   :disabled="forbidEdit"
-                   style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
+        <div class="page-header">
+            <h3>{{info.element_name}}</h3>
         </div>
-        <div class="contianer">
-            <span class="h4"><b>元素详情:</b></span>
-            <textarea v-model="info.element_desc"
-                      :disabled="forbidEdit"
-                      style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;vertical-align: top;"></textarea>
-        </div>
-        <div class="contianer">
-            <span class="h4"><b>指数:</b> </span>
-            <input type="text"
-                   disabled
-                   style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
-            <button style="padding: 4px;border: 0; background-color: #abcdef;border-radius: 2px;margin-left: 15px;">编辑
-            </button>
-        </div>
-        <div class="contianer">
-            <span class="h4"><b>星标:</b> </span>
-            <el-select v-model="init_star" style="margin-left: 15px;" :disabled="forbidEdit">
-                <el-option v-for="item in star_options"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
-                </el-option>
-            </el-select>
-        </div>
-        <div class="contianer">
-            <span class="h4"><b>隐藏/显示:</b> </span>
-            <el-select v-model="init_hide" style="margin-left: 15px;" :disabled="forbidEdit">
-                <el-option v-for="item in hide_options"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
-                </el-option>
-            </el-select>
-        </div>
-        <div class="contianer">
-            <span class="h4"><b>创建者:</b> </span>
-            <input type="text"
-                   disabled
-                   style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
-        </div>
-        <div class="contianer">
-            <span class="h4"><b>创建时间:</b> </span>
-            <input type="text" v-model="info.created_at"
-                   disabled
-                   style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
-        </div>
-        <div class="contianer">
-            <span class="h4"><b>最后编辑时间:</b> </span>
-            <input type="text" v-model="info.updated_at"
-                   disabled
-                   style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
-        </div>
-        <button type="button" class="btn btn-default" @click="editElement">修改</button>
-        <button type="button" class="btn btn-default" @click="submitEdit" v-if="!forbidEdit">完成</button>
+        <el-tabs v-model="activeTab">
+            <el-tab-pane label="信息总览" name="first">
+                <div class="contianer">
+                    <span class="h4"><b>元素名称:</b> </span>
+                    <input type="text"
+                           v-model="info.element_name"
+                           :disabled="forbidEdit"
+                           style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
+                </div>
+                <div class="contianer">
+                    <span class="h4"><b>元素详情:</b></span>
+                    <textarea v-model="info.element_desc"
+                              :disabled="forbidEdit"
+                              style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;vertical-align: top;"></textarea>
+                </div>
+                <div class="contianer">
+                    <span class="h4"><b>指数:</b> </span>
+                    <input type="text"
+                           disabled
+                           style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
+                    <button style="padding: 4px;border: 0; background-color: #abcdef;border-radius: 2px;margin-left: 15px;">
+                        编辑
+                    </button>
+                </div>
+                <div class="contianer">
+                    <span class="h4"><b>星标:</b> </span>
+                    <el-select v-model="init_star" style="margin-left: 15px;" :disabled="forbidEdit">
+                        <el-option v-for="item in star_options"
+                                   :key="item.value"
+                                   :label="item.label"
+                                   :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="contianer">
+                    <span class="h4"><b>隐藏/显示:</b> </span>
+                    <el-select v-model="init_hide" style="margin-left: 15px;" :disabled="forbidEdit">
+                        <el-option v-for="item in hide_options"
+                                   :key="item.value"
+                                   :label="item.label"
+                                   :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="contianer">
+                    <span class="h4"><b>创建者:</b> </span>
+                    <input type="text"
+                           disabled
+                           style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
+                </div>
+                <div class="contianer">
+                    <span class="h4"><b>创建时间:</b> </span>
+                    <input type="text" v-model="info.created_at"
+                           disabled
+                           style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
+                </div>
+                <div class="contianer">
+                    <span class="h4"><b>最后编辑时间:</b> </span>
+                    <input type="text" v-model="info.updated_at"
+                           disabled
+                           style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
+                </div>
+                <button type="button" class="btn btn-default" @click="editElement">修改</button>
+                <button type="button" class="btn btn-default" @click="submitEdit" v-if="!forbidEdit">完成</button>
+
+
+            </el-tab-pane>
+            <el-tab-pane label="POST管理" name="second">POST管理</el-tab-pane>
+            <el-tab-pane label="指数管理" name="third">
+                <button type="button" class="btn btn-default">指数规则管理</button>
+                <hr>
+            </el-tab-pane>
+            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+        </el-tabs>
+
     </div>
 </template>
 
@@ -92,6 +109,7 @@
                         label: '隐藏'
                     }
                 ],
+                activeTab: 'first'
             }
         },
         created() {
