@@ -39,7 +39,10 @@
                 </button>
             </el-tab-pane>
             <el-tab-pane label="子元素列表" name="second">
-                <button class="btn btn-default" type="button">添加元素</button>
+                <router-link :to="{name:'addElement',query:{id:$route.query.id}}">
+                    <button class="btn btn-default" type="button">添加元素</button>
+                </router-link>
+
                 <hr>
                 <table class="table table-hover table-bordered table-striped">
                     <thead>

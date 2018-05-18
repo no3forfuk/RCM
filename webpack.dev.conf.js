@@ -292,19 +292,20 @@ module.exports = merge(base, {
                     message: '添加成功'
                 })
             })
-            //显示隐藏
-            app.post('/api/Ranking/SecondHide/1', (req, res) => {
+            //显示隐藏二级榜单
+            app.post('/api/Ranking/SecondHide', (req, res) => {
                 res.json({
-                    code: '001',
+                    status_code: '1',
                     message: 'success'
                 })
             })
-            app.post('/api/Ranking/SecondHide/0', (req, res) => {
+            //删除二级榜单
+            app.post('/api/Ranking/SecondDel', (req, res) => {
                 res.json({
-                    code: '001',
+                    status_code: 1,
                     message: 'success'
                 })
-            });
+            })
             //获取元素列表
             app.get('/api/Element/index', (req, res) => {
                 res.json({
@@ -818,6 +819,19 @@ module.exports = merge(base, {
                     "message": "编辑成功"
                 })
             })
+            app.post('/api/Element/del', (req, res) => {
+                res.json({
+                    status_code: 1,
+                    message: 'success'
+                })
+            })
+            //添加元素
+            app.post('/api/Element/add', (req, res) => {
+                res.json({
+                    status_code: 1,
+                    message: 'success'
+                })
+            })
             //编辑二级榜单
             app.post('/api/Ranking/SecondEdit', (req, res) => {
                 res.json({
@@ -832,9 +846,10 @@ module.exports = merge(base, {
                     message: 'success'
                 })
             })
-            app.post('/api/Element/hide/0', (req, res) => {
+            //元素显示隐藏
+            app.post('/api/Element/hide', (req, res) => {
                 res.json({
-                    code: '001',
+                    status_code: '001',
                     message: 'success'
                 })
             });
@@ -1094,6 +1109,448 @@ module.exports = merge(base, {
                     ]
                 })
             })
+            //获取POST列表
+            app.get('/api/Post/index', (req, res) => {
+                res.json({
+                    "status_code": 1,
+                    "message": "获取Post成功！",
+                    "data": {
+                        "current_page": 1,
+                        "data": [
+                            {
+                                "id": 1,
+                                "post_content": "乳白色乳霜质地，延展性极佳，淡淡的清香",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 1,
+                                    "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
+                                    "element_desc": "大名鼎鼎的十全大补面膜",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 1,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-18 15:23:59",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 2,
+                                "post_content": "涂抹后没有厚重感，很滋润",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 1,
+                                    "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
+                                    "element_desc": "大名鼎鼎的十全大补面膜",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 1,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-18 15:23:59",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 3,
+                                "post_content": "每次用在要发痘痘的地方，因为它有镇定舒缓的效用",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 1,
+                                    "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
+                                    "element_desc": "大名鼎鼎的十全大补面膜",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 1,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-18 15:23:59",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 4,
+                                "post_content": "冰淇淋般的丰润质地，超级丝滑，延展性好",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 2,
+                                    "element_name": "香奈儿熨斗面膜",
+                                    "element_desc": "涂抹式面膜中的经典单品",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "post_content": "可以改善肌肤质地，平滑纹理，使用后有光泽感，但是又不会觉得腻",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 2,
+                                    "element_name": "香奈儿熨斗面膜",
+                                    "element_desc": "涂抹式面膜中的经典单品",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 6,
+                                "post_content": "面膜是我必做的功课，香奈儿这款高效的面膜，即使我玩儿累了回来我也要让我的肌肤享受一番，喂饱肌肤让它水嘭嘭的，紧致嫩滑。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 2,
+                                    "element_name": "香奈儿熨斗面膜",
+                                    "element_desc": "涂抹式面膜中的经典单品",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 7,
+                                "post_content": "一款非常温和的补水面膜，含有青瓜／木瓜等多种草本精华，可以补水保湿，晒后修复，舒缓过敏等。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 3,
+                                    "element_name": "彼得罗夫青瓜啫喱面膜",
+                                    "element_desc": "深层补水啫喱状面膜",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 8,
+                                "post_content": "彼得罗夫青瓜啫喱面膜绿色啫喱质地，轻盈水润，容易吸收。密封性一般，不能有效锁紧精华。抗氧化性方面表现优异，面膜所蕴含的覆盆子精华能有效抗氧化，帮助修护肌肤，抵抗外来有害物质。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 3,
+                                    "element_name": "彼得罗夫青瓜啫喱面膜",
+                                    "element_desc": "深层补水啫喱状面膜",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 9,
+                                "post_content": "用后肤质改善明显，面膜性质温和，可以用在眼部周围消除眼部浮肿。这款面膜稍显油腻，比较适合秋冬季节或者干燥天气使用。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 3,
+                                    "element_name": "彼得罗夫青瓜啫喱面膜",
+                                    "element_desc": "深层补水啫喱状面膜",
+                                    "exponent": 3,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 10,
+                                "post_content": "碧欧泉活源精粹修复面膜，从外包装上可以看出品牌的一贯风格，清爽的大海蓝，给人的第一感就是非常清爽。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 4,
+                                    "element_name": "碧欧泉奇迹面膜",
+                                    "element_desc": "奇迹面膜，含有 35 种营养成分，5%的高浓度活源精粹 LIFE PLANKTON，能加速肌底细胞新陈代谢，激活肌肤自主吸收源动力，增强肌肤抵抗力。",
+                                    "exponent": 2,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 11,
+                                "post_content": "清新薄透的啫喱凝露质地，水感润滑，触感舒适亲肤，吸收性好，使用时清爽不油腻，不会为肌肤造成负担。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 4,
+                                    "element_name": "碧欧泉奇迹面膜",
+                                    "element_desc": "奇迹面膜，含有 35 种营养成分，5%的高浓度活源精粹 LIFE PLANKTON，能加速肌底细胞新陈代谢，激活肌肤自主吸收源动力，增强肌肤抵抗力。",
+                                    "exponent": 2,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 12,
+                                "post_content": "敷完面膜的肌肤有很强的水润感，肌肤表面格外柔软细滑。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 5,
+                                    "element_name": "科颜氏金盏花舒缓保湿面膜",
+                                    "element_desc": "科颜氏金盏花舒缓保湿面膜，其配方保留了看得见的金盏花瓣，佐以芦荟汁配制，集镇静，舒缓，保湿，调理于一体，为肌肤注入焕颜活力，犹如浸浴在金盏花田一般清爽滋润，舒缓日常生活中的皮肤\"小情绪”。",
+                                    "exponent": 1,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 13,
+                                "post_content": "这款面膜特别适合晚上使用，能给肌肤补充源源不断的营养，修复与滋养肌肤。第二天效果很棒，肌肤水嫩有弹力，很不错。非常好上妆，而且一整天都不花妆哟。很喜欢。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 6,
+                                    "element_name": "悦木之源水润畅饮夜间密集修护面膜",
+                                    "element_desc": "悦木之源水润畅饮夜间密集滋养面膜乳霜质地，细腻幼滑，容易推开，能有效深层补水滋润，让肌肤瞬间恢复水嫩充盈状态，平衡肌肤水油分泌，明显改善肤质状况。",
+                                    "exponent": 1,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 14,
+                                "post_content": "细腻密实的质地轻易涂抹，可以有效地软化老化角质，清除黑头粉刺和污垢，并且使用后的肌肤变得细嫩，可以帮助肌肤控制油分分泌，维持干净清爽的肌肤。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 7,
+                                    "element_name": "馥蕾诗 红茶抗皱紧致修护面膜",
+                                    "element_desc": "馥蕾诗红茶抗皱紧致修护面膜给予肌肤高效紧致，即刻柔软顺滑，幼嫩饱满。",
+                                    "exponent": 1,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            },
+                            {
+                                "id": 15,
+                                "post_content": "猫粮一直选择皇家的，猫咪吃着健康。吃完体质变好了。其实混搭湿粮会比较好，一包大概可以吃一个月的样子。",
+                                "type": 1,
+                                "img": null,
+                                "video": null,
+                                "out_link": null,
+                                "link_title": null,
+                                "link_desc": null,
+                                "exponent": 0,
+                                "comment_num": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "updated_at": "2018-05-15 15:12:13",
+                                "operate_type": 1,
+                                "operate_name": null,
+                                "element": {
+                                    "id": 8,
+                                    "element_name": "皇家猫粮",
+                                    "element_desc": "皇家宠物食品有限公司全球总部于1967年成立，坐落在法国南部的埃玛哥共占地24公顷，集中了所有的重要设施并集结了所有的资源，一切都为了给犬猫提供最好的服务。皇家总部是由研发、营运、财务、人力资源部，以及四个销售部组成的将近500人大团队，为将近90个国家的60个分公司提供服务与支持。从Royal Canin这一品牌自1968年成立以来，经过40多年的发展已经成为全球宠物食品行业的领军人物。皇家另一大特色就是在总部设有大规模的犬场和猫场。犬猫场有160多只犬和180多只猫。皇家提供了最好的环境和最优质的食物，让这些犬猫在总部的犬猫场自在生活。",
+                                    "exponent": 1,
+                                    "is_check": 0,
+                                    "is_hide": 0,
+                                    "asterisk": 0,
+                                    "updated_at": "2018-05-17 10:41:02",
+                                    "operate_type": 1
+                                }
+                            }
+                        ],
+                        "first_page_url": "http://test.bantangtv.com/api/Post/index?page=1",
+                        "from": 1,
+                        "last_page": 5,
+                        "last_page_url": "http://test.bantangtv.com/api/Post/index?page=5",
+                        "next_page_url": "http://test.bantangtv.com/api/Post/index?page=2",
+                        "path": "http://test.bantangtv.com/api/Post/index",
+                        "per_page": 15,
+                        "prev_page_url": null,
+                        "to": 15,
+                        "total": 70
+                    }
+                })
+            })
             //获取七牛token
             app.get('/api/Qiniu/getUploadToken', (res, req) => {
                 const qiniu = require('qiniu');
@@ -1114,6 +1571,7 @@ module.exports = merge(base, {
                     }
                 })
             })
+
             /////////////////////////////////////
             app.post('/submit/add_rank', (req, res) => {
                 res.json(mock.sidebar)

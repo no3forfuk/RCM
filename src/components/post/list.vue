@@ -13,7 +13,8 @@
                         @click="goAdd"></button>
             </div>
         </div>
-        <div>
+        <h4><b>POST列表</b></h4>
+        <div style="max-height: 500px;overflow: auto;">
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <th class="text-center" v-for="(item,index) in TEXT.table" :key="index">
@@ -29,17 +30,25 @@
                 </th>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="(item,index) in postList" :key="index">
+                    <td>{{index+1}}</td>
                     <td>star</td>
                     <td>
                         <router-link :to="{name:'postDetails',query:{id:'id'}}">name</router-link>
                     </td>
-                    <td>father</td>
+                    <td style="max-width: 150px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                        {{item.post_content}}
+                    </td>
+                    <td>
+                        <router-link :to="{}">{{item.element.element_name}}</router-link>
+                    </td>
                     <td>hot</td>
-                    <td>type</td>
+                    <td>
+                        {{item.type}}
+                    </td>
                     <td>from</td>
                     <td>builder</td>
-                    <td>lastEditTime</td>
+                    <td style="width: 100px;">{{item.updated_at}}</td>
                     <td>
                         <button type="button" class="btn btn-default">显示</button>
                         <button type="button" class="btn btn-default">删除</button>
@@ -49,15 +58,26 @@
                 </tbody>
             </table>
         </div>
+        <hr>
+        <el-pagination
+                background
+                :pager-count="totalPage"
+                :total="total"
+                layout="prev, pager, next">
+        </el-pagination>
     </div>
 </template>
 <script>
     import POSTLIST from './text'
+    import {getPostList} from '../../api/api'
 
     export default {
         data() {
             return {
-                rankList: [],
+                postList: [],
+                currentPage: 1,
+                totalPage: 0,
+                total: 0
             };
         },
         created() {
@@ -67,6 +87,16 @@
         methods: {
             init() {
                 this.TEXT = POSTLIST;
+                getPostList().then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        console.log(res.data.data.last_page);
+                        this.postList = res.data.data.data;
+                        this.totalPage = parseInt(res.data.data.last_page);
+                        this.total = res.data.data.total;
+                    }
+                }).catch(err => {
+                    throw err;
+                })
             },
             goAdd() {
                 this.$router.replace('/home/addPost')

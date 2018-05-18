@@ -4,10 +4,6 @@ import App from "./app.vue";
 //引入工具函数
 import utils from './utils/utils';
 
-
-//解析excl
-const arr = [];
-localStorage.setItem('pushTaskArr', JSON.stringify(arr));
 //自定义组件引入
 require('./components/components.js');
 //vuex

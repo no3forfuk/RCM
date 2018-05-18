@@ -65,9 +65,10 @@
                            disabled
                            style="borderRadius: 4px;border:1px solid #ccc;padding: 2px;margin-left: 15px;">
                 </div>
+                <hr>
                 <button type="button" class="btn btn-default" @click="editElement">修改</button>
+                <button type="button" class="btn btn-default" @click="cancelEditElement" v-if="!forbidEdit">取消</button>
                 <button type="button" class="btn btn-default" @click="submitEdit" v-if="!forbidEdit">完成</button>
-
 
             </el-tab-pane>
             <el-tab-pane label="POST管理" name="second">POST管理</el-tab-pane>
@@ -75,7 +76,6 @@
                 <button type="button" class="btn btn-default">指数规则管理</button>
                 <hr>
             </el-tab-pane>
-            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
         </el-tabs>
 
     </div>
@@ -126,6 +126,9 @@
             })
         },
         methods: {
+            cancelEditElement() {
+                this.forbidEdit = true;
+            },
             editElement() {
                 this.forbidEdit = false;
             },
@@ -146,7 +149,9 @@
                 }
                 editElementInfo(params).then(res => {
                     if (res.status == 200 & res.data.status_code == 1) {
-                        alert('修改成功')
+                        this.$alert('', '修改成功', {
+                            confirmButtonText: '确定'
+                        })
                     }
                     this.forbidEdit = true;
                 }).catch(err => {

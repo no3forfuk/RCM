@@ -63,9 +63,25 @@ export const routes = [
                 component: resolve => require(['../components/element/list.vue'], resolve)
             },
             {
-                path: '/home/ElementList/edit/:content',
+                path: '/home/elementDetalis',
+                name: 'elementDetails',
+                query: {
+                    id: 'id'
+                },
+                component: resolve => require(['../components/element/details.vue'], resolve)
+            },
+            {
+                path: '/home/ElementList/edit',
                 name: 'editElement',
                 component: resolve => require(['../components/element/edit.vue'], resolve)
+            },
+            {
+                path: '/home/ElementList/add',
+                name: 'addElement',
+                query: {
+                    id: 'id'
+                },
+                component: resolve => require(['../components/element/add.vue'], resolve)
             },
             {
                 path: '/home/upload',
@@ -76,14 +92,6 @@ export const routes = [
                 path: '/home/PushTask',
                 name: 'PushTask',
                 component: resolve => require(['../components/pushTask/pushTask.vue'], resolve)
-            },
-            {
-                path: '/home/elementDetalis',
-                name: 'elementDetails',
-                query: {
-                    id: 'id'
-                },
-                component: resolve => require(['../components/element/details.vue'], resolve)
             },
             {
                 path: '/home/post',

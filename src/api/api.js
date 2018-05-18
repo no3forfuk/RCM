@@ -51,21 +51,13 @@ module.exports = {
         })
     },
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>二级榜单>>>>>>>>>>>>>>//
-    //导入榜单
+    //导入二级榜单
     importRank(parmas) {
         if (!parmas) return;
         return request({
             url: '/Ranking/importRanking',
             method: 'POST',
             data: parmas || {}
-        })
-    },
-    //添加推送
-    addPushTask(params) {
-        return request({
-            url: '/Push/add',
-            method: 'POST',
-            data: params || {}
         })
     },
     //获取二级榜单列表
@@ -85,7 +77,7 @@ module.exports = {
             url: '/Ranking/SecondDetails',
             method: 'GET',
             params: {
-                id:id
+                id: id
             }
         })
     },
@@ -100,9 +92,12 @@ module.exports = {
     //隐藏二级榜单
     hideSecondRank(params) {
         return request({
-            url: '/Ranking/SecondHide/' + params,
+            url: '/Ranking/SecondHide',
             method: 'POST',
-            data: params
+            data: {
+                is_hide: params.is_hide,
+                id: params.id
+            }
         })
     },
     //编辑二级榜单
@@ -113,19 +108,20 @@ module.exports = {
             data: params || {}
         })
     },
+    //删除二级榜单
+    deleteSecondRank(params) {
+        return request({
+            url: '/Ranking/SecondDel',
+            method: 'POST',
+            data: params || {}
+        })
+    },
     //获取元素列表>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>元素>>>>>>>>>>>>>>
     getElementList(params) {
         return request({
             url: '/Element/index',
             method: 'GET',
             params: params
-        })
-    },
-    //隐藏元素
-    hideElement(params) {
-        return request({
-            url: '/Element/hide/' + params,
-            method: 'POST'
         })
     },
     //获取元素详情
@@ -146,6 +142,60 @@ module.exports = {
             data: params
         })
     },
+    //添加元素
+    addElement(params) {
+        return request({
+            url: '/Element/add',
+            method: 'POST',
+            data: params
+        })
+    },
+    //隐藏元素
+    hideElement(params) {
+        return request({
+            url: '/Element/hide',
+            method: 'POST',
+            params: {
+                id: params.id
+            },
+            data: {
+                is_hide: params.is_hide
+            }
+        })
+    },
+    //删除元素
+    deleteElementById(params) {
+        return request({
+            url: '/Element/del',
+            method: 'POST',
+            data: params || {}
+        })
+    },
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>POST>>>>>>>>>>>>>>
+    //获取POST列表
+    getPostList(params) {
+        return request({
+            url: '/Post/index',
+            method: 'GET',
+            params: params
+        })
+    },
+    //获取七牛TOKEN
+    get7NiuToken() {
+        return request({
+            url: '/Qiniu/getUploadToken',
+            method: 'GET',
+            params: ''
+        })
+    },
+    //添加推送
+    addPushTask(params) {
+        return request({
+            url: '/Push/add',
+            method: 'POST',
+            data: params || {}
+        })
+    },
     //推送任务列表
     getPushTaskList(params) {
         return request({
@@ -156,24 +206,5 @@ module.exports = {
             }
         })
     },
-    //查询榜单
-    serachRankList(params) {
-        return request({
-            url: '/search/ranking',
-            method: 'POST',
-            data: {
-                key: params
-            }
-        })
-    },
-    //获取七牛TOKEN
-    get7NiuToken() {
-        return request({
-            url: '/Qiniu/getUploadToken',
-            method: 'GET',
-            params: ''
-        })
-    }
-
 }
 

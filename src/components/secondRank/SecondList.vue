@@ -20,6 +20,7 @@
                 </button>
             </div>
         </div>
+        <h4><b>榜单列表</b></h4>
         <div style="maxHeight:500px;overflow:auto;">
             <table class="table table table-hover table-striped table-bordered">
                 <thead>
@@ -40,7 +41,7 @@
                 </thead>
                 <tbody class="text-left">
                 <tr v-for="(item,index) in rankList" :key="index">
-                    <td>{{index+1}}</td>
+                    <td>{{(index + 1) + (currentPage - 1) * per_page}}</td>
                     <td>
                         {{item.ranking_name}}
                     </td>
@@ -56,25 +57,28 @@
                         <a href="#" data-toggle="modal" data-target="#secondRate" @click="showRate(item)">S+</a>
                     </td>
                     <td>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-modal-lg"
-                                    @click="editRank($event,item)">编辑
-                            </button>
-                            <button type="button" class="btn"
-                                    :class="{'btn-success':!item.is_hide,'btn-danger':item.is_hide}"
-                                    @click="showOrHidden($event,item)">
-                                {{item.is_hide ==
-                                1?'隐藏':'显示'}}
-                            </button>
-                            <button type="button" class="btn btn-warning"
-                                    @click="addPushTask($event,item)">推送
-                            </button>
-                        </div>
+
+                        <router-link :to="{name:'secondRankDetails',query:{id:item.id}}">
+                            <button type="button" class="btn btn-default">编辑</button>
+                        </router-link>
+                        <button type="button"
+                                v-if="!item.is_hide"
+                                @click="toggleHide(item)"
+                                class="btn btn-success">显示
+                        </button>
+                        <button type="button"
+                                v-if="!!item.is_hide"
+                                @click="toggleHide(item)"
+                                class="btn btn-danger">隐藏
+                        </button>
+                        <button type="button" class="btn btn-default" @click="openDeteleAlert(item.id,index)">删除
+                        </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+        <hr>
         <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
         </button>
         <input type="number" :max="totalPage" min="1" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
@@ -166,7 +170,14 @@
 
 </template>
 <script>
-    import {getSecondRank, addSecondRank, hideSecondRank, getElementList, editSecondRank} from '../../api/api'
+    import {
+        getSecondRank,
+        addSecondRank,
+        hideSecondRank,
+        getElementList,
+        editSecondRank,
+        deleteSecondRank
+    } from '../../api/api'
 
     export default {
         data() {
@@ -187,15 +198,16 @@
                 currentPage: 1,
                 totalPage: 0,
                 rateTarget: {},
-                keyWords: ''
+                keyWords: '',
+                per_page: ''
             }
         },
-        created() {
+        updated() {
 
-            const vm = this;
+        },
+        created() {
             //获取首页榜列表
             this.getRankList(this.currentPage);
-
         },
         methods: {
             //关键字查询
@@ -266,6 +278,7 @@
                             if (res.status == 200 && res.data.status_code == 1) {
                                 this.rankList = res.data.data.data;
                                 this.totalPage = res.data.data.last_page;
+                                this.per_page = res.data.data.per_page;
                             }
                         })
                         .catch(err => {
@@ -298,41 +311,29 @@
                         });
                 });
             },
-            //编辑榜单
-            editRank(e, element) {
-                this.doOperate = '编辑';
-                this.addSecondParams.ranking_name = element.ranking_name;
-                this.addSecondParams.ranking_desc = element.ranking_desc;
-                this.addSecondParams.id = element.id;
-            },
             setRankLv(e) {
                 this.rankLv = e.target.innerText;
             },
             //显示隐藏
-            showOrHidden(e, item) {
-                var params = 0;
-                if (e.target.innerText == '隐藏') {
-                    params = 1;
-                    return new Promise((resolve, reject) => {
-                        hideSecondRank(params).then(res => {
-                            alert('隐藏成功')
-                            e.target.innerText = '显示';
-                            item.is_hide = false;
-                        }).catch(err => {
-                        })
-                    })
+            toggleHide(item) {
+                var params = {};
+                params.id = item.id;
+                if (item.is_hide == 0) {
+                    params.is_hide = 0;
+                    this.$set(item, 'is_hide', 1);
+                } else {
+                    params.is_hide = 1;
+                    this.$set(item, 'is_hide', 0);
                 }
-                if (e.target.innerText == '显示') {
-                    params = 0;
-                    return new Promise((resolve, reject) => {
-                        hideSecondRank(params).then(res => {
-                            alert('显示成功')
-                            e.target.innerText = '隐藏';
-                            item.is_hide = true;
-                        }).catch(err => {
+                hideSecondRank(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.$alert('', '操作成功', {
+                            confirmButtonText: '确定'
                         })
-                    })
-                }
+                    }
+                }).catch(err => {
+                    throw err;
+                });
             },
             //获取元素列表
             getElementList(params) {
@@ -374,21 +375,41 @@
             deleteElement(index) {
                 this.addElementList.splice(index, 1);
             },
-            //添加推送
-            addPushTask(e, target) {
-                e.target.disabled = true;
-                e.target.innerText = '已推送';
-                const str = localStorage.getItem('pushTaskArr');
-                const arr = JSON.parse(str);
-                arr.push(target);
-                JSON.stringify(arr);
-                localStorage.setItem('pushTaskArr', JSON.stringify(arr));
+            openDeteleAlert(id, i) {
+                this.$confirm('您确定要删除这个榜单吗', '删除', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var params = {};
+                    params.id = id
+                    deleteSecondRank(params).then(res => {
+                        if (res.status == 200 && res.data.status_code == 1) {
+                            this.$message('删除成功');
+                            this.rankList.splice(i, 1);
+                            this.getRankList(this.currentPage);
+                        }
+                    }).catch(err => {
+                        throw err;
+                    })
+                }).catch(() => {
+                    return;
+                })
             }
-
         },
         computed: {},
         watch: {
             currentPage: function (n, o) {
+                if (n >= this.totalPage) {
+                    n = this.totalPage;
+                    this.currentPage = this.totalPage;
+                    this.getRankList(n)
+                }
+                if (n < 1) {
+                    n = 1;
+                    this.currentPage = 1;
+                    this.getRankList(n)
+                }
                 this.getRankList(n)
             },
             page: function (n, o) {

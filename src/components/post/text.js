@@ -1,14 +1,20 @@
 /*Created By Jsir on 2018/5/15*/
 'use strict'
 const postText = {};
-postText.listTitle = 'POST列表';
+postText.listTitle = 'POST管理';
 postText.addPost = '添加POST'
 postText.table = [
+    {
+        name: '序号'
+    },
     {
         name: '星标'
     },
     {
         name: '名称'
+    },
+    {
+        name: '详情'
     },
     {
         name: '隶属元素'
@@ -19,7 +25,7 @@ postText.table = [
         item: ['点赞', '转发', '浏览', '评论']
     },
     {
-        name: '种类',
+        name: '类型',
         select: true,
         item: ['图文', '帖子', '音频']
     },
