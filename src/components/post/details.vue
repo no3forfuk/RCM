@@ -1,65 +1,78 @@
 <template>
-    <div class="root">
-        <div class="panel panel-default" style="width: 40%;">
-            <div class="panel-heading">
-                <el-select v-model="selectValue" placeholder="请选择POST类型">
-                    <el-option v-for="(item,index) in text.type" :key="index" :label="item.label" :value="item.value">
-
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="panel-body">
-                <textarea name="" id="" cols="40" rows="20" v-model="phone">
-
-                </textarea>
-            </div>
+    <div>
+        <div class="item">
+            <span><b>类型：</b></span><span>1</span>
         </div>
-        <div class="h5-view" ref="view">
-            <div class="container">
-                {{phone}}
-            </div>
+        <div class="item">
+            <span><b>指数：</b></span><span>1</span>
         </div>
+        <div class="item">
+            <span><b>创建时间：</b></span><span>1</span>
+        </div>
+        <div class="item">
+            <span><b>最后编辑时间：</b></span><span>1</span>
+        </div>
+        <div class="item">
+            <span><b>发布人：</b></span><span>1</span>
+        </div>
+        <div class="item">
+            <span><b>所属元素：</b></span><span>1</span>
+        </div>
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="评论列表" name="first">
+                <button type="button" class="btn btn-default" @click="addDiscuss">添加评论
+                </button>
+                <div v-if="discuss.postDiscuss">
+                    <textarea class="form-control" rows="3"></textarea>
+                    <button class="btn btn-default">发布评论</button>
+                    <button class="btn btn-default" @click="cancelAddDiscuss">取消</button>
+                </div>
+                <hr>
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 
 <script>
     import {detailsText} from './text'
+    import {getPostDetails} from '../../api/api'
 
     export default {
         data() {
             return {
-                text: {},
-                selectValue: '',
-                phone:''
+                postInfo: {},
+                activeName: 'first',
+                discuss: {
+                    postDiscuss: false
+                }
+
             }
         },
         created() {
-            this.init();
+            this.getPostDetailsById();
         },
         mounted() {
-            this.$nextTick(function () {
-                this.moveH5View()
-            })
+
         },
         updated() {
 
         },
         methods: {
-            init() {
-                this.text = detailsText;
+            addDiscuss() {
+                this.discuss.postDiscuss = true;
             },
-            moveH5View() {
-                const h5View = this.$refs.view;
-                h5View.addEventListener('mousedown', function (e) {
-                    var pageX = e.clientX;
-                    var pageY = e.clientY;
-                    document.onmousemove = function (e) {
-
+            cancelAddDiscuss() {
+                this.discuss.postDiscuss = false;
+            },
+            getPostDetailsById() {
+                var id = this.$route.query.id;
+                getPostDetails(id).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.postInfo = res.data.data;
                     }
+                }).catch(err => {
+                    throw err;
                 })
-                document.onmouseup = function () {
-                    document.onmousemove = null;
-                }
             }
         }
     }
@@ -67,22 +80,5 @@
 </script>
 
 <style scoped>
-    .root {
-        position: relative;
-    }
 
-    .h5-view {
-        width: 365px;
-        height: 792px;
-        background: url("../../static/images/phone.png");
-        position: absolute;
-        top: 10px;
-        left: 50%;
-    }
-    .container{
-        width: 334px;
-        height: 582px;
-        background-color: #e3e3e3;
-        margin-top: 100px;
-    }
 </style>

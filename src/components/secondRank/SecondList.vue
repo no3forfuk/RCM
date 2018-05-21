@@ -385,7 +385,11 @@
                     params.id = id
                     deleteSecondRank(params).then(res => {
                         if (res.status == 200 && res.data.status_code == 1) {
-                            this.$message('删除成功');
+                            this.$message({
+                                message: '删除成功',
+                                type: 'success',
+                                duration: 1500
+                            });
                             this.rankList.splice(i, 1);
                             this.getRankList(this.currentPage);
                         }

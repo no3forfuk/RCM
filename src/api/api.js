@@ -180,6 +180,14 @@ module.exports = {
             params: params
         })
     },
+    //获取POST详情
+    getPostDetails(params) {
+        return request({
+            url: '/Post/details',
+            method: 'GET',
+            params: params
+        })
+    },
     //获取七牛TOKEN
     get7NiuToken() {
         return request({

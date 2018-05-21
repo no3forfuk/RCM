@@ -1551,6 +1551,40 @@ module.exports = merge(base, {
                     }
                 })
             })
+            //获取POST详情
+            app.get('/api/Post/details', (req, res) => {
+                res.json({
+                    status_code: '1',
+                    data: {
+                        "id": 16,
+                        "post_content": "从皇家换成了伟嘉，猫饮水量明显变大，应该是咸一些了，用了不到一周换粮完成。现在搭配了湿粮一起喂。",
+                        "type": 1,
+                        "img": null,
+                        "video": null,
+                        "out_link": null,
+                        "link_title": null,
+                        "link_desc": null,
+                        "exponent": 0,
+                        "comment_num": 0,
+                        "is_check": 0,
+                        "is_hide": 1,
+                        "updated_at": "2018-05-15 15:12:13",
+                        "operate_type": 1,
+                        "operate_name": null,
+                        "element": {
+                            "id": 9,
+                            "element_name": "伟嘉猫粮",
+                            "element_desc": "含有丰富的有机物，是小动物就能吃，只要它愿意吃喜欢这个味道。",
+                            "exponent": 1,
+                            "is_check": 0,
+                            "is_hide": 0,
+                            "asterisk": 0,
+                            "updated_at": "2018-05-17 10:41:02",
+                            "operate_type": 1
+                        }
+                    }
+                })
+            })
             //获取七牛token
             app.get('/api/Qiniu/getUploadToken', (res, req) => {
                 const qiniu = require('qiniu');

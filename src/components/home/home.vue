@@ -4,10 +4,11 @@
             <div class="left-box">
                 <ul class="list-group">
                     <li class="list-group-item" v-for="(item,index) in sidebar" :key="index">
-                        <a class="list-title" href="javascript:;" @click="toggleHeight($event,index)">{{item.name}}</a>
+                        <a class="list-title" href="javascript:;">{{item.name}}</a>
+                        <!--@click="toggleHeight($event,index)"-->
                         <ul class="inner" ref="subul">
                             <li v-for="(list,index) in item.menu" :key="index">
-                                <router-link :to="{name:list.route_name}" style="color:#f60;">{{list.name}}
+                                <router-link :to="{name:list.route_name}" style="color:#999;">{{list.name}}
                                 </router-link>
                             </li>
                         </ul>
@@ -83,7 +84,7 @@
     }
 
     .inner {
-        display: none;
+        display: block;
         transition: all 1s;
         height: auto;
         margin-top: 10px;

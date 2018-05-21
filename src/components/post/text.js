@@ -11,11 +11,11 @@ postText.table = [
         name: '星标'
     },
     {
-        name: '名称'
+        name: '简介'
     },
-    {
-        name: '详情'
-    },
+    // {
+    //     name: '详情'
+    // },
     {
         name: '隶属元素'
     },
