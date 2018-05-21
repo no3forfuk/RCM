@@ -12,8 +12,9 @@
 
             </div>
             <div class="container" contentEditable="true" ref="editor">
-                <span ref="imgUrl"></span>
+                <!--<span ref="imgUrl"></span>-->
             </div>
+
         </div>
         <div class="phone-view">
             <div style="position: relative;">
@@ -22,8 +23,9 @@
                 <img src="../../static/images/post_top.png" alt="" class="post-top">
                 <img src="../../static/images/phone.png" alt="">
                 <div class="text-img">
-                    <p class="text">乳白色乳霜质地，延展性极佳，淡淡的清香乳白色乳霜质地，延展性极佳，淡淡的清香乳白色乳霜质地，延展性极佳，淡淡的清香</p>
-                    <img src="" alt="" ref="preview" style="max-width: 275px;margin-left: 44px;margin-bottom: 10px;box-sizing: border-box;border-radius: 4px;">
+                    <p class="text" v-html="postText"></p>
+                    <img src="" alt="" ref="preview"
+                         style="max-width: 275px;margin-left: 44px;margin-bottom: 10px;box-sizing: border-box;border-radius: 4px;">
                     <div style="vertical-align: top;padding-left: 43px;position: relative;">
                         <span style="display: inline-block;width: 20px;height: 20px;background-color: #ccc;border-radius: 50%;"></span>
                         <span style="line-height: 20px;position: absolute;top: 1px;left: 70px;">用户名</span>
@@ -44,22 +46,27 @@
             return {
                 text: {},
                 selectValue: '',
-                phone: ''
+                phone: '',
+                postText: ''
             }
         },
         created() {
             this.init();
         },
         mounted() {
-
+            const vm = this;
+            window.onkeyup = function (e) {
+                vm.postText = vm.$refs.editor.innerHTML;
+            }
         },
-        computed: {
-
-        },
+        computed: {},
         updated() {
 
         },
         methods: {
+            inputWords() {
+                this.postText = this.$refs.editor.innerText;
+            },
             init() {
                 this.text = detailsText;
             },
@@ -67,9 +74,17 @@
                 this.$refs.uploadImg.click();
             },
             uploadImg() {
-                this.$refs.imgUrl.innerText = this.$refs.uploadImg.value;
+                //定位图片名称
                 //预览
                 var file = this.$refs.uploadImg.files[0];
+                if (file) {
+                    var fileName_str = '\r\n#' + this.$refs.uploadImg.files[0].name + '#\r\n';
+
+                    console.log(this.$refs.editor.innerHTML);
+                    this.$refs.editor.innerHTML += fileName_str;
+                    this.postText = this.$refs.editor.innerHTML;
+                }
+
                 var reader = new FileReader();
                 var self = this;
                 reader.onloadend = function () {
@@ -130,7 +145,9 @@
         top: 295px;
         left: 16px;
         border-bottom: 1px solid #d3d3d3;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 385px;
     }
 
     .text-img > .text {
@@ -174,5 +191,6 @@
     .container {
         width: 100%;
         height: 370px;
+        overflow-y: auto;
     }
 </style>

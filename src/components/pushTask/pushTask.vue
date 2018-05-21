@@ -51,11 +51,12 @@
                 </el-tab-pane>
             </el-tabs>
         </div>
-        <div class="modal fade add-task"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade add-task" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">添加推送任务</h4>
                     </div>
                     <div class="modal-body">
@@ -68,7 +69,7 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 Cras justo odio
-                                <button type="button" class="btn btn-default" >添加</button>
+                                <button type="button" class="btn btn-default">添加</button>
                             </li>
                         </ul>
                     </div>
@@ -83,7 +84,7 @@
 </template>
 
 <script>
-    import {getPushTaskList,serachRankList} from '../../api/api'
+    import {getPushTaskList, serachRankList} from '../../api/api'
     import {timeFormat} from '../../utils/utils'
 
 
@@ -99,7 +100,7 @@
                 },
                 activeName: "first",
                 pushList: [],
-                keyWords:''
+                keyWords: ''
             };
         },
         created() {
@@ -107,15 +108,13 @@
         },
         computed: {},
         methods: {
-            searchPushList(params){
+            searchPushList(params) {
                 var self = this;
+                serachRankList(params).then(res => {
 
-
-                    serachRankList(params).then(res=>{
-
-                    }).catch(err=>{
-                        throw err
-                    })
+                }).catch(err => {
+                    throw err
+                })
 
             },
             getPushList(time) {
@@ -171,11 +170,11 @@
 
             }
         },
-        watch:{
-            today:function (n,o) {
+        watch: {
+            today: function (n, o) {
                 this.getPushList(n);
             },
-            keyWords:function (n,o) {
+            keyWords: function (n, o) {
                 this.searchPushList(n);
             }
         }

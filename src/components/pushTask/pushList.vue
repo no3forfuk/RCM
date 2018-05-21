@@ -1,283 +1,145 @@
 <template>
-    <div class="root">
-        <div class="left">
-            <div class="page-header range">
-                <h3>推送任务</h3>
-                <button type="button" @click="getPushTask" class="btn btn-success addTask"><i
-                        class="glyphicon glyphicon-arrow-right"
-                ></i></button>
-            </div>
-            <div style="height: 500px;overflow: auto;">
-                <table class="table table-striped push-tab table-bordered table-hover active">
+    <div>
+        <el-date-picker
+                type="date"
+                placeholder="请选择日期"
+                format="yyyy-MM-dd"
+                :picker-options="pickerOptions"
+                v-model="day">
+        </el-date-picker>
+        <hr>
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="一级榜单" name="first">
+                一级榜单
+            </el-tab-pane>
+            <el-tab-pane label="二级榜单" name="second">
+                <div class="input-group" style="width: 60%;">
+                    <input type="text" class="form-control" placeholder="Search"
+                           aria-describedby="basic-addon2" v-model="rank2KeyWords">
+                    <span class="input-group-addon" id="basic-addon2" @click="searchRank2keyWords(rank2_page)"
+                          style="cursor: pointer;"><span
+                            class="glyphicon glyphicon-search"></span></span>
+                </div>
+                <br>
+                <table class="table-bordered table table-hover table-striped">
                     <thead>
-                    <th class="text-center" style="width:10%">
-                        <input type="checkbox" @click="checkAll($event)">全选
-                    </th>
-                    <th class="text-center">名称</th>
+                    <th>序号</th>
+                    <th>榜单名称</th>
+                    <th>榜单详情</th>
+                    <th>操作</th>
                     </thead>
                     <tbody>
-                    <tr v-for="(list,index) in lists" :key="index">
-                        <td class="text-center check-td">
-                            <input type="checkbox" ref="checkboxes">
+                    <tr v-for="(item,index) in rank2" :key="index">
+                        <td>{{index+1}}</td>
+                        <td>{{item.ranking_name}}</td>
+                        <td>{{item.ranking_desc}}</td>
+                        <td>
+                            <button type="button"
+                                    @click="pushTodayTask"
+                                    class="btn btn-default">
+                                添加到当日任务
+                            </button>
                         </td>
-                        <td @click="addSingle(list)">{{list.ranking_name}}</td>
                     </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <div class="right">
-            <div class="panel panel-default">
-                <div class="panel-body task-window">
-                    <ul class="list-group" ref="pushBuffer">
-                        <li class="list-group-item order" v-for="(item,index) in pushTashArr" :key="index">
-                            <input
-                                    @change="orderDiy"
-                                    @focus="getOldValue(index)"
-                                    type="number" min="1"
-                                    max="20"
-                                    v-model="order[index]"
-                                    class="order-input">
-                            <span style="marginLeft:5px;"
-                                  @click="deleteSingle(item,index)">{{item.ranking_name}}</span>
-                            <input
-                                    type="checkbox"
-                                    style="float:right;"
-                                    ref="taskCheck">
-                        </li>
-                    </ul>
-                </div>
-                <div class="panel-footer task-ctrl">
-                    <button type="button" class="btn btn-default" @click="pushSort"><i
-                            class="glyphicon glyphicon-hand-up"></i></button>
-                    <button type="button" class="btn btn-default" @click="removeAll"><i
-                            class="glyphicon glyphicon-remove"></i></button>
-                    <button type="button" class="btn btn-success" style="width:97%;marginTop:5px;"
-                            @click="addTaskList(pushTashArr)">
-                        <i class="glyphicon glyphicon-ok"></i></button>
-
-                </div>
-            </div>
-        </div>
+                <hr>
+                <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        @current-change="getRank2ListByPage"
+                        :page-size="15"
+                        :total="rank2_total">
+                </el-pagination>
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 <script>
-    import {addPushTask} from "../../api/api";
+    import {getSecondRank} from "../../api/api";
     import {timeFormat} from '../../utils/utils'
+
     export default {
         data() {
             return {
-                lists: [],
-                pushTashArr: [],
-                order: [],
-                oldValue: ""
+                day: Date.now(),
+                pickerOptions: {
+                    disabledDate(time) {
+                        return time.getTime() + 3600 * 1000 * 24 < Date.now();
+                    }
+                },
+                activeName: 'second',
+                rank2: [],
+                rank2KeyWords: '',
+                rank2_page: 1,
+                rank2_totalPage: 0,
+                rank2_total: 0,
+                selectedDay: ''
+
             };
         },
         created() {
-            this.getRankList()
+            this.getSecondRank(this.rank2_page);
         },
         updated() {
         },
         methods: {
-            addTaskList(params) {
-                if (params && params.length !== 0) {
-                    var arr = []
-                    for (let i = 0; i < params.length; i++) {
-                        var obj = {}
-                        obj.level = params[i].ranking_level;
-                        obj.id = params[i].id;
-                        arr.push(obj)
-                    }
-                    var date = timeFormat('-')
-                    var pushData = {};
-                    pushData.push_date = date;
-                    pushData.push_json = arr;
-                    addPushTask(pushData).then(res => {
-                        if (res.status == 200 && res.data.status_code == 1) {
-                            alert('推送成功')
-                        } else {
-                            alert('推送失败，请重试')
-                        }
-                    }).catch(err => {
-                    })
-                }
+            pushTodayTask() {
+                var date = timeFormat('-', this.day);
             },
-            getOldValue(e) {
-                this.oldValue = e;
-            },
-            getPushTask() {
-                const arr = [];
-                const listArr = [];
-                for (let i = 0; i < this.$refs.checkboxes.length; i++) {
-                    if (this.$refs.checkboxes[i].checked) {
-                        arr.push(i);
-                    }
-                }
-                for (let i = 0; i < arr.length; i++) {
-                    this.pushTashArr.push(this.lists[arr[i]]);
-                }
-                let resultarr = [...new Set(this.pushTashArr)];
-                this.pushTashArr = resultarr;
-                this.setValue();
-            },
-            addSingle(obj) {
-                this.pushTashArr.push(obj);
-                let resultarr = [...new Set(this.pushTashArr)];
-                this.pushTashArr = resultarr;
-                this.setValue();
-            },
-            removeAll() {
-                this.pushTashArr = [];
-                this.setValue();
-            },
-            deleteSingle(obj, i) {
-                this.pushTashArr.splice(i, 1);
-                this.setValue();
-            },
-            checkAll(e) {
-                if (e.target.checked == true) {
-                    for (let i = 0; i < this.$refs.checkboxes.length; i++) {
-                        this.$refs.checkboxes[i].checked = true;
+            getSecondRank(page) {
+                var params;
+                if (this.rank2KeyWords == '') {
+                    params = {
+                        page: page
                     }
                 } else {
-                    for (let i = 0; i < this.$refs.checkboxes.length; i++) {
-                        this.$refs.checkboxes[i].checked = false;
+                    params = {
+                        page: page,
+                        like: this.rank2KeyWords
                     }
                 }
-
+                getSecondRank(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.rank2 = res.data.data.data;
+                        this.rank2_totalPage = res.data.data.last_page;
+                        this.rank2_total = res.data.data.total;
+                    }
+                }).catch(err => {
+                    throw err;
+                })
             },
-            orderDiy(e) {
-                var obj = {};
-                for (let i = 0; i < this.pushTashArr.length; i++) {
-                    if (e.target.value > this.pushTashArr.length) {
-                        e.target.value = this.oldValue + 1;
-                        return;
+            searchRank2keyWords(page) {
+                var params;
+                if (this.rank2KeyWords == '') {
+                    params = {
+                        page: page
                     }
-                    this.order.push(i + 1);
-                    obj[i] = this.pushTashArr[i];
-                }
-                var temp = 0;
-                temp = obj[this.oldValue];
-                obj[this.oldValue] = obj[e.target.value - 1];
-                obj[e.target.value - 1] = temp;
-                for (let k in obj) {
-                    this.pushTashArr[k] = obj[k];
-
-                    this.order[k] = parseInt(k) + 1;
-                }
-            },
-            pushSort() {
-                var obj = {}, temp;
-                var arr = [];
-                var index = [];
-                for (let i = 0; i < this.pushTashArr.length; i++) {
-                    arr[i] = this.pushTashArr[i];
-                }
-                if (this.$refs.taskCheck) {
-                    for (let i = 0; i < this.$refs.taskCheck.length; i++) {
-                        if (this.$refs.taskCheck[i].checked) {
-                            if (i < 1) {
-                                return
-                            }
-                            obj[i] = this.pushTashArr[i];
-                        }
-                    }
-                    for (let k in obj) {
-                        temp = arr[k - 1];
-                        arr[k - 1] = arr[k];
-                        arr[k] = temp;
-                        this.$refs.taskCheck[k].checked = false;
-                        this.$refs.taskCheck[k - 1].checked = true;
-                        if (k == 1) {
-                            this.$refs.taskCheck[0].checked = false;
-                        }
-                    }
-                    this.pushTashArr = [];
-                    for (let i = 0; i < arr.length; i++) {
-                        this.pushTashArr[i] = arr[i];
+                } else {
+                    params = {
+                        page: page,
+                        like: this.rank2KeyWords
                     }
                 }
-
-
+                getSecondRank(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.rank2 = res.data.data.data;
+                    }
+                }).catch(err => {
+                    throw err
+                })
             },
-            setValue() {
-                for (let i = 0; i < this.pushTashArr.length; i++) {
-                    this.order.push(i + 1);
-                }
-                let resultarr = [...new Set(this.order)];
-                this.order = resultarr;
-            },
-            getRankList() {
-                const str = localStorage.getItem('pushTaskArr');
-                this.lists = JSON.parse(str);
-            },
-
+            getRank2ListByPage(val) {
+                this.getSecondRank(val);
+            }
+        },
+        computed: {
+            today() {
+                return timeFormat('/', this.day);
+            }
         }
     };
 </script>
 <style scoped>
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none !important;
-        margin: 0;
-    }
 
-    .order {
-        position: relative;
-    }
-
-    .order .order-input {
-        display: block;
-        width: 20px;
-        height: 20px;
-        float: left;
-        color: #f60;
-    }
-
-    .range {
-        position: relative;
-    }
-
-    .addTask {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-    }
-
-    .task-ctrl button {
-        width: 48%;
-    }
-
-    .task-ctrl {
-        text-align: center;
-    }
-
-    .task-window {
-        width: 460px;
-        height: 400px;
-        overflow: auto;
-    }
-
-    .root {
-        position: relative;
-    }
-
-    .right {
-        position: absolute;
-        top: 0px;
-        right: -16px;
-    }
-
-    .left {
-        padding-right: 480px;
-        box-sizing: border-box;
-    }
-
-    .check-td {
-        text-indent: -27px;
-    }
-
-    .text-center {
-        text-align: center;
-    }
 </style>

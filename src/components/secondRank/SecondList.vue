@@ -316,24 +316,36 @@
             },
             //显示隐藏
             toggleHide(item) {
-                var params = {};
-                params.id = item.id;
-                if (item.is_hide == 0) {
-                    params.is_hide = 0;
-                    this.$set(item, 'is_hide', 1);
-                } else {
-                    params.is_hide = 1;
-                    this.$set(item, 'is_hide', 0);
-                }
-                hideSecondRank(params).then(res => {
-                    if (res.status == 200 && res.data.status_code == 1) {
-                        this.$alert('', '操作成功', {
-                            confirmButtonText: '确定'
-                        })
+                this.$confirm('请确定此次操作', '提示', {
+                    confirmButtonText: '确定',
+                    type: 'warning',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    var params = {};
+                    params.id = item.id;
+                    if (item.is_hide == 0) {
+                        params.is_hide = 0;
+                        this.$set(item, 'is_hide', 1);
+                    } else {
+                        params.is_hide = 1;
+                        this.$set(item, 'is_hide', 0);
                     }
-                }).catch(err => {
-                    throw err;
-                });
+                    hideSecondRank(params).then(res => {
+                        if (res.status == 200 && res.data.status_code == 1) {
+                            this.$message({
+                                type: 'success',
+                                message: '操作成功',
+                                duration: 1500
+                            })
+                            this.getRankList(this.currentPage);
+                        }
+                    }).catch(err => {
+                        throw err;
+                    });
+                }).catch(() => {
+                    return;
+                })
+
             },
             //获取元素列表
             getElementList(params) {
