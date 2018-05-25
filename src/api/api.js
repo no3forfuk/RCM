@@ -188,14 +188,49 @@ module.exports = {
             params: params
         })
     },
+    //添加POST
+    addPost(params) {
+        return request({
+            url: '/Post/add',
+            method: 'POST',
+            data: params
+        })
+    },
+    //编辑post
+    editPostById(get_params, post_params) {
+        return request({
+            url: '/Post/edit',
+            method: 'POST',
+            params: get_params,
+            data: post_params
+        })
+    },
+    //删除post
+    deletePostById(params) {
+        return request({
+            url: '',
+            method: 'POST',
+            data: params
+        })
+    },
+    //隐藏POST
+    hidePostById(params, data) {
+        return request({
+            url: '/Post/hide',
+            method: 'POST',
+            params: params,
+            data: data
+        })
+    },
     //获取七牛TOKEN
     get7NiuToken() {
         return request({
             url: '/Qiniu/getUploadToken',
-            method: 'GET',
+            method: 'POST',
             params: ''
         })
     },
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>推送
     //添加推送
     addPushTask(params) {
         return request({
@@ -204,15 +239,30 @@ module.exports = {
             data: params || {}
         })
     },
+    //编辑推送
+    editPushTask(params) {
+        return request({
+            url: '/Push/edit',
+            method: 'POST',
+            data: params || {}
+        })
+    },
     //推送任务列表
     getPushTaskList(params) {
         return request({
-            url: '/pushTask/list',
+            url: '/Push/index',
             method: 'POST',
-            data: {
-                time: params
-            }
+            data: params
         })
     },
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>评论
+    //添加评论
+    addComment(params) {
+        return request({
+            url: '/Comment/adminAdd',
+            method: 'POST',
+            data: params
+        })
+    }
 }
 

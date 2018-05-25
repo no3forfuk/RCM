@@ -20,13 +20,13 @@ module.exports = merge(base, {
     mode: 'development',
     devtool: 'inline-source-map',
     plugins: [
-        new HtmlWebpackPlugin({template: './index.html', filename: 'index.html'}),
+        new HtmlWebpackPlugin({ template: './index.html', filename: 'index.html' }),
     ],
     devServer: {
         contentBase: './dist/Admin',
         before(app) {
             const bodyParser = require('body-parser');
-            app.use(bodyParser.urlencoded({extended: false}));
+            app.use(bodyParser.urlencoded({ extended: false }));
             app.use(bodyParser.json());
             //登陆
             app.post('/api/Login', function (req, res) {
@@ -48,13 +48,6 @@ module.exports = merge(base, {
                     })
                 }
             });
-            //添加推送
-            app.post('/api/Push/add', (req, res) => {
-                res.json({
-                    code: '1',
-                    message: 'chenggong1'
-                })
-            })
             //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>一级榜单API
             //获取一级榜单
             app.get('/api/Ranking/FirstIndex', (req, res) => {
@@ -250,6 +243,48 @@ module.exports = merge(base, {
                                 }
                             },
                             {
+                                "id": 2,
+                                "ranking_name": "涂抹式面膜人气榜单",
+                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                "exponent": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "asterisk": 0,
+                                "created_at": "2018-05-04 18:25:45",
+                                "updated_at": "2018-05-04 18:25:45",
+                                "operate_type": 1,
+                                "admin": {
+                                    "name": "admin"
+                                }
+                            }, {
+                                "id": 4,
+                                "ranking_name": "涂抹式面膜人气榜单",
+                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                "exponent": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "asterisk": 0,
+                                "created_at": "2018-05-04 18:25:45",
+                                "updated_at": "2018-05-04 18:25:45",
+                                "operate_type": 1,
+                                "admin": {
+                                    "name": "admin"
+                                }
+                            }, {
+                                "id": 3,
+                                "ranking_name": "涂抹式面膜人气榜单",
+                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
+                                "exponent": 0,
+                                "is_check": 0,
+                                "is_hide": 1,
+                                "asterisk": 0,
+                                "created_at": "2018-05-04 18:25:45",
+                                "updated_at": "2018-05-04 18:25:45",
+                                "operate_type": 1,
+                                "admin": {
+                                    "name": "admin"
+                                }
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -263,7 +298,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -277,7 +312,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -291,7 +326,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -305,7 +340,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -319,7 +354,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -333,7 +368,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -347,7 +382,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -361,7 +396,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -375,7 +410,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -389,7 +424,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -403,7 +438,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -417,7 +452,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -431,7 +466,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -445,7 +480,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -459,7 +494,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -473,49 +508,7 @@ module.exports = merge(base, {
                                 "admin": {
                                     "name": "admin"
                                 }
-                            },{
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            },{
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            },{
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            },{
+                            }, {
                                 "id": 1,
                                 "ranking_name": "涂抹式面膜人气榜单",
                                 "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
@@ -1134,238 +1127,27 @@ module.exports = merge(base, {
                     message: 'success'
                 })
             });
-            app.post('/api/pushTask/list', (req, res) => {
+            //获取推送列表
+            app.post('/api/Push/index', (req, res) => {
                 res.json({
                     "status_code": 1,
-                    "message": "获取二级成功！",
                     "data": {
-                        "current_page": 1,
-                        "data": [
-                            {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "ranking_name": "猫粮品牌排行榜",
-                                "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "ranking_name": "789798797",
-                                "ranking_desc": "天然猫粮一般是指肉类和蛋白质韩流比较丰富，有蔬菜、全麦粉、纤维等成分的猫粮。不含人工添加剂，成分安全，对猫咪的成长很有好处的。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "ranking_name": "耐养便宜的宠物排行榜",
-                                "ranking_desc": "没钱没时间还想养宠物？那你一定需要这个榜单",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 5,
-                                "ranking_name": "长寿宠物排行榜",
-                                "ranking_desc": "世界上最长寿的宠物是？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "ranking_name": "理科热门专业",
-                                "ranking_desc": "高中文理分科时每个人都会面临着究竟是学文还是学理的纠结。很多人认为学文不如学理，理由是理科范围广好就业。那么理科最热门的专业有哪些呢?",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "ranking_name": "美国医科专业学校排行",
-                                "ranking_desc": "想去美国留学学习医科专业，哪所学校的医学院最好呢？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "ranking_name": "女生热门专业",
-                                "ranking_desc": "在这些专业里，可能90%以上都是女生，男女比例严重失调…",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 9,
-                                "ranking_name": "热门小语种",
-                                "ranking_desc": "由于小语种人才稀缺，因此身怀\"绝技\"的人才不但有机会在外交部、商务部等国家相关部委就职，还能报考公务员、进外企、做陪同翻译等，待遇也很好。你看好哪些小语种呢？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 10,
-                                "ranking_name": "英语教育机构",
-                                "ranking_desc": "英语学习了解一下？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 11,
-                                "ranking_name": "中国各省份高考难度",
-                                "ranking_desc": "高考就像一群人在玩闯关游戏，同样在通关但你打的是困难模式别人打的是easy模式而且还自带外挂！不是你不努力，实在是敌人太狡猾啊～～～",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 12,
-                                "ranking_name": "中国含金量高的资格证书",
-                                "ranking_desc": "截至目前，我国已有272项各类职业资格取消。那么现在问题来了：取消了这么多职业资格证书，还有哪些证书含金量高?值得去考证的呢?",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 13,
-                                "ranking_name": "国产天然狗粮",
-                                "ranking_desc": "国产狗粮品牌很多，也有很多非常优质的天然狗粮品牌，吃天然狗粮对狗狗的健康比较好。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 14,
-                                "ranking_name": "进口天然口粮",
-                                "ranking_desc": "在喂养狗狗的时候，选择狗粮是很重要的。很多人在经济条件允许的时候，都会选择天然狗粮。而相比较来说，国外的天然狗粮名气更大一些。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 15,
-                                "ranking_name": "顶级狗粮品牌",
-                                "ranking_desc": null,
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_name": {
-                                    "name": "admin"
-                                }
-                            }
-                        ],
-                        "first_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=1",
-                        "from": 1,
-                        "last_page": 4,
-                        "last_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=4",
-                        "next_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=2",
-                        "path": "http://rcm.bantangtv.com/api/Ranking/SecondIndex",
-                        "per_page": 15,
-                        "prev_page_url": null,
-                        "to": 15,
-                        "total": 60
+                        "id": 7,
+                        "push_date": "2018-05-22",
+                        "push_json": "[{\"level\":2,\"id\":4,\"name\":\"2018\\u6700\\u53d7\\u6b22\\u8fce\\u624b\\u6e38\\u6392\\u884c\\u699c\"}]",
+                        "updated_at": "2018-05-22 20:17:26",
+                        "is_save": 1
                     }
                 })
             });
+            app.post('/api/Push/add', (req, res) => {
+                res.json({ "status_code": 1 })
+            })
+            app.post('/api/Push/edit', (req, res) => {
+                res.json({
+                    status_code: 1
+                })
+            })
             app.post('/api/search/ranking', (req, res) => {
                 res.json({
                     "status_code": 1,
@@ -1866,8 +1648,36 @@ module.exports = merge(base, {
                     }
                 })
             })
+            //编辑post
+            app.post('/api/Post/edit', (req, res) => {
+                res.json({
+                    status_code: 1,
+                    message: 'success'
+                })
+            })
+            //隐藏POST
+            app.post('/api/Post/hide', (req, res) => {
+                res.json({
+                    status_code: 1,
+                    message: 'success'
+                })
+            })
+            //添加POST
+            app.post('/api/Post/add', (req, res) => {
+                res.json({
+                    status_code: 1,
+                    message: 'success'
+                })
+            })
+            //添加评论
+            app.post('/api/Comment/adminAdd', (req, res) => {
+                res.json({
+                    status_code: 1,
+                    message: 'success'
+                })
+            })
             //获取七牛token
-            app.get('/api/Qiniu/getUploadToken', (res, req) => {
+            app.post('/api/Qiniu/getUploadToken', (res, req) => {
                 const qiniu = require('qiniu');
                 var ak = 'CCfyEudIXBbtgJVlJjLyKrxsiIT1a-X3gfQBeXKU';
                 var sk = '9DJlV0wjgouH1NlZE8taDXKHn5DK24lGbFiXclt9';

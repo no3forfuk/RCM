@@ -8,15 +8,15 @@
                 <div class="sign-in-out">
 
                     <button type="button" class="btn btn-default" v-if="!isLogin">
-                        <router-link :to="{path:'/login', name: 'login'}">登陆</router-link>
+                        <router-link :to="{name: 'login'}">登陆</router-link>
                     </button>
                     <button type="button" class="btn btn-default" v-if="!isLogin">
-                        <router-link :to="{path:'/register',name:'register'}">注册</router-link>
+                        <router-link :to="{name:'register'}">注册</router-link>
                     </button>
                     <div v-if="isLogin">
                         <span>{{username}}</span>
                         <button type="button" class="btn btn-default" @click="logout">
-                            <router-link :to="{name:'login'}">退出</router-link>
+                            退出
                         </button>
                     </div>
                 </div>
@@ -43,15 +43,12 @@
         },
         methods: {
             logout() {
-                this.$store
-                    .dispatch("logout")
-                    .then(res => {
-                        this.isLogin = false;
-                        this.$router.go("/login");
-                    })
-                    .catch(err => {
-                    });
+                sessionStorage.removeItem('X-Auth-Token');
+                this.$router.replace("/login");
             }
+        },
+        watch: {
+
         }
     };
 </script>

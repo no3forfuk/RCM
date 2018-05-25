@@ -53,7 +53,7 @@
                             </li>
                         </ul>
                     </td>
-                    <td>{{item.operate_name.name}}</td>
+                    <td>{{item.admin.name}}</td>
                     <td>{{item.updated_at}}</td>
                     <td>
                         <router-link :to="{name:'elementDetails',query:{id:item.id}}">
@@ -78,12 +78,13 @@
             </table>
         </div>
         <hr>
-        <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
-        </button>
-        <input type="number" :max="totalPage" min="1" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
-        <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
-        </button>
-        <span>共{{totalPage}}页</span>
+        <el-pagination
+                background
+                :page-size="per_page"
+                layout="prev, pager, next"
+                @current-change="getElementListIndex"
+                :total="total">
+        </el-pagination>
         <element-exp></element-exp>
         <edit-exp></edit-exp>
     </div>
@@ -98,7 +99,9 @@
                 currentPage: 1,
                 totalPage: 0,
                 keyWords: '',
-                per_page: ''
+                per_page: 0,
+                total: 0,
+                user: []
             }
         },
         created() {
@@ -107,6 +110,7 @@
         methods: {
             //获取元素列表
             getElementListIndex(page) {
+                this.currentPage = page;
                 var params;
                 if (this.keyWords == '') {
                     params = {
@@ -123,6 +127,10 @@
                         this.elementList = res.data.data.data;
                         this.totalPage = res.data.data.last_page;
                         this.per_page = res.data.data.per_page;
+                        this.total = res.data.data.total;
+                        for (let i = 0; i < this.elementList.length; i++) {
+
+                        }
                     }
                 })
             },
@@ -147,24 +155,6 @@
                 }).catch(err => {
                     throw err;
                 })
-            },
-            //上一页
-            prePage(target, page) {
-                if (target.value == 1) {
-                    return;
-                } else {
-                    target.value--;
-                    this[page] = target.value;
-                }
-            },
-            //下一页
-            nextPage(target, page) {
-                if (target.value >= this.totalPage) {
-                    return
-                }
-                target.value++;
-                this[page] = target.value;
-
             },
             //显示隐藏
             toggleHide(e, item) {

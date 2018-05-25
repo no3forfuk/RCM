@@ -10,9 +10,10 @@
                           style="cursor: pointer;"><span
                             class="glyphicon glyphicon-search"></span></span>
                 </div>
-                <button class="btn btn-default add-ranklist" data-toggle="modal" data-target=".bs-modal-lg"
-                        @click="operate($event)">添加榜单
-                </button>
+                <router-link :to="{name:'addRank',query:{ranking_level:2}}">
+                    <button class="btn btn-default add-ranklist">添加榜单
+                    </button>
+                </router-link>
                 <button class="btn btn-default">
                     <router-link :to="{name:'upload'}">导入榜单</router-link>
                 </button>
@@ -36,26 +37,33 @@
                     评级
                 </th>
                 <th class="text-center">
+                    指数
+                </th>
+                <th class="text-center">
                     操作
                 </th>
                 </thead>
                 <tbody class="text-left">
                 <tr v-for="(item,index) in rankList" :key="index">
                     <td>{{(index + 1) + (currentPage - 1) * per_page}}</td>
+
                     <td>
-                        {{item.ranking_name}}
+                        <router-link :to="{name:'secondRankDetails',query:{id:item.id}}">
+                            {{item.ranking_name}}
+                        </router-link>
+
                     </td>
                     <td style="max-width:300px;">
-                        <router-link :to="{name:'secondRankDetails',query:{id:item.id}}">
-                            <p class="td-disc">{{item.ranking_desc}}</p>
-                        </router-link>
+                        <p class="td-disc">{{item.ranking_desc}}</p>
+
                     </td>
                     <td>{{item.admin.name}}</td>
                     <td>{{item.updated_at}}</td>
                     <td></td>
                     <td>
-                        <a href="#" data-toggle="modal" data-target="#secondRate" @click="showRate(item)">S+</a>
+                        <a href="#" data-toggle="modal" data-target="#secondRate" @click="showRate(item)">{{item.rating}}</a>
                     </td>
+                    <td>{{item.exponent}}</td>
                     <td>
 
                         <router-link :to="{name:'secondRankDetails',query:{id:item.id}}">
@@ -79,93 +87,16 @@
             </table>
         </div>
         <hr>
-        <button type="button" class="btn btn-default" @click="prePage($refs.pageInputSecond,'currentPage')">上一页
-        </button>
-        <input type="number" :max="totalPage" min="1" v-model="currentPage" ref="pageInputSecond" style="width: 60px;">
-        <button type="button" class="btn btn-default" @click="nextPage($refs.pageInputSecond,'currentPage')">下一页
-        </button>
-        <span>共{{totalPage}}页</span>
+        <el-pagination
+                background
+                :page-size="per_page"
+                layout="prev, pager, next"
+                @current-change="getRankList"
+                :total="total">
+        </el-pagination>
         <second-rate v-bind:info="rateTarget"></second-rate>
         <editsecond-rate></editsecond-rate>
-        <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="gridSystemModalLabel">{{doOperate}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="rankName" class="col-sm-2 control-label">榜单名称</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="rankName" placeholder="榜单名称"
-                                           v-model="addSecondParams.ranking_name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="rankDesc" class="col-sm-2 control-label">榜单详情</label>
-                                <div class="col-sm-10">
-                                    <textarea name="" id="rankDesc" cols="30" rows="3"
-                                              v-model="addSecondParams.ranking_desc"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">添加元素</label>
-                                <div class="col-sm-10" style="position: relative; height: 300px;">
-                                    <div style="width: 40%;">
-                                        <ul class="list-group" v-if="addElementList.length"
-                                            style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in addElementList"
-                                                :key="index">
-                                            <span class="badge" style="backgroundColor: #C9302C;">
-                                                <i class="glyphicon glyphicon-remove"
-                                                   style="cursor: pointer;" @click="deleteElement(index)"></i>
-                                            </span>
-                                                {{item.element_name}}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div style="width: 40%; position: absolute;top: 0;right: 60px;">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search for...">
-                                            <span class="input-group-btn">
-        <button class="btn btn-default" type="button" @click="getElementList(page)">Go!</button>
-      </span>
-                                        </div>
-                                        <ul class="list-group" v-if="elementLsit.length"
-                                            style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in elementLsit"
-                                                :key="index">
-                                            <span class="badge" style="backgroundColor: #5cb85c;cursor: pointer;"><i
-                                                    class="glyphicon glyphicon-plus"
-                                                    @click="addElement(index)"></i></span>
-                                                {{item.element_name}}
-                                            </li>
-                                            <button type="button" class="btn btn-default"
-                                                    @click="prePage($refs.elementList,'page')">上一页
-                                            </button>
-                                            <input type="text" v-model="page" ref="elementList" style="width: 35%;">
-                                            <button type="button" class="btn btn-default"
-                                                    @click="nextPage($refs.elementList,'page')">下一页
-                                            </button>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="col-sm-10 text-right">
-                            <button type="button" class="btn btn-danger" @click="confirm">确 定
-                            </button>
-                            <button type="button" class="btn btn-success" data-dismiss="modal">取 消</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 
 </template>
@@ -199,7 +130,8 @@
                 totalPage: 0,
                 rateTarget: {},
                 keyWords: '',
-                per_page: ''
+                per_page: 0,
+                total: 0
             }
         },
         updated() {
@@ -261,6 +193,7 @@
             },
             //获取二级榜单数据
             getRankList(page) {
+                this.currentPage = page;
                 var params;
                 if (this.keyWords == '') {
                     params = {
@@ -279,6 +212,7 @@
                                 this.rankList = res.data.data.data;
                                 this.totalPage = res.data.data.last_page;
                                 this.per_page = res.data.data.per_page;
+                                this.total = res.data.data.total;
                             }
                         })
                         .catch(err => {

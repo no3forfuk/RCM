@@ -67,8 +67,8 @@
                 <button type="button" class="btn btn-default" @click="addDiscuss">添加评论
                 </button>
                 <div v-if="discuss.editDiscuss">
-                    <textarea class="form-control" rows="3"></textarea>
-                    <button class="btn btn-default">发布评论</button>
+                    <textarea class="form-control" rows="3" v-model="rank2DiscussContent"></textarea>
+                    <button class="btn btn-default" @click="submitDiscuss">发布评论</button>
                     <button class="btn btn-default" @click="cancelAddDiscuss">取消</button>
                 </div>
                 <hr>
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-    import {getSecondRankDetails, editSecondRank} from '../../api/api'
+    import {getSecondRankDetails, editSecondRank, addComment} from '../../api/api'
 
     export default {
         data() {
@@ -115,13 +115,32 @@
                 },
                 discuss: {
                     editDiscuss: false
-                }
+                },
+                rank2DiscussContent: ''
             }
         },
         created() {
             this.getRankDetails();
         },
         methods: {
+            submitDiscuss() {
+                var params = {};
+                params.comment_type = 2;
+                params.content = this.rank2DiscussContent;
+                params.ranking_id = this.$route.query.id;
+                addComment(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.$message({
+                            message: '添加评论成功',
+                            type: 'success',
+                            duration: 1500
+                        })
+                        this.rank2DiscussContent = ''
+                    }
+                }).catch(err => {
+                    throw err;
+                })
+            },
             addDiscuss() {
                 this.discuss.editDiscuss = true;
             },

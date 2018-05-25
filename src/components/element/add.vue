@@ -21,6 +21,7 @@
                 style="width: 39.5%;position: absolute;top: 48px;left: 91px;z-index: 1;">
                 <li class="list-group-item" v-for="(item,index) in ranking_list"
                     style="cursor: pointer;"
+                    :key="index"
                     @click="chooseSecondRank(item)">
                     {{item.ranking_name}}
                 </li>
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-    import {getElementDetails, getSecondRank, addElement} from '../../api/api'
+    import {getElementDetails, getSecondRank, addElement,getSecondRankDetails} from '../../api/api'
 
     export default {
         data() {
@@ -86,12 +87,9 @@
         methods: {
             getELementNameById() {
                 if (this.$route.query.id) {
-                    var params = {
-                        id: this.$route.query.id
-                    }
-                    getSecondRank(params).then(res => {
+                    getSecondRankDetails(this.$route.query.id).then(res => {
                         if (res.status == 200 && res.data.status_code == 1) {
-                            this.secondRank_name = res.data.data.data[0].ranking_name;
+                            this.secondRank_name = res.data.data.ranking_name;
                         }
                     }).catch(err => {
                         throw err;
@@ -146,20 +144,12 @@
                 var params = {};
                 params.element_name = this.element_name;
                 params.element_desc = this.element_desc;
-                params.is_hide = this.is_hide;
-                params.asterisk = this.asterisk;
+                params.is_hide = this.is_hide || 1;
+                params.asterisk = this.asterisk || 0;
                 params.ranking_id = parseInt(this.$route.query.id);
                 if (!params.element_name) {
                     this.$message({
                         message: '元素名称不能为空',
-                        duration: 1000,
-                        type: 'error'
-                    });
-                    return;
-                }
-                if (!params.ranking_id) {
-                    this.$message({
-                        message: '上级榜单暂时不能不填',
                         duration: 1000,
                         type: 'error'
                     });

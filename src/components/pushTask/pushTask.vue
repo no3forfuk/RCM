@@ -3,8 +3,11 @@
         <div>
             <el-date-picker type="date" placeholder="请选择日期" format="yyyy-MM-dd" v-model="today"
                             :picker-options="pickerOptions"></el-date-picker>
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target=".add-task">添加推送任务</button>
+            <router-link :to="{name:'PushList'}">
+                <button type="button" class="btn btn-default">添加推送任务</button>
+            </router-link>
         </div>
+        <hr>
         <div>
             <el-tabs v-model="activeName">
                 <el-tab-pane label="推送任务" name="first">
@@ -23,13 +26,15 @@
                             <td v-text="index+1"></td>
                             <td @click="check(index)">
                                 <input type="checkbox" ref="checkBoxLists" @click="check(index)">
-                                <span v-text="item.ranking_name"></span>
+                                <span v-text="item.name"></span>
                             </td>
                             <td class="text-center">
                                 <el-button type="primary" size="small" @click="toTop(index,item)"
                                            :disabled="item.isLocked">置顶
                                 </el-button>
-                                <el-button type="primary" size="small" :disabled="item.isLocked">
+                                <el-button type="primary" size="small"
+                                           @click="deletePushItem(index)"
+                                           :disabled="item.isLocked">
                                     <i style="font-size: 12px;font-weight: 900;font-style: normal;">&times;</i>
                                 </el-button>
                                 <el-button type="primary" size="small" @click="locked(item)">
@@ -44,47 +49,19 @@
                         </tbody>
                     </table>
                     <el-button type="primary" size="small">推送</el-button>
-                    <el-button type="primary" size="small">全部推送</el-button>
+                    <el-button type="primary" size="small" @click="submitPush">全部推送</el-button>
                 </el-tab-pane>
                 <el-tab-pane label="已推送" name="second">
 
                 </el-tab-pane>
             </el-tabs>
         </div>
-        <div class="modal fade add-task" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">添加推送任务</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="input-group search-box">
-                            <input type="text" class="form-control" placeholder="请输入关键字搜索"
-                                   aria-describedby="basic-addon2" @click="searchPushList" v-model="keyWords">
-                            <span class="input-group-addon" id="basic-addon2"><span
-                                    class="glyphicon glyphicon-search"></span></span>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                Cras justo odio
-                                <button type="button" class="btn btn-default">添加</button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary">添加</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </template>
 
 <script>
-    import {getPushTaskList, serachRankList} from '../../api/api'
+    import {getPushTaskList, serachRankList, addPushTask, editPushTask} from '../../api/api'
     import {timeFormat} from '../../utils/utils'
 
 
@@ -108,6 +85,58 @@
         },
         computed: {},
         methods: {
+            deletePushItem(i) {
+                this.pushList.splice(i, 1);
+                var params = {};
+                var arr = [];
+                params.push_date = timeFormat('-', this.today);
+                params.is_save = 1;
+                for (let i = 0; i < this.pushList.length; i++) {
+                    var obj = {};
+                    obj.level = this.pushList[i].level;
+                    obj.id = this.pushList[i].id;
+                    obj.name = this.pushList[i].name;
+                    arr.push(obj);
+                }
+                params.push_json = arr;
+                editPushTask(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success',
+                            duration: 1500
+                        })
+                    }
+                    this.getPushList(this.today);
+                }).catch(err => {
+                    throw err;
+                })
+            },
+            submitPush() {
+                var params = {};
+                var arr = [];
+                params.push_date = timeFormat('-', this.today);
+                params.is_save = 0;
+                for (let i = 0; i < this.pushList.length; i++) {
+                    var obj = {};
+                    obj.level = this.pushList[i].level;
+                    obj.id = this.pushList[i].id;
+                    obj.name = this.pushList[i].name;
+                    arr.push(obj);
+                }
+                params.push_json = arr;
+                editPushTask(params).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.$message({
+                            message: '推送成功',
+                            type: 'success',
+                            duration: 1500
+                        })
+                    }
+                }).catch(err => {
+                    throw err;
+                })
+            },
             searchPushList(params) {
                 var self = this;
                 serachRankList(params).then(res => {
@@ -119,17 +148,20 @@
             },
             getPushList(time) {
                 return new Promise((resolve, reject) => {
-                    const params = timeFormat('-', time);
+                    var params = {};
+                    params.time = timeFormat('-', time);
                     getPushTaskList(params).then(res => {
                         if (res.status == 200 && res.data.status_code == 1) {
-                            this.pushList = res.data.data.data;
-                            for (let i = 0; i < this.pushList.length; i++) {
-                                this.$set(this.pushList[i], 'isLocked', false)
+                            if(res.data.data){
+                                this.pushList = JSON.parse(res.data.data.push_json);
+                                for (let i = 0; i < this.pushList.length; i++) {
+                                    this.$set(this.pushList[i], 'isLocked', false)
+                                }
                             }
                         }
 
                     }).catch(err => {
-                        console.log(err);
+                        throw err;
                     })
                 })
             },

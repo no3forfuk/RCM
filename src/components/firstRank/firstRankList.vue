@@ -9,9 +9,10 @@
                     <span class="input-group-addon" id="basic-addon2"><span
                             class="glyphicon glyphicon-search"></span></span>
                 </div>
-                <button class="btn btn-primary add-ranklist" data-toggle="modal" data-target=".bs-modal-lg"
-                        @click="operate($event)">添加榜单
-                </button>
+                <router-link :to="{name:'addRank',query:{ranking_level:1}}">
+                    <button class="btn btn-default add-ranklist">添加榜单
+                    </button>
+                </router-link>
                 <button class="btn btn-default">
                     <router-link :to="{name:'upload'}">导入榜单</router-link>
                 </button>
@@ -63,84 +64,6 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="modal fade bs-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="gridSystemModalLabel">{{doOperate}}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="rankName" class="col-sm-2 control-label">榜单名称</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="rankName" placeholder="榜单名称"
-                                           v-model="addFirstParams.ranking_name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="rankDesc" class="col-sm-2 control-label">榜单详情</label>
-                                <div class="col-sm-10">
-                                    <textarea name="" id="rankDesc" cols="30" rows="3"
-                                              v-model="addFirstParams.ranking_desc"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">添加二级榜单</label>
-                                <div class="col-sm-10" style="position: relative; height: 300px;">
-                                    <div style="width: 40%;">
-                                        <ul class="list-group" v-if="addSubList.length"
-                                            style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in addSubList">
-                                            <span class="badge" style="backgroundColor: #C9302C;">
-                                                <i class="glyphicon glyphicon-remove"
-                                                   style="cursor: pointer;" @click="deleteSubList(index)"></i>
-                                            </span>
-                                                {{item.ranking_name}}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div style="width: 40%; position: absolute;top: 0;right: 60px;">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search for...">
-                                            <span class="input-group-btn">
-        <button class="btn btn-default" type="button" @click="getSecondRankList(page)">Go!</button>
-      </span>
-                                        </div>
-                                        <ul class="list-group" v-if="secondRankLsit.length"
-                                            style="height: 288px;overflow: auto">
-                                            <li class="list-group-item" v-for="(item,index) in secondRankLsit"
-                                                :key="index">
-                                            <span class="badge" style="backgroundColor: #5cb85c;cursor: pointer;"><i
-                                                    class="glyphicon glyphicon-plus"
-                                                    @click="add_subRank(index)"></i></span>
-                                                {{item.ranking_name}}
-                                            </li>
-                                            <button type="button" class="btn btn-default" @click="prePage(page)">上一页
-                                            </button>
-                                            <button type="button" class="btn btn-default" @click="nextPage(page)">下一页
-                                            </button>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="col-sm-10 text-right">
-                            <button type="button" class="btn btn-danger" @click="confirm">确 定
-                            </button>
-                            <button type="button" class="btn btn-success" data-dismiss="modal">取 消</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
     </div>
 
 </template>
@@ -194,25 +117,7 @@
             operate(e) {
                 this.doOperate = '添加'
             },
-            //确认
-            confirm() {
-                if (this.doOperate == '添加') {
-                    this.addFirstParams.data = this.addSubList;
-                    this.addFirstRank(this.addFirstParams);
-                }
-                if (this.doOperate == '编辑') {
-                    this.addFirstParams.data = this.addSubList;
-                    editFirstRank(this.addFirstParams).then(res => {
-                        alert('修改成功');
-                        $('.bs-modal-lg').modal('hide');
-                        this.addFirstParams.ranking_name = '';
-                        this.addFirstParams.ranking_desc = '';
-                        this.addSubList = []
-                        this.getRankList();
-                    }).catch(err => {
-                    })
-                }
-            },
+
             //获取一级榜单数据
             getRankList() {
                 return new Promise((resolve, reject) => {
@@ -224,30 +129,7 @@
                         });
                 });
             },
-            //添加一级榜单
-            addFirstRank(params) {
-                if (params.ranking_name == '') {
-                    alert('请填写榜单名称')
-                    return
-                }
-                if (params.ranking_desc == '') {
-                    alert('请填写榜单详情')
-                    return
-                }
-                return new Promise((resolve, reject) => {
-                    addFirstRank(params)
-                        .then(res => {
-                            console.log(res.data);
-                            if (res.data.code == '001') {
-                                alert('添加成功')
-                                $('.bs-modal-lg').modal('hide');
-                                this.getRankList();
-                            }
-                        })
-                        .catch(err => {
-                        });
-                });
-            },
+
             //编辑榜单
             editRank(e, element) {
                 this.doOperate = '编辑';

@@ -33,10 +33,10 @@
                 </thead>
                 <tbody>
                 <tr v-for="(item,index) in postList" :key="index">
-                    <td>{{index+1}}</td>
+                    <td>{{(index + 1) + (currentPage - 1) * per_page}}</td>
                     <td>star</td>
                     <td style="max-width: 150px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                        <router-link :to="{name:'postDetails',query:{id:item.id}}">{{item.post_content}}</router-link>
+                        <router-link :to="{name:'postDetails',query:{id:item.id,ele_id:item.element.id}}">{{item.post_content}}</router-link>
                     </td>
                     <!--<td style="max-width: 150px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">-->
                     <!--{{item.post_content}}-->
@@ -54,9 +54,21 @@
                     <td>builder</td>
                     <td style="width: 100px;">{{item.updated_at}}</td>
                     <td>
-                        <button type="button" class="btn btn-default">显示</button>
-                        <button type="button" class="btn btn-default">删除</button>
-                        <button type="button" class="btn btn-default">编辑</button>
+                        <button type="button"
+                                v-if="!item.is_hide"
+                                @click="hidePost($event,item)"
+                                class="btn btn-success">显示
+                        </button>
+                        <button type="button"
+                                v-if="!!item.is_hide"
+                                @click="hidePost($event,item)"
+                                class="btn btn-danger">隐藏
+                        </button>
+                        <!--<button type="button" class="btn btn-default" @click="deletePost">删除</button>-->
+                        <router-link :to="{name:'postDetails',query:{id:item.id,ele_id:item.element.id}}">
+                            <button type="button" class="btn btn-default">编辑</button>
+                        </router-link>
+
                     </td>
                 </tr>
                 </tbody>
@@ -66,7 +78,7 @@
         <el-pagination
                 background
                 @current-change="getPostListByPage"
-                :page-size="15"
+                :page-size="per_page"
                 :total="total"
                 layout="prev, pager, next">
         </el-pagination>
@@ -74,7 +86,7 @@
 </template>
 <script>
     import POSTLIST from './text'
-    import {getPostList} from '../../api/api'
+    import {getPostList, hidePostById} from '../../api/api'
 
     export default {
         data() {
@@ -84,7 +96,8 @@
                 totalPage: 0,
                 total: 0,
                 keyWords: '',
-                value: ''
+                value: '',
+                per_page: 0
             };
         },
         created() {
@@ -92,6 +105,41 @@
             this.init();
         },
         methods: {
+            hidePost(e, item) {
+                this.$confirm('您确定要' + e.target.innerText + '该POST吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var params = {};
+                    params.id = this.$route.query.id;
+                    var data = {};
+                    if (item.is_hide == 0) {
+                        this.$set(item, 'is_hide', 1);
+                    } else {
+                        this.$set(item, 'is_hide', 0);
+                    }
+                    data.is_hide = item.is_hide;
+                    hidePostById(params, data).then(res => {
+                        if (res.status == 200 && res.data.status_code == 1) {
+                            this.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            })
+                            this.init();
+                        } else {
+                            return
+                        }
+                    }).catch(err => {
+                        throw err;
+                    })
+                }).catch(() => {
+                    return;
+                })
+            },
+            deletePost() {
+
+            },
             init() {
                 this.TEXT = POSTLIST;
                 var params = {};
@@ -101,6 +149,7 @@
                         this.postList = res.data.data.data;
                         this.totalPage = parseInt(res.data.data.last_page);
                         this.total = res.data.data.total;
+                        this.per_page = res.data.data.per_page;
                     }
                 }).catch(err => {
                     throw err;

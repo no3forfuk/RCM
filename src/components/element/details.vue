@@ -71,7 +71,26 @@
                 <button type="button" class="btn btn-default" @click="submitEdit" v-if="!forbidEdit">完成</button>
 
             </el-tab-pane>
-            <el-tab-pane label="POST管理" name="second">POST管理</el-tab-pane>
+            <el-tab-pane label="POST管理" name="second">
+                <router-link :to="{name:'addPost',query:{id:info.id}}">
+                    <button type="button" class="btn btn-default">添加POST</button>
+                </router-link>
+                <hr>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <th>POST详情</th>
+                    <th>来源</th>
+                    <th>操作</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </el-tab-pane>
             <el-tab-pane label="指数管理" name="third">
                 <button type="button" class="btn btn-default">指数规则管理</button>
                 <hr>
@@ -113,19 +132,23 @@
             }
         },
         created() {
-            getElementDetails().then(res => {
-                if (res.status == 200 && res.data.status_code == 1) {
-                    this.info = res.data.data;
-                    this.init_star = this.info.asterisk == 0 ? '不标记' : '标记';
-                    this.init_hide = this.info.is_hide == 0 ? '隐藏' : '显示';
-                } else {
-                    alert('获取元素失败')
-                }
-            }).catch(err => {
-                throw err;
-            })
+            this.getElementDetails()
+
         },
         methods: {
+            getElementDetails(){
+                getElementDetails(this.$route.query.id).then(res => {
+                    if (res.status == 200 && res.data.status_code == 1) {
+                        this.info = res.data.data;
+                        this.init_star = this.info.asterisk == 0 ? '不标记' : '标记';
+                        this.init_hide = this.info.is_hide == 0 ? '隐藏' : '显示';
+                    } else {
+                        alert('获取元素失败')
+                    }
+                }).catch(err => {
+                    throw err;
+                })
+            },
             cancelEditElement() {
                 this.forbidEdit = true;
             },
