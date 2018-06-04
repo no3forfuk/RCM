@@ -47,9 +47,7 @@
                 this.$router.replace("/login");
             }
         },
-        watch: {
-
-        }
+        watch: {}
     };
 </script>
 <style scoped>

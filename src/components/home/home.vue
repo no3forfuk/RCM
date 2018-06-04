@@ -1,5 +1,6 @@
 <template>
     <div>
+        <y-header></y-header>
         <div class="root-box">
             <div class="left-box">
                 <ul class="list-group">

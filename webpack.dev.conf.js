@@ -30,6 +30,7 @@ module.exports = merge(base, {
             app.use(bodyParser.json());
             const rp = require('request-promise');
             var baseUrl = 'http://test.bantangtv.com';
+            // var baseUrl = 'http://www.rcm.ink';
             const go = function (requset, response) {
                 var method = requset.method;
                 var options;

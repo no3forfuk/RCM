@@ -13,24 +13,7 @@
               v-if="hasFile"><span class="glyphicon glyphicon-hand-up"></span> 请选择文件</span>
 
         <button type="button" class="btn btn-default" style="marginTop:10px;" @click="upload_rankData">确定上传</button>
-        <div class="modal fade" tabindex="-1" role="dialog" id="uploadModal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h2 class="modal-title">{{success}}</h2>
-                    </div>
-                    <div class="modal-body text-center">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">点击继续上传</button>
-                        <button type="button" class="btn btn-primary" @click="uploadSuccess">
-                            查看上传结果
-                        </button>
-                    </div>
 
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 <script>
@@ -50,10 +33,6 @@
         },
         computed: {},
         methods: {
-            uploadSuccess() {
-                $('#uploadModal').modal('hide');
-                this.$router.replace('/home');
-            },
             upload_rankData() {
                 if (!this.$refs.file.files[0]) {
                     this.hasFile = true;
@@ -69,7 +48,6 @@
                             .then(res => {
                                 if (res.status == 200 && res.data.return_status_code == 1) {
                                     loading.close();
-                                    $('#uploadModal').modal('show');
                                 }
 
                             })
@@ -94,7 +72,6 @@
                         let wb = XLSX.read(data, {
                             type: "binary"
                         });
-
                         var fileData = [];
                         for (let j = 0; j < wb.SheetNames.length; j++) {
                             let flag = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[j]]);
@@ -155,7 +132,6 @@
                     };
                     reader.readAsBinaryString(file);
                 }
-
             }
         }
     };

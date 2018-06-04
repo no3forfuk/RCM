@@ -1,5 +1,6 @@
 <template>
     <div>
+        <y-header></y-header>
         <div class="contanier text-center">
             <img src="" width="200px">
             <p class="h4">欢迎来到RCM</p>
