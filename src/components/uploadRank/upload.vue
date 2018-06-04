@@ -59,9 +59,19 @@
                     this.hasFile = true;
                 } else {
                     return new Promise((resolve, reject) => {
+                        const loading = this.$loading({
+                            lock: true,
+                            text: 'Loading',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         importRank(this.rankDataArr)
                             .then(res => {
-                                $('#uploadModal').modal('show');
+                                if (res.status == 200 && res.data.return_status_code == 1) {
+                                    loading.close();
+                                    $('#uploadModal').modal('show');
+                                }
+
                             })
                         resolve()
                             .catch(err => {

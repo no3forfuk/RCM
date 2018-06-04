@@ -20,1663 +20,170 @@ module.exports = merge(base, {
     mode: 'development',
     devtool: 'inline-source-map',
     plugins: [
-        new HtmlWebpackPlugin({ template: './index.html', filename: 'index.html' }),
+        new HtmlWebpackPlugin({template: './index.html', filename: 'index.html'}),
     ],
     devServer: {
         contentBase: './dist/Admin',
         before(app) {
             const bodyParser = require('body-parser');
-            app.use(bodyParser.urlencoded({ extended: false }));
+            app.use(bodyParser.urlencoded({extended: false}));
             app.use(bodyParser.json());
+            const rp = require('request-promise');
+            var baseUrl = 'http://test.bantangtv.com';
+            const go = function (requset, response) {
+                var method = requset.method;
+                var options;
+                if (method == 'GET') {
+                    options = {
+                        "method": method,
+                        "qs": requset.query,
+                        "json": true,
+                        "uri": baseUrl + requset.url,
+                        "headers": {
+                            "authorization": requset.headers.authorization
+                        }
+                    }
+                }
+                if (method == 'POST') {
+                    options = {
+                        "method": method,
+                        "body": requset.body,
+                        "json": true,
+                        "uri": baseUrl + requset.url,
+                        "headers": requset.headers,
+                        "headers": {
+                            "authorization": requset.headers.authorization
+                        }
+                    }
+                }
+                rp(options).then(data => {
+                    response.json(data)
+                }).catch(err => {
+                    throw err;
+                })
+            }
             //登陆
             app.post('/api/Login', function (req, res) {
-                let token = parseInt(Math.random() * 9635423165465452).toString(16);
-                let user = req.body;
-                if (user.username == 'admin' && user.password == '123456') {
-                    res.json({
-                        "status_code": 1,
-                        "message": "登录成功！",
-                        "data": {
-                            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vcmNtLmNjL2FwaS9Mb2dpbiIsImlhdCI6MTUyNDcyMzczNiwiZXhwIjoxNTI0NzI3MzM2LCJuYmYiOjE1MjQ3MjM3MzYsImp0aSI6IjNyem1mcjdkc1JrMERWWUkiLCJzdWIiOjEsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.cjEZ_ZevnfnkxZVMLf0CuOOFw6bAzC8AvXNIgYbQHzY",
-                            "expires_in": 3600
-                        }
-                    })
-                } else {
-                    res.json({
-                        code: '002',
-                        msg: 'go out'
-                    })
-                }
+                go(req, res)
             });
             //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>一级榜单API
             //获取一级榜单
             app.get('/api/Ranking/FirstIndex', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "获取一级成功！",
-                    "data": {
-                        "current_page": 1,
-                        "data": [
-                            {
-                                "id": 1,
-                                "ranking_name": "其他",
-                                "ranking_desc": null,
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }
-                        ],
-                        "first_page_url": "http://rcm.bantangtv.com/api/Ranking/FirstIndex?page=1",
-                        "from": 1,
-                        "last_page": 1,
-                        "last_page_url": "http://rcm.bantangtv.com/api/Ranking/FirstIndex?page=1",
-                        "next_page_url": null,
-                        "path": "http://rcm.bantangtv.com/api/Ranking/FirstIndex",
-                        "per_page": 15,
-                        "prev_page_url": null,
-                        "to": 4,
-                        "total": 4
-                    }
-                })
+                go(req, res)
             })
             //隐藏一级榜单
             app.post('/api/Ranking/FirstHide/1', (req, res) => {
-                res.json({
-                    code: '001',
-                    message: 'success'
-                })
+                go(req, res)
             })
             app.post('/api/Ranking/FirstHide/0', (req, res) => {
-                res.json({
-                    code: '001',
-                    message: 'success'
-                })
+                go(req, res)
             });
             //添加一级榜单
             app.post('/api/Ranking/FirstAdd', (req, res) => {
-                res.json({
-                    code: '001',
-                    message: '添加成功'
-                })
+                go(req, res)
             })
             //编辑一级榜单
             app.post('/api/Ranking/FirstEdit/2', (req, res) => {
-                res.json({
-                    code: '001',
-                    massage: '修改成功'
-                })
+                go(req, res)
             })
             //获取侧边栏
             app.get('/api/index/getMenu', (req, res) => {
-                res.json({
-                    "code": 1,
-                    "msg": "获取成功",
-                    "data": [
-                        {
-                            "id": 1,
-                            "name": "角色管理",
-                            "route_name": "role",
-                            "menu": [
-                                {
-                                    "id": 2,
-                                    "name": "角色列表",
-                                    "route_name": "RoleList"
-                                }
-                            ]
-                        },
-                        {
-                            "id": 7,
-                            "name": "榜单管理",
-                            "route_name": "ranking",
-                            "menu": [
-                                {
-                                    "id": 8,
-                                    "name": "一级榜单列表",
-                                    "route_name": "FirstList"
-                                },
-                                {
-                                    "id": 14,
-                                    "name": "二级榜单列表",
-                                    "route_name": "SecondList"
-                                }
-                            ]
-                        },
-                        {
-                            "id": 21,
-                            "name": "推送管理",
-                            "route_name": "push",
-                            "menu": [
-                                {
-                                    "id": 22,
-                                    "name": "推送列表",
-                                    "route_name": "PushList"
-                                },
-                                {
-                                    "id": 23,
-                                    "name": "推送任务",
-                                    "route_name": "PushTask"
-                                }
-                            ]
-                        },
-                        {
-                            "id": 21,
-                            "name": "元素管理",
-                            "route_name": "element",
-                            "menu": [
-                                {
-                                    "id": 22,
-                                    "name": "元素列表",
-                                    "route_name": "ElementList"
-                                },
-                                {
-                                    "id": 33,
-                                    "name": "POST列表",
-                                    "route_name": "PostList"
-                                }
-                            ]
-                        },
-                        // {
-                        //     "id": 21,
-                        //     "name": "POST管理",
-                        //     "route_name": "post",
-                        //     "menu": [
-                        //         {
-                        //             "id": 22,
-                        //             "name": "POST列表",
-                        //             "route_name": "postList"
-                        //         }
-                        //     ]
-                        // },
-                        // {
-                        //     "id": 21,
-                        //     "name": "统计",
-                        //     "route_name": "post",
-                        //     "menu": [
-                        //         {
-                        //             "id": 22,
-                        //             "name": "统计列表",
-                        //             "route_name": "countList"
-                        //         }
-                        //     ]
-                        // }
-                    ]
-                })
+                go(req, res)
             });
 
             //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>二级榜单API
             //导入榜单
             app.post("/api/Ranking/importRanking", (req, res) => {
-                res.json({
-                    code: '001',
-                    msg: 'success',
-                    data: req.body
-                })
+                go(req, res)
             });
             //获取二级榜单
             app.get('/api/Ranking/SecondIndex', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "获取二级成功！",
-                    "data": {
-                        "current_page": 1,
-                        "data": [
-                            {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 4,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 3,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            }, {
-                                "id": 1,
-                                "ranking_name": "涂抹式面膜人气榜单",
-                                "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 18:25:45",
-                                "updated_at": "2018-05-04 18:25:45",
-                                "operate_type": 1,
-                                "admin": {
-                                    "name": "admin"
-                                }
-                            },
-                        ],
-                        "first_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=1",
-                        "from": 1,
-                        "last_page": 4,
-                        "last_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=4",
-                        "next_page_url": "http://rcm.bantangtv.com/api/Ranking/SecondIndex?page=2",
-                        "path": "http://rcm.bantangtv.com/api/Ranking/SecondIndex",
-                        "per_page": 15,
-                        "prev_page_url": null,
-                        "to": 15,
-                        "total": 60
-                    }
-                })
+                go(req, res)
             });
             //获取二级榜单详情
             app.get('/api/Ranking/SecondDetails/', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "获取详情成功！",
-                    "data": {
-                        "id": 2,
-                        "ranking_name": "猫粮品牌排行榜",
-                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                        "ranking_level": 2,
-                        "exponent": 0,
-                        "is_check": 0,
-                        "is_hide": 1,
-                        "asterisk": 0,
-                        "updated_at": "2018-05-15 15:12:13",
-                        "operate_type": 1,
-                        "admin": {
-                            "name": "admin"
-                        }
-                    }
-                })
+                go(req, res)
             })
             //添加二级榜单
             app.post('/api/Ranking/SecondAdd', (req, res) => {
-                res.json({
-                    code: '001',
-                    message: '添加成功'
-                })
+                go(req, res)
             })
             //显示隐藏二级榜单
             app.post('/api/Ranking/SecondHide', (req, res) => {
-                res.json({
-                    status_code: '1',
-                    message: 'success'
-                })
+                go(req, res)
             })
             //删除二级榜单
             app.post('/api/Ranking/SecondDel', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: 'success'
-                })
+                go(req, res)
             })
             //获取元素列表
             app.get('/api/Element/index', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "获取元素成功！",
-                    "data": {
-                        "current_page": 1,
-                        "data": [
-                            {
-                                "id": 1,
-                                "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
-                                "element_desc": "大名鼎鼎的十全大补面膜",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 1,
-                                        "ranking_name": "涂抹式面膜人气榜单",
-                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 1,
-                                            "ranking_id": 1
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 2,
-                                "element_name": "香奈儿熨斗面膜",
-                                "element_desc": "涂抹式面膜中的经典单品",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 1,
-                                        "ranking_name": "涂抹式面膜人气榜单",
-                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 2,
-                                            "ranking_id": 1
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 3,
-                                "element_name": "彼得罗夫青瓜啫喱面膜",
-                                "element_desc": "深层补水啫喱状面膜",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 1,
-                                        "ranking_name": "涂抹式面膜人气榜单",
-                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 3,
-                                            "ranking_id": 1
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 4,
-                                "element_name": "碧欧泉奇迹面膜",
-                                "element_desc": "奇迹面膜，含有 35 种营养成分，5%的高浓度活源精粹 LIFE PLANKTON，能加速肌底细胞新陈代谢，激活肌肤自主吸收源动力，增强肌肤抵抗力。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 1,
-                                        "ranking_name": "涂抹式面膜人气榜单",
-                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 4,
-                                            "ranking_id": 1
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 5,
-                                "element_name": "科颜氏金盏花舒缓保湿面膜",
-                                "element_desc": "科颜氏金盏花舒缓保湿面膜，其配方保留了看得见的金盏花瓣，佐以芦荟汁配制，集镇静，舒缓，保湿，调理于一体，为肌肤注入焕颜活力，犹如浸浴在金盏花田一般清爽滋润，舒缓日常生活中的皮肤\"小情绪”。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 1,
-                                        "ranking_name": "涂抹式面膜人气榜单",
-                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 5,
-                                            "ranking_id": 1
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 6,
-                                "element_name": "悦木之源水润畅饮夜间密集修护面膜",
-                                "element_desc": "悦木之源水润畅饮夜间密集滋养面膜乳霜质地，细腻幼滑，容易推开，能有效深层补水滋润，让肌肤瞬间恢复水嫩充盈状态，平衡肌肤水油分泌，明显改善肤质状况。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 1,
-                                        "ranking_name": "涂抹式面膜人气榜单",
-                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 6,
-                                            "ranking_id": 1
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 7,
-                                "element_name": "馥蕾诗 红茶抗皱紧致修护面膜",
-                                "element_desc": "馥蕾诗红茶抗皱紧致修护面膜给予肌肤高效紧致，即刻柔软顺滑，幼嫩饱满。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 1,
-                                        "ranking_name": "涂抹式面膜人气榜单",
-                                        "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 7,
-                                            "ranking_id": 1
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 8,
-                                "element_name": "皇家猫粮",
-                                "element_desc": "皇家宠物食品有限公司全球总部于1967年成立，坐落在法国南部的埃玛哥共占地24公顷，集中了所有的重要设施并集结了所有的资源，一切都为了给犬猫提供最好的服务。皇家总部是由研发、营运、财务、人力资源部，以及四个销售部组成的将近500人大团队，为将近90个国家的60个分公司提供服务与支持。从Royal Canin这一品牌自1968年成立以来，经过40多年的发展已经成为全球宠物食品行业的领军人物。皇家另一大特色就是在总部设有大规模的犬场和猫场。犬猫场有160多只犬和180多只猫。皇家提供了最好的环境和最优质的食物，让这些犬猫在总部的犬猫场自在生活。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 8,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 9,
-                                "element_name": "伟嘉猫粮",
-                                "element_desc": "含有丰富的有机物，是小动物就能吃，只要它愿意吃喜欢这个味道。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 9,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 10,
-                                "element_name": "雪山",
-                                "element_desc": "美国雪山公司从1989年开始研制Natural Balance宠物食品，希望制造出世界上品质最优良和最健康的宠物食品。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 10,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 11,
-                                "element_name": "凌采",
-                                "element_desc": "美国Natura公司生产的宠物食品品种齐全、品质保证已有十多年历史，旗下有露华系列、露华EVO系列、加州天然系列、健盈系列、卡玛系列的猫粮、犬粮，罐头、饼干等纯天然产品，并一直处于同行业的领头羊位置。",
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 11,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 12,
-                                "element_name": "珍宝SANPO",
-                                "element_desc": null,
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 12,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 13,
-                                "element_name": "比瑞吉猫粮",
-                                "element_desc": null,
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 13,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 14,
-                                "element_name": "美滋元 宠物猫粮",
-                                "element_desc": null,
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 14,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 15,
-                                "element_name": "妙多乐 宠物猫粮",
-                                "element_desc": null,
-                                "exponent": 0,
-                                "is_check": 0,
-                                "is_hide": 0,
-                                "asterisk": 0,
-                                "created_at": "2018-05-04 10:11:59",
-                                "updated_at": "2018-05-04 10:11:59",
-                                "operate_name": {
-                                    "name": "admin"
-                                },
-                                "second_ranking": [
-                                    {
-                                        "id": 2,
-                                        "ranking_name": "猫粮品牌排行榜",
-                                        "ranking_desc": "猫咪是人们最爱的宠物之一，为了伺候好猫主子，口粮的选择是很重要的。好的猫粮能让猫咪健康成长。",
-                                        "exponent": 0,
-                                        "is_check": 0,
-                                        "is_hide": 1,
-                                        "asterisk": 0,
-                                        "created_at": "2018-05-04 10:11:59",
-                                        "updated_at": "2018-05-04 10:11:59",
-                                        "pivot": {
-                                            "element_id": 15,
-                                            "ranking_id": 2
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "first_page_url": "http://rcm.cc/api/Element/index?page=1",
-                        "from": 1,
-                        "last_page": 24,
-                        "last_page_url": "http://rcm.cc/api/Element/index?page=24",
-                        "next_page_url": "http://rcm.cc/api/Element/index?page=2",
-                        "path": "http://rcm.cc/api/Element/index",
-                        "per_page": 15,
-                        "prev_page_url": null,
-                        "to": 15,
-                        "total": 357
-                    }
-                })
+                go(req, res)
             })
             //获取元素详情
             app.get('/api/Element/details', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "获取详情成功！",
-                    "data": {
-                        "id": 1,
-                        "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
-                        "element_desc": "大名鼎鼎的十全大补面膜",
-                        "exponent": 0,
-                        "is_check": 0,
-                        "is_hide": 0,
-                        "asterisk": 0,
-                        "created_at": "2018-04-28 17:58:12",
-                        "updated_at": "2018-05-10 17:10:16",
-                        "operate_type": 1
-                    }
-                })
+                go(req, res)
             })
             //编辑元素
             app.post('/api/Element/edit', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "编辑成功"
-                })
+                go(req, res)
             })
             app.post('/api/Element/del', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: 'success'
-                })
+                go(req, res)
             })
             //添加元素
             app.post('/api/Element/add', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: 'success'
-                })
+                go(req, res)
             })
             //编辑二级榜单
             app.post('/api/Ranking/SecondEdit', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: '修改成功'
-                })
+                go(req, res)
             })
             //元素
             app.post('/api/Element/hide/1', (req, res) => {
-                res.json({
-                    code: '001',
-                    message: 'success'
-                })
+                go(req, res)
             })
             //元素显示隐藏
             app.post('/api/Element/hide', (req, res) => {
-                res.json({
-                    status_code: '001',
-                    message: 'success'
-                })
+                go(req, res)
             });
             //获取推送列表
             app.post('/api/Push/index', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "data": {
-                        "id": 7,
-                        "push_date": "2018-05-22",
-                        "push_json": "[{\"level\":2,\"id\":4,\"name\":\"2018\\u6700\\u53d7\\u6b22\\u8fce\\u624b\\u6e38\\u6392\\u884c\\u699c\"}]",
-                        "updated_at": "2018-05-22 20:17:26",
-                        "is_save": 1
-                    }
-                })
+                go(req, res)
             });
             app.post('/api/Push/add', (req, res) => {
-                res.json({ "status_code": 1 })
+                go(req, res)
             })
             app.post('/api/Push/edit', (req, res) => {
-                res.json({
-                    status_code: 1
-                })
+                go(req, res)
             })
             app.post('/api/search/ranking', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "获取成功！",
-                    "data": [
-                        {
-                            "id": 1,
-                            "ranking_name": "涂抹式面膜人气榜单",
-                            "ranking_desc": "涂抹式面膜是日常护肤必不可少的一个环节～一起来看看大家最喜欢的是哪几种哪？",
-                            "ranking_level": 2,
-                            "exponent": 0,
-                            "is_check": 0,
-                            "is_hide": 1,
-                            "asterisk": 0,
-                            "created_at": "2018-05-04 18:25:45",
-                            "updated_at": "2018-05-04 18:25:45",
-                            "operate_type": 1,
-                            "operate_name": {
-                                "name": "admin"
-                            }
-                        }
-                    ]
-                })
+                go(req, res)
             })
             //获取POST列表
             app.get('/api/Post/index', (req, res) => {
-                res.json({
-                    "status_code": 1,
-                    "message": "获取Post成功！",
-                    "data": {
-                        "current_page": 1,
-                        "data": [
-                            {
-                                "id": 1,
-                                "post_content": "乳白色乳霜质地，延展性极佳，淡淡的清香",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 1,
-                                    "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
-                                    "element_desc": "大名鼎鼎的十全大补面膜",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 1,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-18 15:23:59",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "post_content": "涂抹后没有厚重感，很滋润",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 1,
-                                    "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
-                                    "element_desc": "大名鼎鼎的十全大补面膜",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 1,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-18 15:23:59",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "post_content": "每次用在要发痘痘的地方，因为它有镇定舒缓的效用",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 1,
-                                    "element_name": "菲洛嘉 柔滑亮泽焕颜面膜",
-                                    "element_desc": "大名鼎鼎的十全大补面膜",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 1,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-18 15:23:59",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "post_content": "冰淇淋般的丰润质地，超级丝滑，延展性好",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 2,
-                                    "element_name": "香奈儿熨斗面膜",
-                                    "element_desc": "涂抹式面膜中的经典单品",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 5,
-                                "post_content": "可以改善肌肤质地，平滑纹理，使用后有光泽感，但是又不会觉得腻",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 2,
-                                    "element_name": "香奈儿熨斗面膜",
-                                    "element_desc": "涂抹式面膜中的经典单品",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "post_content": "面膜是我必做的功课，香奈儿这款高效的面膜，即使我玩儿累了回来我也要让我的肌肤享受一番，喂饱肌肤让它水嘭嘭的，紧致嫩滑。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 2,
-                                    "element_name": "香奈儿熨斗面膜",
-                                    "element_desc": "涂抹式面膜中的经典单品",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "post_content": "一款非常温和的补水面膜，含有青瓜／木瓜等多种草本精华，可以补水保湿，晒后修复，舒缓过敏等。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 3,
-                                    "element_name": "彼得罗夫青瓜啫喱面膜",
-                                    "element_desc": "深层补水啫喱状面膜",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "post_content": "彼得罗夫青瓜啫喱面膜绿色啫喱质地，轻盈水润，容易吸收。密封性一般，不能有效锁紧精华。抗氧化性方面表现优异，面膜所蕴含的覆盆子精华能有效抗氧化，帮助修护肌肤，抵抗外来有害物质。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 3,
-                                    "element_name": "彼得罗夫青瓜啫喱面膜",
-                                    "element_desc": "深层补水啫喱状面膜",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 9,
-                                "post_content": "用后肤质改善明显，面膜性质温和，可以用在眼部周围消除眼部浮肿。这款面膜稍显油腻，比较适合秋冬季节或者干燥天气使用。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 3,
-                                    "element_name": "彼得罗夫青瓜啫喱面膜",
-                                    "element_desc": "深层补水啫喱状面膜",
-                                    "exponent": 3,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 10,
-                                "post_content": "碧欧泉活源精粹修复面膜，从外包装上可以看出品牌的一贯风格，清爽的大海蓝，给人的第一感就是非常清爽。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 4,
-                                    "element_name": "碧欧泉奇迹面膜",
-                                    "element_desc": "奇迹面膜，含有 35 种营养成分，5%的高浓度活源精粹 LIFE PLANKTON，能加速肌底细胞新陈代谢，激活肌肤自主吸收源动力，增强肌肤抵抗力。",
-                                    "exponent": 2,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 11,
-                                "post_content": "清新薄透的啫喱凝露质地，水感润滑，触感舒适亲肤，吸收性好，使用时清爽不油腻，不会为肌肤造成负担。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 4,
-                                    "element_name": "碧欧泉奇迹面膜",
-                                    "element_desc": "奇迹面膜，含有 35 种营养成分，5%的高浓度活源精粹 LIFE PLANKTON，能加速肌底细胞新陈代谢，激活肌肤自主吸收源动力，增强肌肤抵抗力。",
-                                    "exponent": 2,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 12,
-                                "post_content": "敷完面膜的肌肤有很强的水润感，肌肤表面格外柔软细滑。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 5,
-                                    "element_name": "科颜氏金盏花舒缓保湿面膜",
-                                    "element_desc": "科颜氏金盏花舒缓保湿面膜，其配方保留了看得见的金盏花瓣，佐以芦荟汁配制，集镇静，舒缓，保湿，调理于一体，为肌肤注入焕颜活力，犹如浸浴在金盏花田一般清爽滋润，舒缓日常生活中的皮肤\"小情绪”。",
-                                    "exponent": 1,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 13,
-                                "post_content": "这款面膜特别适合晚上使用，能给肌肤补充源源不断的营养，修复与滋养肌肤。第二天效果很棒，肌肤水嫩有弹力，很不错。非常好上妆，而且一整天都不花妆哟。很喜欢。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 6,
-                                    "element_name": "悦木之源水润畅饮夜间密集修护面膜",
-                                    "element_desc": "悦木之源水润畅饮夜间密集滋养面膜乳霜质地，细腻幼滑，容易推开，能有效深层补水滋润，让肌肤瞬间恢复水嫩充盈状态，平衡肌肤水油分泌，明显改善肤质状况。",
-                                    "exponent": 1,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 14,
-                                "post_content": "细腻密实的质地轻易涂抹，可以有效地软化老化角质，清除黑头粉刺和污垢，并且使用后的肌肤变得细嫩，可以帮助肌肤控制油分分泌，维持干净清爽的肌肤。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 7,
-                                    "element_name": "馥蕾诗 红茶抗皱紧致修护面膜",
-                                    "element_desc": "馥蕾诗红茶抗皱紧致修护面膜给予肌肤高效紧致，即刻柔软顺滑，幼嫩饱满。",
-                                    "exponent": 1,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            },
-                            {
-                                "id": 15,
-                                "post_content": "猫粮一直选择皇家的，猫咪吃着健康。吃完体质变好了。其实混搭湿粮会比较好，一包大概可以吃一个月的样子。",
-                                "type": 1,
-                                "img": null,
-                                "video": null,
-                                "out_link": null,
-                                "link_title": null,
-                                "link_desc": null,
-                                "exponent": 0,
-                                "comment_num": 0,
-                                "is_check": 0,
-                                "is_hide": 1,
-                                "updated_at": "2018-05-15 15:12:13",
-                                "operate_type": 1,
-                                "operate_name": null,
-                                "element": {
-                                    "id": 8,
-                                    "element_name": "皇家猫粮",
-                                    "element_desc": "皇家宠物食品有限公司全球总部于1967年成立，坐落在法国南部的埃玛哥共占地24公顷，集中了所有的重要设施并集结了所有的资源，一切都为了给犬猫提供最好的服务。皇家总部是由研发、营运、财务、人力资源部，以及四个销售部组成的将近500人大团队，为将近90个国家的60个分公司提供服务与支持。从Royal Canin这一品牌自1968年成立以来，经过40多年的发展已经成为全球宠物食品行业的领军人物。皇家另一大特色就是在总部设有大规模的犬场和猫场。犬猫场有160多只犬和180多只猫。皇家提供了最好的环境和最优质的食物，让这些犬猫在总部的犬猫场自在生活。",
-                                    "exponent": 1,
-                                    "is_check": 0,
-                                    "is_hide": 0,
-                                    "asterisk": 0,
-                                    "updated_at": "2018-05-17 10:41:02",
-                                    "operate_type": 1
-                                }
-                            }
-                        ],
-                        "first_page_url": "http://test.bantangtv.com/api/Post/index?page=1",
-                        "from": 1,
-                        "last_page": 5,
-                        "last_page_url": "http://test.bantangtv.com/api/Post/index?page=5",
-                        "next_page_url": "http://test.bantangtv.com/api/Post/index?page=2",
-                        "path": "http://test.bantangtv.com/api/Post/index",
-                        "per_page": 15,
-                        "prev_page_url": null,
-                        "to": 15,
-                        "total": 70
-                    }
-                })
+                go(req, res)
             })
             //获取POST详情
             app.get('/api/Post/details', (req, res) => {
-                res.json({
-                    status_code: '1',
-                    data: {
-                        "id": 16,
-                        "post_content": "从皇家换成了伟嘉，猫饮水量明显变大，应该是咸一些了，用了不到一周换粮完成。现在搭配了湿粮一起喂。",
-                        "type": 1,
-                        "img": null,
-                        "video": null,
-                        "out_link": null,
-                        "link_title": null,
-                        "link_desc": null,
-                        "exponent": 0,
-                        "comment_num": 0,
-                        "is_check": 0,
-                        "is_hide": 1,
-                        "updated_at": "2018-05-15 15:12:13",
-                        "operate_type": 1,
-                        "operate_name": null,
-                        "element": {
-                            "id": 9,
-                            "element_name": "伟嘉猫粮",
-                            "element_desc": "含有丰富的有机物，是小动物就能吃，只要它愿意吃喜欢这个味道。",
-                            "exponent": 1,
-                            "is_check": 0,
-                            "is_hide": 0,
-                            "asterisk": 0,
-                            "updated_at": "2018-05-17 10:41:02",
-                            "operate_type": 1
-                        }
-                    }
-                })
+                go(req, res)
             })
             //编辑post
             app.post('/api/Post/edit', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: 'success'
-                })
+                go(req, res)
             })
             //隐藏POST
             app.post('/api/Post/hide', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: 'success'
-                })
+                go(req, res)
             })
             //添加POST
             app.post('/api/Post/add', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: 'success'
-                })
+                go(req, res)
             })
             //添加评论
             app.post('/api/Comment/adminAdd', (req, res) => {
-                res.json({
-                    status_code: 1,
-                    message: 'success'
-                })
+                go(req, res)
             })
-            //获取七牛token
             app.post('/api/Qiniu/getUploadToken', (res, req) => {
                 const qiniu = require('qiniu');
                 var ak = 'CCfyEudIXBbtgJVlJjLyKrxsiIT1a-X3gfQBeXKU';
@@ -1687,26 +194,15 @@ module.exports = merge(base, {
                 };
                 var putPolicy = new qiniu.rs.PutPolicy(options);
                 var uploadToken = putPolicy.uploadToken(mac);
-                req.json({
-                    "status_code": 1,
-                    "message": 'success',
-                    data: {
-                        "qiniu_token": uploadToken,
-                        "bucket": 'yyrcm'
-                    }
-                })
+                go(req, res)
             })
 
             /////////////////////////////////////
             app.post('/submit/add_rank', (req, res) => {
-                res.json(mock.sidebar)
+                go(req, res)
             });
             app.post('/submit/edit_rank', (req, res) => {
-                res.json({
-                    code: '001',
-                    msg: 'success',
-                    data: []
-                })
+                go(req, res)
             });
 
 

@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div>
+            <span><span>H5地址：</span><a href="" ref="h5Address" target="_blank">http://www.rcm.ink/Home/Index#/elementDetails/post?id={{postInfo.id}}</a></span>
+
+        </div>
         <div class="item">
             <span><b>类型：</b></span>
             <el-input v-model="postInfo.type" style="width: 50%" :disabled="canEdit"></el-input>
@@ -145,6 +149,7 @@
                 getPostDetails(params).then(res => {
                     if (res.status == 200 && res.data.status_code == 1) {
                         this.postInfo = res.data.data;
+                        this.$refs.h5Address.href = 'http://www.rcm.ink/Home/Index#/elementDetails/post?id=' + this.postInfo.id
                     }
                 }).catch(err => {
                     throw err;

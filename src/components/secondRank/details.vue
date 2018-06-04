@@ -2,6 +2,7 @@
     <div>
         <div class="page-header">
             <h3>{{info.ranking_name}}</h3>
+            <span><span>H5地址：</span><a href="" ref="h5Address" target="_blank">http://www.rcm.ink/Home/Index#/rank2list/list?level=2&id={{info.id}}</a></span>
         </div>
         <el-tabs v-model="activeName">
             <el-tab-pane label="基本信息" name="first">
@@ -185,6 +186,7 @@
                 getSecondRankDetails(id).then(res => {
                     if (res.status == 200 && res.data.status_code == 1) {
                         this.info = res.data.data;
+                        this.$refs.h5Address.href = 'http://www.rcm.ink/Home/Index#/rank2list/list?level=2&id=' + this.info.id
                         this.base.init_star = this.info.asterisk == 0 ? '不标记' : '标记';
                         this.base.init_hide = this.info.is_hide == 0 ? '隐藏' : '显示';
                         if (res.data.data.operate_type == 1) {

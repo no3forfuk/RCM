@@ -2,6 +2,7 @@
     <div>
         <div class="page-header">
             <h3>{{info.element_name}}</h3>
+            <span><span>H5地址：</span><a href="" ref="h5Address" target="_blank">http://www.rcm.ink/Home/Index#/elementDetails/details?id={{info.id}}</a></span>
         </div>
         <el-tabs v-model="activeTab">
             <el-tab-pane label="信息总览" name="first">
@@ -136,10 +137,11 @@
 
         },
         methods: {
-            getElementDetails(){
+            getElementDetails() {
                 getElementDetails(this.$route.query.id).then(res => {
                     if (res.status == 200 && res.data.status_code == 1) {
                         this.info = res.data.data;
+                        this.$refs.h5Address.href = 'http://www.rcm.ink/Home/Index#/elementDetails/details?id=' + this.info.id
                         this.init_star = this.info.asterisk == 0 ? '不标记' : '标记';
                         this.init_hide = this.info.is_hide == 0 ? '隐藏' : '显示';
                     } else {
