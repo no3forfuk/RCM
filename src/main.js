@@ -40,9 +40,18 @@ const qiniu = require('qiniu-js');
 Vue.prototype.qiniu = qiniu;
 //权限控制
 
-// router.beforeEach((to, from, next) => {
-
-// });
+router.beforeEach((to, from, next) => {
+    const isLogin = !!sessionStorage.getItem('X-Auth-Token');
+    if (isLogin) {
+        next()
+    } else {
+        if (to.path == '/login') {
+            next()
+        } else {
+            next({path: '/login'})
+        }
+    }
+});
 
 
 //实例化Vue
