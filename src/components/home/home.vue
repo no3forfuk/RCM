@@ -4,6 +4,7 @@
         <div class="root-box">
             <div class="left-box">
                 <ul class="list-group">
+                    <router-link :to="{name:'statistics'}">统计</router-link>
                     <li class="list-group-item" v-for="(item,index) in sidebar" :key="index">
                         <a class="list-title" href="javascript:;">{{item.name}}</a>
                         <!--@click="toggleHeight($event,index)"-->

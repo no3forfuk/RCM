@@ -77,6 +77,7 @@
                             let flag = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[j]]);
                             fileData = fileData.concat(flag);
                         }
+                        console.log(fileData);
                         var rank1Arr = [];
                         var count1 = 0;
                         var count2 = 0;

@@ -123,6 +123,11 @@ export const routes = [
                 },
                 component: resolve => require(['../components/addRank/index.vue'], resolve)
             },
+            {
+                path: '/home/statistics',
+                name: 'statistics',
+                component: resolve => require(['../components/statistics/statistics.vue'], resolve)
+            },
         ],
         redirect: '/home/FirstList'
     },
