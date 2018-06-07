@@ -25,6 +25,13 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(ElementUI);
+const echarts = require('echarts')
+Vue.prototype.echarts = echarts;
+
+
+const exif = require('exif-js');
+Vue.prototype.exif = exif;
+
 
 //router
 import VueRouter from 'vue-router';

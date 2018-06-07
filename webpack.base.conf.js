@@ -54,7 +54,7 @@ module.exports = {
                 // use: ['css-loader']
                 use: ExtractTextPlugin.extract({
                     fallback: "vue-style-loader",
-                    use: "css-loader"
+                    use: ['css-loader']
                 })
             }
 
@@ -65,7 +65,7 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
-          })
+        })
     ]
 
 }
