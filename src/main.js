@@ -6,10 +6,11 @@ import utils from './utils/utils';
 
 //自定义组件引入
 require('./components/components.js');
+import './static/font/iconfont.css'
 //vuex
 import Vuex from 'vuex';
 
-import './static/font/iconfont.css'
+
 
 Vue.use(Vuex);
 const storeConfig = require('./store/store');
@@ -27,10 +28,6 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 const echarts = require('echarts')
 Vue.prototype.echarts = echarts;
-
-
-const exif = require('exif-js');
-Vue.prototype.exif = exif;
 
 
 //router
