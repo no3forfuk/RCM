@@ -162,14 +162,7 @@
         watch: {
             'dateRange.length'(n, o) {
                 if (n != o) {
-                    switch (n) {
-                        case 7:
-                            this.initEchart()
-                            break;
-                        case 30:
-                            this.initEchart()
-                            break;
-                    }
+                    this.initEchart()
                 } else {
                     return
                 }
