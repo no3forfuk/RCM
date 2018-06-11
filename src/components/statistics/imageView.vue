@@ -1,9 +1,10 @@
 <template>
     <el-container>
         <el-header>
-            <span @click="initEchart(openTime.value,index)"
-                  v-for="(item,index) in tagOpts">
-                <el-tag style="cursor: pointer;" :class="{'chooseTag':chooseTag==index}">{{item.value}}</el-tag>
+            <span @click="chooseTag(index)"
+                  v-for="(item,index) in tagOpts"
+                  :key="index">
+                <el-tag style="cursor: pointer;" :class="{'chooseTag':item.actived}">{{item.value}}</el-tag>
             </span>
             <!--<span @click="initEchart(dateRange,viewTimes.value)">-->
             <!--<el-tag style="cursor: pointer;" >浏览时长</el-tag>-->
@@ -61,17 +62,19 @@
     export default {
         data() {
             return {
-                chooseTag: 0,
                 tagOpts: [
                     {
-                        value: '打开次数'
+                        value: '打开次数',
+                        data: [820, 932, 901, 934, 1290, 1330, 1320],
+                        actived: true
                     },
                     {
-                        value: '浏览时长'
+                        value: '浏览时长',
+                        data: [820, 932, 9, 934, 1, 1330, 1320],
+                        actived: false
                     }
                 ],
                 activeNames: ['1'],
-                dateRange: [],
                 selectDate: {
                     value: '1',
                     options: [
@@ -85,12 +88,8 @@
                         }
                     ]
                 },
-                openTime: {
-                    value: [820, 932, 901, 934, 1290, 1330, 1320]
-                },
-                viewTimes: {
-                    value: [820, 932, 9, 934, 1290, 1330, 1320]
-                }
+                dateRange: [],
+                EchartValue: []
             }
         },
         created() {
@@ -100,11 +99,18 @@
         mounted() {
             this.$nextTick(function () {
                 //初始化设置默认值
-                this.selectDateRange('1')
-                this.initEchart(this.dateRange, this.openTime.value)
+                this.chooseTag(0)
             })
         },
         methods: {
+            chooseTag(index) {
+                for (let i = 0; i < this.tagOpts.length; i++) {
+                    this.tagOpts[i].actived = false;
+                }
+                this.tagOpts[index].actived = true;
+                this.EchartValue = this.tagOpts[index].data;
+                this.initEchart();
+            },
             selectDateRange(e) {
                 let mapArr = [];
                 //选择日期范围
@@ -113,7 +119,7 @@
                     mapArr = [6, 5, 4, 3, 2, 1, 0]
                 }
                 if (e == '2') {
-                    for (let i = 0; i < 31; i++) {
+                    for (let i = 0; i < 30; i++) {
                         mapArr.unshift(i)
                     }
                 }
@@ -127,8 +133,7 @@
                     return str
                 })
             },
-            initEchart(value, index) {
-                this.chooseTag = index;
+            initEchart() {
                 const box = $('.chart')[0];
                 const myChart = this.echarts.init(box);
                 const data = {
@@ -142,7 +147,7 @@
                         max: 1500
                     },
                     series: [{
-                        data: value,
+                        data: this.EchartValue,
                         type: 'line',
                         itemStyle: {
                             normal: {
@@ -155,7 +160,20 @@
             }
         },
         watch: {
-
+            'dateRange.length'(n, o) {
+                if (n != o) {
+                    switch (n) {
+                        case 7:
+                            this.initEchart()
+                            break;
+                        case 30:
+                            this.initEchart()
+                            break;
+                    }
+                } else {
+                    return
+                }
+            }
         }
     }
 
